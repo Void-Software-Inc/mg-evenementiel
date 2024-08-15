@@ -5,45 +5,17 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
 
-export const TextParallaxContentExample = () => {
-  return (
-    <div className="bg-white">
-      <TextParallaxContent
-        imgUrl="https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/photo-1525441273400-056e9c7517b3.avif"
-        headerTitle="FAITES BRILLER VOS MOMENTS AVEC UNE TOUCHE DE MAGIE"
-        headerMini="CHAQUE DÉTAIL COMPTE"
-        subheading="DANS LE SUD DE LA FRANCE"
-        heading="ORGANISEZ LE PARFAIT ÉVÉNEMENT"
-        description="Location de décoration et de mobilier pour vos événements"
-      />
-    </div>
-  );
-};
-
-const TextParallaxContent = ({
-  imgUrl,
-  subheading,
-  heading,
-  description,
-  headerTitle,
-  headerMini,
-}: {
-  imgUrl: string;
-  subheading: string;
-  heading: string;
-  description: string;
-  headerTitle: string;
-  headerMini: string;
-}) => {
+const TextParallaxContent = () => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end start"],
   });
+  
 
   const isLargeScreen = useMediaQuery({ minWidth: 1024 });
-  const isMdScreen = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-  const isSmallScreen = useMediaQuery({ maxWidth: 767 });
+  const isMdScreen = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
+  const isSmallScreen = useMediaQuery({ maxWidth: 768 });
 
   const imageX = useTransform(scrollYProgress, [0, 1], [
     "0%",
@@ -71,7 +43,7 @@ const TextParallaxContent = ({
   ]);
   const contentWidth = useTransform(scrollYProgress, [0, 1], [
     "100%",
-    isLargeScreen ? "0%" : isMdScreen ? "0%" : "100%"
+    isLargeScreen ? "-10%" : isMdScreen ? "0%" : "100%"
   ]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 1]);
 
@@ -84,7 +56,7 @@ const TextParallaxContent = ({
         >
           <div
             style={{
-              backgroundImage: `url(${imgUrl})`,
+              backgroundImage: `url(https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/photo-1525441273400-056e9c7517b3.avif)`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -94,27 +66,50 @@ const TextParallaxContent = ({
               className="absolute inset-0 flex flex-col items-center justify-center text-white bg-black bg-opacity-30"
               style={{ opacity: useTransform(scrollYProgress, [0, 0.5], [1, 0]) }}
             >
-              <p className="text-sm uppercase tracking-wider mb-4">{headerMini}</p>
-              <h1 className="text-4xl font-bold mb-6 text-center px-2 md:px-10">{headerTitle}</h1>
+              <p className="text-sm uppercase tracking-wider mb-4">CHAQUE DÉTAIL COMPTE</p>
+              <h1 className="text-4xl font-bold mb-6 text-center px-2 md:px-10">FAITES BRILLER VOS MOMENTS AVEC UNE TOUCHE DE MAGIE</h1>
             </motion.div>
           </div>
         </motion.div>
-        <motion.div 
-          className="absolute inset-0 bg-white"
-          style={{ x: contentX, y: contentY, width: contentWidth, opacity: contentOpacity }}
-        >
-          <div className="h-full flex items-center justify-center">
-            <div className="max-w-md px-8">
-              <p className="text-sm uppercase tracking-wider mb-4">{subheading}</p>
-              <h1 className="text-4xl font-bold mb-6">{heading}</h1>
-              <p className="text-lg mb-8">{description}</p>
-              <Button variant="default" size="lg">
+        {isSmallScreen ? (
+          <motion.div 
+            className="absolute inset-0 bg-white"
+            style={{ x: contentX, y: contentY, width: contentWidth, opacity: contentOpacity }}
+          >
+            <div className="h-full flex items-center justify-center">
+              <div className="max-w-md px-8">
+                <p className="text-sm uppercase tracking-wider mb-4">Dans le sud de la france</p>
+                <h1 className="text-4xl font-bold mb-6">ORGANISEZ LE PARFAIT ÉVÉNEMENT</h1>
+                <p className="text-lg mb-8">Location de décoration et de mobilier pour vos événements</p>
+                <Button variant="default" size="lg">
+                  DÉCOUVRIR
+                  <span className="ml-2">→</span>
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            className="absolute inset-0 bg-white"
+            style={{ x: contentX, y: contentY, width: contentWidth, opacity: contentOpacity }}
+          >
+            <div className="relative h-full w-full">
+              <p className="absolute top-40 left-16 text-sm uppercase tracking-wider">Dans le sud de la france</p>
+              <h1 className="absolute top-48 left-16 text-7xl font-extralight tracking-wider leading-tight">
+                <span className="md:ml-24 lg:ml-48 text-right">ORGANISEZ</span><br />
+                <span className="md:ml-2 lg:ml-16 text-center">LE PARFAIT</span><br />
+                <span className="md:ml-20 lg:ml-40 text-right">ÉVÉNEMENT</span>
+              </h1>
+              <p className="absolute bottom-32 left-16 text-lg max-w-md">
+                Location de décoration et de mobilier pour vos événements
+              </p>
+              <Button className="absolute bottom-16 left-16" variant="default" size="lg">
                 DÉCOUVRIR
                 <span className="ml-2">→</span>
               </Button>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
