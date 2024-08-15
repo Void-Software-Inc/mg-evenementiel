@@ -9,7 +9,7 @@ const TextParallaxContent = () => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ["start start", "end start"],
+    offset: ["start end", "end end"],
   });
   
 
@@ -23,7 +23,7 @@ const TextParallaxContent = () => {
   ]);
   const imageY = useTransform(scrollYProgress, [0, 1], [
     "0%",
-    isSmallScreen ? "-50%" : "0%"
+    isSmallScreen ? "0%" : "0%"
   ]);
   const imageWidth = useTransform(scrollYProgress, [0, 1], [
     "100%",
@@ -31,21 +31,20 @@ const TextParallaxContent = () => {
   ]);
   const imageHeight = useTransform(scrollYProgress, [0, 1], [
     "100%",
-    isSmallScreen ? "50%" : "100%"
+    isSmallScreen ? "100%" : "100%"
   ]);
   const contentX = useTransform(scrollYProgress, [0, 1], [
-    isSmallScreen ? "0%" : "-100%",
-    isLargeScreen ? "100%" : isMdScreen ? "100%" : "0%"
+    isSmallScreen ? "0%" : "-240%",
+    isLargeScreen ? "0%" : isMdScreen ? "0%" : "0%"
   ]);
   const contentY = useTransform(scrollYProgress, [0, 1], [
-    isSmallScreen ? "100%" : "0%",
-    isSmallScreen ? "-100%" : "0%" 
+    isSmallScreen ? "200%" : "0%",
+    isSmallScreen ? "0%" : "0%" 
   ]);
   const contentWidth = useTransform(scrollYProgress, [0, 1], [
     "100%",
-    isLargeScreen ? "-10%" : isMdScreen ? "0%" : "100%"
+    isLargeScreen ? "45%" : isMdScreen ? "50%" : "100%"
   ]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 1]);
 
   return (
     <div ref={targetRef} className="relative h-[200vh]">
@@ -64,7 +63,7 @@ const TextParallaxContent = () => {
           >
             <motion.div 
               className="absolute inset-0 flex flex-col items-center justify-center text-white bg-black bg-opacity-30"
-              style={{ opacity: useTransform(scrollYProgress, [0, 0.5], [1, 0]) }}
+              style={{ opacity: useTransform(scrollYProgress, [0.5, 1], [1, 0]) }}
             >
               <p className="text-sm uppercase tracking-wider mb-4">CHAQUE DÉTAIL COMPTE</p>
               <h1 className="text-4xl font-bold mb-6 text-center px-2 md:px-10">FAITES BRILLER VOS MOMENTS AVEC UNE TOUCHE DE MAGIE</h1>
@@ -74,7 +73,7 @@ const TextParallaxContent = () => {
         {isSmallScreen ? (
           <motion.div 
             className="absolute inset-0 bg-white"
-            style={{ x: contentX, y: contentY, width: contentWidth, opacity: contentOpacity }}
+            style={{ x: contentX, y: contentY, width: contentWidth }}
           >
             <div className="h-full flex items-center justify-center">
               <div className="max-w-md px-8">
@@ -91,7 +90,7 @@ const TextParallaxContent = () => {
         ) : (
           <motion.div 
             className="absolute inset-0 bg-white"
-            style={{ x: contentX, y: contentY, width: contentWidth, opacity: contentOpacity }}
+            style={{ x: contentX, y: contentY, width: contentWidth}}
           >
             <div className="relative h-full w-full">
               <p className="absolute top-40 left-16 text-sm uppercase tracking-wider">Dans le sud de la france</p>
