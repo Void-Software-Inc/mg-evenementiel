@@ -12,8 +12,9 @@ const TextParallaxContent = () => {
     offset: ["start end", "end end"],
   });
   
-
-  const isLargeScreen = useMediaQuery({ minWidth: 1024 });
+  const is2xlScreen = useMediaQuery({ minWidth: 1536 });
+  const isXLargeScreen = useMediaQuery({ minWidth: 1280, maxWidth: 1536 });
+  const isLargeScreen = useMediaQuery({ minWidth: 1024, maxWidth: 1280 });
   const isMdScreen = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
   const isSmallScreen = useMediaQuery({ maxWidth: 768 });
 
@@ -43,7 +44,7 @@ const TextParallaxContent = () => {
   ]);
   const contentWidth = useTransform(scrollYProgress, [0, 1], [
     "100%",
-    isLargeScreen ? "45%" : isMdScreen ? "50%" : "100%"
+    is2xlScreen ? "30%" : isXLargeScreen ? "40%" : isLargeScreen ? "45%" : isMdScreen ? "50%" : "100%"
   ]);
 
   return (
