@@ -49,12 +49,12 @@ const TextParallaxContent = () => {
     "100%",
     is2xlScreen ? "31%" : isXLargeScreen ? "40%" : isLargeScreen ? "45%" : isMdScreen ? "50%" : "100%"
   ]);
-  const buttonLeftPosition = useTransform(scrollYProgress, [0, 1], ["0%", "88%"]);
+  const buttonLeftPosition = useTransform(scrollYProgress, [0, 0.9, 1], ["0%", "0%", "88%"]);
 
   return (
     <>
       <div ref={targetRef} className="relative h-[200vh]">
-        <div className="hidden md:block absolute h-[100vh] w-full bg-transparent">
+        <div className="hidden md:block absolute h-[10vh] w-full bg-transparent">
           <div className="sticky h-16 top-0 overflow-hidden z-50 bg-transparent">
             <div className="p-4 bg-transparent flex items-center">
               <Link href="/" className="absolute left-2 gap-2 text-lg font-semibold">
