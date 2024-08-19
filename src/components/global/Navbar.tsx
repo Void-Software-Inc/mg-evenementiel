@@ -6,22 +6,20 @@ import { useState, useEffect } from "react";
 import { Menu, ShoppingBag, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { motion, useScroll, AnimatePresence } from "framer-motion";
 
-export default function Navbar(){
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { scrollY } = useScroll();
   const [isVisible, setIsVisible] = useState(false);
 
-  const textParallaxHeight = window.innerHeight * 2;
-
   useEffect(() => {
-    const unsubscribe = scrollY.onChange((latest) => {
-      setIsVisible(latest >= textParallaxHeight);
-    });
+    const handleScroll = () => {
+      const scrollThreshold = window.innerHeight * 2; // 200vh
+      setIsVisible(window.scrollY > scrollThreshold);
+    };
 
-    return () => unsubscribe();
-  }, [scrollY]);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleItemClick = () => {
     setIsOpen(false);
@@ -78,40 +76,34 @@ export default function Navbar(){
         </Link>
       </header>
 
-      <AnimatePresence>
-        {isVisible && (
-          <motion.header 
-            className="hidden md:flex fixed w-full top-0 h-16 items-center justify-between px-6 z-50 bg-white border-b border-gray-200"
-            initial={{ y: "-100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <Link href="/" className="flex items-center gap-2 text-base font-semibold">
-              <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={200} height={200} />
-            </Link>
+      <header 
+        className={`hidden md:flex fixed w-full top-0 h-16 items-center justify-between px-6 z-50 bg-white border-b border-gray-200 transition-transform duration-300 ${
+          isVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
+        <Link href="/" className="flex items-center gap-2 text-base font-semibold">
+          <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={150} height={150} />
+        </Link>
 
-            <nav className="flex items-center space-x-6 text-sm font-medium">
-              <Link href="/catalogue" className="text-gray-600 hover:text-gray-900">
-                CATALOGUE
-              </Link>
-              <Link href="/realisations" className="text-gray-600 hover:text-gray-900">
-                RÉALISATIONS
-              </Link>
-              <Link href="/infos" className="text-gray-600 hover:text-gray-900">
-                INFOS
-              </Link>
-              <Link href="/contact" className="text-gray-600 hover:text-gray-900">
-                CONTACT
-              </Link>
-            </nav>
+        <nav className="flex items-center space-x-6 text-sm font-medium">
+          <Link href="/catalogue" className="text-gray-600 hover:text-gray-900">
+            CATALOGUE
+          </Link>
+          <Link href="/realisations" className="text-gray-600 hover:text-gray-900">
+            RÉALISATIONS
+          </Link>
+          <Link href="/infos" className="text-gray-600 hover:text-gray-900">
+            INFOS
+          </Link>
+          <Link href="/contact" className="text-gray-600 hover:text-gray-900">
+            CONTACT
+          </Link>
+        </nav>
 
-            <Link href="/cart" className="text-black">
-              <ShoppingBag className="h-6 w-6" />
-            </Link>
-          </motion.header>
-        )}
-      </AnimatePresence>
+        <Link href="/cart" className="text-black">
+          <ShoppingBag className="h-6 w-6" />
+        </Link>
+      </header>
     </>
   )
 }
