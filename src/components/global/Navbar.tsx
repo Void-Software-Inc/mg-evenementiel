@@ -13,7 +13,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollThreshold = window.innerHeight * 2; // 200vh
+      const scrollThreshold = window.innerHeight * 1; // 100vh
       setIsVisible(window.scrollY > scrollThreshold);
     };
 
@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="md:hidden fixed w-full top-0 flex h-16 items-center justify-between px-4 z-50 bg-white border-b border-gray-200">
+      <header className="md:hidden fixed w-full top-0 flex h-16 items-center justify-between px-4 z-50 bg-white/30 backdrop-blur-md">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button
@@ -41,7 +41,7 @@ export default function Navbar() {
           </SheetTrigger>
           <SheetContent side="top" className="w-full h-full">
             <div className="flex flex-col h-full">
-              <div className="flex justify-between items-center pb-4 border-b">
+              <div className="flex justify-between items-center pb-4">
                 <Link href="/" className="flex items-center gap-2" onClick={handleItemClick}>
                   <Image src="/static/svg/mgelogo.svg" alt="logo" width={150} height={150} />
                 </Link>
@@ -77,7 +77,7 @@ export default function Navbar() {
       </header>
 
       <header 
-        className={`hidden md:flex fixed w-full top-0 h-16 items-center justify-between px-6 z-50 bg-white border-b border-gray-200 transition-transform duration-300 ${
+        className={`hidden md:flex fixed w-full top-0 h-16 items-center justify-between px-6 z-50 bg-white/1 backdrop-blur-md transition-transform duration-300 ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
@@ -86,16 +86,16 @@ export default function Navbar() {
         </Link>
 
         <nav className="flex items-center space-x-6 text-sm font-medium">
-          <Link href="/catalogue" className="text-gray-600 hover:text-gray-900">
+          <Link href="/catalogue" className="text-gray-800 hover:text-black">
             CATALOGUE
           </Link>
-          <Link href="/realisations" className="text-gray-600 hover:text-gray-900">
+          <Link href="/realisations" className="text-gray-800 hover:text-black">
             RÉALISATIONS
           </Link>
-          <Link href="/infos" className="text-gray-600 hover:text-gray-900">
+          <Link href="/infos" className="text-gray-800 hover:text-black">
             INFOS
           </Link>
-          <Link href="/contact" className="text-gray-600 hover:text-gray-900">
+          <Link href="/contact" className="text-gray-800 hover:text-black">
             CONTACT
           </Link>
         </nav>
