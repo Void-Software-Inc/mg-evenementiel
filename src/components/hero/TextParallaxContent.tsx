@@ -20,6 +20,8 @@ const TextParallaxContent = () => {
   const isLargeScreen = useMediaQuery({ minWidth: 1024, maxWidth: 1280 });
   const isMdScreen = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
   const isSmallScreen = useMediaQuery({ maxWidth: 768 });
+  const isPortrait = useMediaQuery({ minHeight: 500, maxHeight: 650 });
+  const isPortraitSmall = useMediaQuery({ maxHeight: 500 });
 
   const imageX = useTransform(scrollYProgress, [0, 1], [
     "0%",
@@ -53,7 +55,7 @@ const TextParallaxContent = () => {
 
   return (
     <>
-      <div ref={targetRef} className="relative h-[200vh]">
+      <div ref={targetRef} className="relative h-[200%]">
         <div className="hidden md:block absolute h-[10vh] w-full bg-transparent">
           <div className="sticky h-16 top-0 overflow-hidden z-50 bg-transparent">
             <div className="p-4 bg-transparent flex items-center">
@@ -116,7 +118,7 @@ const TextParallaxContent = () => {
               style={{ x: contentX, y: contentY, width: contentWidth }}
             >
               <div className="h-full flex items-center justify-center">
-                <div className="max-w-md px-8">
+                <div className="max-w-md px-8 text-center">
                   <p className="text-sm uppercase tracking-wider mb-4">Dans le sud de la france</p>
                   <h1 className="text-4xl font-bold mb-6">ORGANISEZ LE PARFAIT ÉVÉNEMENT</h1>
                   <p className="text-lg mb-8">Location de décoration et de mobilier pour vos événements</p>
@@ -132,32 +134,88 @@ const TextParallaxContent = () => {
               className="absolute inset-0 bg-white"
               style={{ x: contentX, y: contentY, width: contentWidth }}
             >
-              <div className="relative h-full w-full">
-                <p className="absolute top-40 left-16 text-sm uppercase tracking-wider">Dans le sud de la france</p>
-                <h1 className="absolute top-48 left-16 text-7xl font-extralight tracking-wider leading-tight">
-                  <span className="md:ml-24 lg:ml-48 text-right">ORGANISEZ</span><br />
-                  <span className="md:ml-2 lg:ml-16 text-center">LE PARFAIT</span><br />
-                  <span className="md:ml-20 lg:ml-40 text-right">ÉVÉNEMENT</span>
-                </h1>
-                <p className="absolute bottom-32 left-16 text-lg max-w-md">
-                  Location de décoration et de mobilier pour vos événements
-                </p>
-                <motion.div 
-                  className="absolute bottom-8"
-                  style={{ left: buttonLeftPosition }}
-                >
-                  <Button 
-                    className="hover:bg-black rounded-full w-28 h-28 p-0 flex items-center justify-center text-sm font-medium group"
-                    variant="default" 
-                    size="lg"
+              {isPortraitSmall ? (
+                <div className="relative h-full w-full">
+                  <p className="absolute top-10 left-16 text-sm uppercase tracking-wider">Dans le sud de la france</p>
+                  <h1 className="absolute top-16 left-16 text-5xl font-extralight tracking-wider leading-tight">
+                    <span className="md:ml-36 lg:ml-48 text-right">ORGANISEZ</span><br />
+                    <span className="md:ml-10 lg:ml-16 text-center">LE PARFAIT</span><br />
+                    <span className="md:ml-32 lg:ml-40 text-right">ÉVÉNEMENT</span>
+                  </h1>
+                  <p className="absolute bottom-16 left-16 text-md max-w-xs">
+                    Location de décoration et de mobilier pour vos événements
+                  </p>
+                  <motion.div 
+                    className="absolute bottom-1"
+                    style={{ left: buttonLeftPosition }}
                   >
-                    <div className="flex flex-col items-center justify-center w-full h-full">
-                      <span>DÉCOUVRIR</span>
-                      <span className="text-xl transform transition-transform duration-700 group-hover:rotate-[360deg]">→</span>
-                    </div>
-                  </Button>
-                </motion.div>
-              </div>
+                    <Button 
+                      className="hover:bg-black rounded-full w-24 h-24 p-0 flex items-center justify-center text-sm font-medium group"
+                      variant="default" 
+                      size="lg"
+                    >
+                      <div className="flex flex-col items-center justify-center w-full h-full">
+                        <span>DÉCOUVRIR</span>
+                        <span className="text-xl transform transition-transform duration-700 group-hover:rotate-[360deg]">→</span>
+                      </div>
+                    </Button>
+                  </motion.div>
+                </div>
+              ) : isPortrait ? (
+                <div className="relative h-full w-full">
+                  <p className="absolute top-10 left-16 text-sm uppercase tracking-wider">Dans le sud de la france</p>
+                  <h1 className="absolute top-16 left-16 text-6xl font-extralight tracking-wider leading-tight">
+                    <span className="md:ml-36 lg:ml-48 text-right">ORGANISEZ</span><br />
+                    <span className="md:ml-10 lg:ml-16 text-center">LE PARFAIT</span><br />
+                    <span className="md:ml-32 lg:ml-40 text-right">ÉVÉNEMENT</span>
+                  </h1>
+                  <p className="absolute bottom-32 left-16 text-lg w-72">
+                    Location de décoration et de mobilier pour vos événements
+                  </p>
+                  <motion.div 
+                    className="absolute bottom-16"
+                    style={{ left: buttonLeftPosition }}
+                  >
+                    <Button 
+                      className="hover:bg-black rounded-full w-28 h-28 p-0 flex items-center justify-center text-sm font-medium group"
+                      variant="default" 
+                      size="lg"
+                    >
+                      <div className="flex flex-col items-center justify-center w-full h-full">
+                        <span>DÉCOUVRIR</span>
+                        <span className="text-xl transform transition-transform duration-700 group-hover:rotate-[360deg]">→</span>
+                      </div>
+                    </Button>
+                  </motion.div>
+                </div>
+              ) : (
+                <div className="relative h-full w-full">
+                  <p className="absolute top-40 left-16 text-sm uppercase tracking-wider">Dans le sud de la france</p>
+                  <h1 className="absolute top-48 left-16 text-7xl font-extralight tracking-wider leading-tight">
+                    <span className="md:ml-24 lg:ml-48 text-right">ORGANISEZ</span><br />
+                    <span className="md:ml-2 lg:ml-16 text-center">LE PARFAIT</span><br />
+                    <span className="md:ml-20 lg:ml-40 text-right">ÉVÉNEMENT</span>
+                  </h1>
+                  <p className="absolute bottom-32 left-16 text-lg max-w-md">
+                    Location de décoration et de mobilier pour vos événements
+                  </p>
+                  <motion.div 
+                    className="absolute bottom-8"
+                    style={{ left: buttonLeftPosition }}
+                  >
+                    <Button 
+                      className="hover:bg-black rounded-full w-28 h-28 p-0 flex items-center justify-center text-sm font-medium group"
+                      variant="default" 
+                      size="lg"
+                    >
+                      <div className="flex flex-col items-center justify-center w-full h-full">
+                        <span>DÉCOUVRIR</span>
+                        <span className="text-xl transform transition-transform duration-700 group-hover:rotate-[360deg]">→</span>
+                      </div>
+                    </Button>
+                  </motion.div>
+                </div>
+              )}
             </motion.div>
           )}
         </div>
