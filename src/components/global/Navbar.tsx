@@ -6,10 +6,12 @@ import { useState, useEffect } from "react";
 import { Menu, ShoppingBag, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useMediaQuery } from "react-responsive";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const is2xlScreen = useMediaQuery({ minWidth: 1698 });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,27 +83,27 @@ export default function Navbar() {
           isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        <Link href="/" className="flex items-center gap-2 text-base font-semibold">
-          <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={150} height={150} />
+        <Link href="/" className="absolute left-2 gap-2 text-base font-semibold">
+          <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={is2xlScreen ? 175 : 150} height={is2xlScreen ? 175 : 150} />
         </Link>
 
-        <nav className="flex items-center space-x-6 text-sm font-medium">
-          <Link href="/catalogue" className="text-gray-800 hover:text-black">
+        <nav className="flex w-full justify-center items-center space-x-6 text-sm 2xl:text-lg font-medium">
+          <Link href="/catalogue" className="text-gray-800 hover:text-black 2xl:text-lg">
             CATALOGUE
           </Link>
-          <Link href="/realisations" className="text-gray-800 hover:text-black">
+          <Link href="/realisations" className="text-gray-800 hover:text-black 2xl:text-lg">
             RÉALISATIONS
           </Link>
-          <Link href="/infos" className="text-gray-800 hover:text-black">
+          <Link href="/infos" className="text-gray-800 hover:text-black 2xl:text-lg">
             INFOS
           </Link>
-          <Link href="/contact" className="text-gray-800 hover:text-black">
+          <Link href="/contact" className="text-gray-800 hover:text-black 2xl:text-lg">
             CONTACT
           </Link>
         </nav>
 
-        <Link href="/cart" className="text-black">
-          <ShoppingBag className="h-6 w-6" />
+        <Link href="/cart" className="absolute right-8 text-gray-800 hover:text-black transition-colors duration-500">
+          <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
         </Link>
       </header>
     </>
