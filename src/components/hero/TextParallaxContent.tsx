@@ -122,7 +122,7 @@ const TextParallaxContent = () => {
                   <p className="text-sm uppercase tracking-wider mb-4">Dans le sud de la france</p>
                   <h1 className="text-4xl font-bold mb-6">ORGANISEZ LE PARFAIT ÉVÉNEMENT</h1>
                   <p className="text-lg mb-8">Location de décoration et de mobilier pour vos événements</p>
-                  <Button variant="default" size="lg">
+                  <Button variant="default" size="default">
                     DÉCOUVRIR
                     <span className="ml-2">→</span>
                   </Button>
@@ -152,7 +152,7 @@ const TextParallaxContent = () => {
                     <Button 
                       className="hover:bg-black rounded-full w-24 h-24 p-0 flex items-center justify-center text-sm font-medium group"
                       variant="default" 
-                      size="lg"
+                      size="default"
                     >
                       <div className="flex flex-col items-center justify-center w-full h-full">
                         <span>DÉCOUVRIR</span>
@@ -179,7 +179,7 @@ const TextParallaxContent = () => {
                     <Button 
                       className="hover:bg-black rounded-full w-28 h-28 p-0 flex items-center justify-center text-sm font-medium group"
                       variant="default" 
-                      size="lg"
+                      size="default"
                     >
                       <div className="flex flex-col items-center justify-center w-full h-full">
                         <span>DÉCOUVRIR</span>
@@ -206,7 +206,7 @@ const TextParallaxContent = () => {
                     <Button 
                       className="hover:bg-black rounded-full w-28 h-28 2xl:w-36 2xl:h-36 p-0 flex items-center justify-center text-sm 2xl:text-lg font-medium group"
                       variant="default" 
-                      size="lg"
+                      size="default"
                     >
                       <div className="flex flex-col items-center justify-center w-full h-full">
                         <span>DÉCOUVRIR</span>
