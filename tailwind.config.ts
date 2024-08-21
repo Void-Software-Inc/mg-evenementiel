@@ -18,6 +18,10 @@ const config = {
       screens: {
         "2xl": "1698px",
       },
+      fontSize: {
+        '1xl': '20px', 
+        '5-1/2xl':'55px', 
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
