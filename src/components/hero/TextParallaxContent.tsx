@@ -7,6 +7,7 @@ import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingBag } from "lucide-react"
+import { CartSheet } from "@/components/global/CartSheet";
 
 const TextParallaxContent = () => {
   const targetRef = useRef(null);
@@ -84,9 +85,13 @@ const TextParallaxContent = () => {
                   </span>
                 </Link>
               </nav>
-              <Link href="/cart" className="absolute right-8 text-white hover:text-gray-200 transition-colors duration-500">
-                <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
-              </Link>
+              <div className="absolute right-8 text-white hover:text-gray-200 transition-colors duration-500">
+                <CartSheet trigger={
+                  <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-transparent">
+                    <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
+                  </Button>
+                } />
+              </div>
             </div>
           </div>
         </div>
