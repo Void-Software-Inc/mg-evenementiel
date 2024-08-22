@@ -95,14 +95,17 @@ const TextParallaxContent = () => {
             className="absolute inset-0"
             style={{ x: imageX, y: imageY, width: imageWidth, height: imageHeight }}
           >
-            <div
-              style={{
-                backgroundImage: `url(https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/photo-1525441273400-056e9c7517b3.avif)`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-              className="w-full h-full"
-            >
+            <div className="relative w-full h-full">
+              <Image
+                src="https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/photo-1525441273400-056e9c7517b3.avif"
+                alt="Background"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: 'cover'
+                }}
+                priority
+              />
               <motion.div 
                 className="absolute inset-0 flex flex-col items-center justify-center text-white bg-black bg-opacity-30"
                 style={{ opacity: useTransform(scrollYProgress, [0.5, 1], [1, 0]) }}
