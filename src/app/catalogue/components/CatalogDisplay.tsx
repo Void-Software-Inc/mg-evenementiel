@@ -5,6 +5,7 @@ import { ChevronDownIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { productTypes, productColors, ProductType, ProductColor, Product } from "@/utils/types/products";
 import { getProducts } from "@/services/products";
 import ProductCard from "@/app/catalogue/components/ProductCard";
+import SkeletonProductCard from "@/app/catalogue/components/SkeletonProductCard";
 
 import {
   DropdownMenu,
@@ -21,9 +22,11 @@ const CatalogDisplay: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true);
       try {
         const fetchedProducts = await getProducts();
         console.log("Fetched products:", fetchedProducts);
@@ -31,6 +34,8 @@ const CatalogDisplay: React.FC = () => {
         setFilteredProducts(fetchedProducts);
       } catch (error) {
         console.error("Failed to fetch products:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchProducts();
@@ -179,13 +184,18 @@ const CatalogDisplay: React.FC = () => {
           </div>
 
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {filteredProducts.map((product, index) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                priority={index < 4} // Set priority for the first 4 products
-              />
-            ))}
+            {isLoading
+              ? Array.from({ length: 8 }).map((_, index) => (
+                  <SkeletonProductCard key={index} />
+                ))
+              : filteredProducts.map((product, index) => (
+                  <ProductCard 
+                    key={product.id} 
+                    product={product} 
+                    priority={index < 4}
+                  />
+                ))
+            }
           </div>
 
         </div>

@@ -3,6 +3,7 @@
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { Cross2Icon } from "@radix-ui/react-icons"
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -51,12 +52,16 @@ const sheetVariants = cva(
 
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {}
+    VariantProps<typeof sheetVariants> {
+  title: string;
+  description?: string;
+  hideTitle?: boolean;
+}
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = "right", className, children, ...props }, ref) => (
+>(({ side = "right", className, children, title, description, hideTitle = false, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content
@@ -64,6 +69,18 @@ const SheetContent = React.forwardRef<
       className={cn(sheetVariants({ side }), className)}
       {...props}
     >
+      {hideTitle ? (
+        <VisuallyHidden>
+          <SheetTitle>{title}</SheetTitle>
+        </VisuallyHidden>
+      ) : (
+        <SheetTitle>{title}</SheetTitle>
+      )}
+      {description && (
+        <VisuallyHidden>
+          <SheetDescription>{description}</SheetDescription>
+        </VisuallyHidden>
+      )}
       {children}
     </SheetPrimitive.Content>
   </SheetPortal>

@@ -6,7 +6,7 @@ const API_URL = '/api';
 /********************* PRODUCTS *********************/
   
 export async function getProducts(): Promise<Product[]> {
-  /*try {
+  try {
     const url = `${API_URL}/products`
     const response = await fetch(url);
     if (!response.ok) {
@@ -27,10 +27,10 @@ export async function getProducts(): Promise<Product[]> {
   } catch (error) {
     console.error('Error fetching products:', error);
     throw error;
-  }*/
-    return new Promise((resolve) => {
+  }
+    /*return new Promise((resolve) => {
       setTimeout(() => {
         resolve(fakeProducts);
       }, 500); // 500ms delay to simulate network request
-    });
+    });*/
 }
