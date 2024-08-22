@@ -18,6 +18,7 @@ import {
 const CatalogDisplay: React.FC = () => {
   const [selectedType, setSelectedType] = useState<string>("");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   
@@ -36,33 +37,33 @@ const CatalogDisplay: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Filtering products. Selected type:", selectedType, "Selected colors:", selectedColors);
     const newFilteredProducts = products.filter(product => {
       const typeMatch = selectedType === "" || product.type === selectedType;
       const colorMatch = selectedColors.length === 0 || selectedColors.includes(product.color);
-      console.log(`Product: ${product.name}, Type: ${product.type}, Color: ${product.color}, TypeMatch: ${typeMatch}, ColorMatch: ${colorMatch}`);
-      return typeMatch && colorMatch;
+      const searchMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return typeMatch && colorMatch && searchMatch;
     });
-    console.log("Filtered products:", newFilteredProducts.length);
     setFilteredProducts(newFilteredProducts);
-  }, [selectedType, selectedColors, products]);
+  }, [selectedType, selectedColors, searchQuery, products]);
 
   const handleTypeChange = (type: string) => {
-    console.log("Type changed to:", type);
     setSelectedType(prev => prev === type ? "" : type);
   };
 
   const handleColorChange = (color: string) => {
-    console.log("Color changed:", color);
     setSelectedColors(prev => 
       prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]
     );
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
   const handleResetFilters = () => {
-    console.log("Resetting filters");
     setSelectedType("");
     setSelectedColors([]);
+    setSearchQuery("");
   };
 
   const renderColorSwatch = (color: ProductColor) => {
@@ -114,8 +115,17 @@ const CatalogDisplay: React.FC = () => {
             </div>
           </div>
 
-          <div className="h-fit w-full flex flex-col sm:flex-row sm:justify-between mt-0 md:mt-4">
-            <div className="h-fit w-full flex justify-start space-x-1 lg:space-x-2 lg:ml-6">
+          <div className="h-fit w-full flex flex-col lg:flex-row mt-0 md:mt-4">
+            <div className="mb-1 lg:mb-0 w-full">
+              <input
+                type="text"
+                placeholder="Rechercher un produit..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                className="w-full px-4 py-2 border border-zinc-800 rounded-full focus:outline-none focus:ring-2 focus:ring-zinc-500"
+              />
+            </div>
+            <div className="h-fit w-full flex justify-start space-x-1 lg:space-x-2 lg:ml-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button className="flex items-center justify-between bg-transparent transition duration-200 ease-in-out hover:bg-zinc-100 text-zinc-800 border border-zinc-800 rounded-full px-4 py-2">
@@ -160,7 +170,7 @@ const CatalogDisplay: React.FC = () => {
               </DropdownMenu>
             </div>
 
-            <div className="mt-1 sm:mt-0 ml-0 lg:ml-2">
+            <div className="mt-1 lg:mt-0 ml-0 lg:ml-2">
               <Button onClick={handleResetFilters} className="bg-transparent transition active:scale-95 space-x-1 overflow-hidden duration-200 ease-in-out hover:bg-zinc-100 border border-zinc-800 text-zinc-800 rounded-full">
                 <span className="pr-2">Nettoyer filtres</span>
                 <UpdateIcon />
