@@ -7,21 +7,28 @@ import { Menu, ShoppingBag, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useMediaQuery } from "react-responsive";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const is2xlScreen = useMediaQuery({ minWidth: 1698 });
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollThreshold = window.innerHeight * 1; // 100vh
-      setIsVisible(window.scrollY > scrollThreshold);
+      if (pathname === '/') {
+        const scrollThreshold = window.innerHeight * 1; // 100vh
+        setIsVisible(window.scrollY > scrollThreshold);
+      } else {
+        setIsVisible(true); // Always visible on other routes
+      }
     };
 
+    handleScroll(); // Call once to set initial state
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [pathname]);
 
   const handleItemClick = () => {
     setIsOpen(false);
