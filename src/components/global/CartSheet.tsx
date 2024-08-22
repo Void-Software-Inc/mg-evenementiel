@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Image from 'next/image';
 import { Sheet, SheetContent, SheetTrigger, SheetFooter } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useCart } from '@/app/context/CartContext';
 import { ShoppingBag, Plus, Minus, Trash2 } from 'lucide-react';
 
-export const CartSheet: React.FC = () => {
+interface CartSheetProps {
+    trigger?: ReactNode;
+}
+
+export const CartSheet: React.FC<CartSheetProps> = ({ trigger }) => {
   const { cart, updateQuantity, removeFromCart } = useCart();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -21,10 +25,12 @@ export const CartSheet: React.FC = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="hover:bg-transparent h-10 w-10" variant="ghost" size="icon">
-          <ShoppingBag className="h-5 w-5" />
+        {trigger || (
+          <Button className="hover:bg-transparent h-10 w-10" variant="ghost" size="icon">
+            <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
           <span className="sr-only">Open cart</span>
         </Button>
+        )}
       </SheetTrigger>
       <SheetContent 
         title="Votre panier" 
