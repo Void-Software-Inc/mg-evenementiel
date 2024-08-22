@@ -4,7 +4,7 @@ const CataloguePage: React.FC = () => {
   return (
       <>
         <CatalogDisplay />
-        <div className="h-screen w-full bg-white"></div>
+        <div className="h-12 w-full bg-white"></div>
       </>
   );
 };
