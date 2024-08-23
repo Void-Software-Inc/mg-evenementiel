@@ -180,13 +180,21 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
       </div>
 <div className='h-fit w-full flex justify-center'>
   <div className='h-fit w-[95%]'>
-    <div className="grid grid-cols-6 gap-2 mt-8">
+    <div className={`grid gap-2 mt-8 ${
+      filteredImages.length === 1 
+        ? 'grid-cols-1 place-items-center' 
+        : 'grid-cols-6'
+    }`}>
       {filteredImages.map((image, index) => (
         <div 
           key={index} 
           ref={(el) => { imageRefs.current[index] = el; }}
-          className={`relative ${image.isPortrait ? 'col-span-2' : 'col-span-4'} opacity-0 translate-y-5 transition-all duration-700 ease-out`}
-          style={{ paddingBottom: '75%' }}
+          className={`relative ${
+            filteredImages.length === 1 
+              ? 'w-1/2'
+              : image.isPortrait ? 'col-span-2' : 'col-span-4'
+          } opacity-0 translate-y-5 transition-all duration-700 ease-out`}
+          style={{ paddingBottom: filteredImages.length === 1 ? '37.5%' : '75%' }}
         >
           <Image 
             src={image.src} 
