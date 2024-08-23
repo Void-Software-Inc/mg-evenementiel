@@ -47,22 +47,9 @@ export default async function RealisationsPage() {
       
           <FilterControls initialFilters={initialFilters} />
 
-          <div className='h-full w-full flex justify-center'>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {images.map((image, index) => (
-                <div key={index} className={`${index % 2 === 0 ? 'md:col-span-1' : 'md:col-span-2'} h-full`}>
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    width={800} // Adjust if necessary
-                    height={600} // Adjust if necessary
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-              ))}
-            </div>
          
-      </div>
+         
+      
     </div>
   );
 }
