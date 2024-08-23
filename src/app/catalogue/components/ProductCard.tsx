@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Product } from "@/utils/types/products";
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useCart } from '@/app/context/CartContext';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface ProductCardProps {
   product: Product;
@@ -11,20 +12,26 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, priority = false }) => {
-  const { addToCart } = useCart();
-  const [quantity, setQuantity] = useState(1);
+  const { addToCart, cart } = useCart();
+  const [quantity, setQuantity] = useState("1");
+  const [remainingStock, setRemainingStock] = useState(product.stock);
 
-  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuantity = parseInt(event.target.value, 10);
-    if (!isNaN(newQuantity) && newQuantity >= 1 && newQuantity <= product.stock) {
-      setQuantity(newQuantity);
-    }
+  useEffect(() => {
+    const itemInCart = cart.find(item => item.id === product.id);
+    const quantityInCart = itemInCart ? itemInCart.quantity : 0;
+    setRemainingStock(product.stock - quantityInCart);
+  }, [cart, product.id, product.stock]);
+
+  const handleQuantityChange = (value: string) => {
+    setQuantity(value);
   };
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
-    setQuantity(1); // Reset quantity after adding to cart
+    addToCart(product, parseInt(quantity, 10));
+    setQuantity("1");
   };
+
+  const isOutOfStock = remainingStock === 0;
 
   return (
     <div className="flex flex-col space-y-2">
@@ -46,23 +53,42 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, priority = false }) 
       </div>
       
       <div className="flex items-center space-x-2">
-        <Button
-          onClick={handleAddToCart}
-          className="flex-grow text-xs font-medium text-center text-gray-700 border border-gray-300 rounded-full hover:bg-gray-50 transition duration-150"
-          variant="outline"
-          size="compact"
-        >
-          Ajouter au devis
-        </Button>
-        <Input
-          isModifiedCn={true}
-          type="number"
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex-grow">
+                <Button
+                  onClick={handleAddToCart}
+                  className="w-full text-xs font-medium text-center text-gray-700 border border-gray-300 rounded hover:bg-gray-50 transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+                  variant="outline"
+                  size="compact"
+                  disabled={isOutOfStock}
+                >
+                  {isOutOfStock ? 'Quantité max' : 'Ajouter au devis'}
+                </Button>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              {isOutOfStock ? 'Quantité maximale commandée' : `${remainingStock} disponible(s)`}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <Select
           value={quantity}
-          onChange={handleQuantityChange}
-          min={1}
-          max={product.stock}
-          className="w-20 text-center h-8 px-4 py-0 border border-gray-300 rounded-full"
-        />
+          onValueChange={handleQuantityChange}
+          disabled={isOutOfStock}
+        >
+          <SelectTrigger className="w-20">
+            <SelectValue placeholder="Qté" />
+          </SelectTrigger>
+          <SelectContent>
+            {Array.from({ length: remainingStock }, (_, i) => i + 1).map((num) => (
+              <SelectItem key={num} value={num.toString()}>
+                {num}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
