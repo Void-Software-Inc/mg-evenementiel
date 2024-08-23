@@ -58,8 +58,8 @@ const TextParallaxContent = () => {
     <>
       <div ref={targetRef} className="relative h-[200%]">
         <div className="hidden md:block absolute h-[10vh] w-full bg-transparent">
-          <div className="sticky h-16 top-0 overflow-hidden z-50 bg-transparent">
-            <div className="p-4 bg-transparent flex items-center">
+          <div className="sticky h-16 top-0 overflow-hidden z-50 bg-transparent flex items-center">
+            <div className="p-4 bg-transparent flex items-center w-full">
               <Link href="/" className="absolute left-2 gap-2 text-lg font-semibold">
                 <Image className="cursor-pointer" src="/static/svg/mgelogowhite.svg" alt="logo" width={is2xlScreen ? 175 : 150} height={is2xlScreen ? 175 : 150} />
               </Link>
