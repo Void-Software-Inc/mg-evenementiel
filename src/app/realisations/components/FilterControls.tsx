@@ -20,39 +20,49 @@ interface ImageData {
   src: string;
   alt: string;
   isPortrait: boolean;
+  type: string;
+  lieu: string;
 }
 
 const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
-  const [selectedType, setSelectedType] = useState(initialFilters.type);
-  const [selectedLieu, setSelectedLieu] = useState(initialFilters.lieu);
+  const [selectedType, setSelectedType] = useState(initialFilters.type || "Tout");
+  const [selectedLieu, setSelectedLieu] = useState(initialFilters.lieu || "Tout");
+  const [filteredImages, setFilteredImages] = useState<ImageData[]>([]);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [isLieuOpen, setIsLieuOpen] = useState(false);
 
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const types = ["Tout", "Mariage", "Baptême", "Baby Shower", "Anniversaire", "Traiteur"];
+  const types = ["Tout", "Mariage", "Baptême", "Baby Shower", "Anniversaire", "Traiteur", "Professionnel", "Autre"];
   const places = ["Tout", "En intérieur", "En extérieur"];
 
-  interface ImageData {
-    src: string;
-    alt: string;
-    isPortrait: boolean;
-  }
-  
   const staticImages: ImageData[] = [
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/felix-manuel-almonte-ulloa-idJeiwIdZTo-unsplash_1_.webp", alt: "Portrait 1", isPortrait: true },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/engin-akyurt-i3rFV6ULk-o-unsplash_1_.webp", alt: "Landscape 1", isPortrait: false },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/mitchell-lawler-tbaoryUol_E-unsplash-1.webp", alt: "Landscape 2", isPortrait: false },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/d-l-samuels-ZIRlju8VBXg-unsplash.webp?t=2024-08-23T12%3A27%3A52.400Z", alt: "Portrait 2", isPortrait: true },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/jeremy-wong-weddings-K8KiCHh4WU4-unsplash(1).webp?t=2024-08-23T12%3A28%3A43.218Z", alt: "Portrait 3", isPortrait: true },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/wedding-dreamz-pqkn1uIS6jY-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/saile-ilyas-SiwrpBnxDww-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/katrien-sterckx-fn0xXL9szcU-unsplash_1__1_.webp", alt: "Landscape 3", isPortrait: true },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/kelly-neil-eZX1D12IS9w-unsplash.webp", alt: "Landscape 3", isPortrait: true },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/sirio-hm3efUMoReg-unsplash_2_.webp", alt: "Landscape 3", isPortrait: false },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/photos-by-lanty-dcb2pog89fQ-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/silas-van-overeem-GNM6W-7gkGI-unsplash.webp", alt: "Landscape 3", isPortrait: true },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/felix-manuel-almonte-ulloa-idJeiwIdZTo-unsplash_1_.webp", alt: "Portrait 1", isPortrait: true, type: "Mariage", lieu: "En intérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/engin-akyurt-i3rFV6ULk-o-unsplash_1_.webp", alt: "Landscape 1", isPortrait: false, type: "Mariage", lieu: "En extérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/mitchell-lawler-tbaoryUol_E-unsplash-1.webp", alt: "Landscape 2", isPortrait: false, type: "Professionnel", lieu: "En intérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/d-l-samuels-ZIRlju8VBXg-unsplash.webp?t=2024-08-23T12%3A27%3A52.400Z", alt: "Portrait 2", isPortrait: true, type: "Baptême", lieu: "En extérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/jeremy-wong-weddings-K8KiCHh4WU4-unsplash(1).webp?t=2024-08-23T12%3A28%3A43.218Z", alt: "Portrait 3", isPortrait: true, type: "Mariage", lieu: "En extérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/wedding-dreamz-pqkn1uIS6jY-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Mariage", lieu: "En extérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/saile-ilyas-SiwrpBnxDww-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Traiteur", lieu: "En intérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/katrien-sterckx-fn0xXL9szcU-unsplash_1__1_.webp", alt: "Landscape 3", isPortrait: true, type: "Traiteur", lieu: "En extérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/kelly-neil-eZX1D12IS9w-unsplash.webp", alt: "Landscape 3", isPortrait: true, type: "Anniversaire", lieu: "En intérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/sirio-hm3efUMoReg-unsplash_2_.webp", alt: "Landscape 3", isPortrait: false, type: "Baby Shower", lieu: "En intérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/photos-by-lanty-dcb2pog89fQ-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Autre", lieu: "En extérieur" },
+    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/silas-van-overeem-GNM6W-7gkGI-unsplash.webp", alt: "Landscape 3", isPortrait: true, type: "Anniversaire", lieu: "En extérieur" },
   ];
+
+  useEffect(() => {
+    console.log("Static Images:", staticImages);
+  }, []);
+
+  useEffect(() => {
+    const filtered = staticImages.filter(image => 
+      (selectedType === "Tout" || image.type === selectedType) &&
+      (selectedLieu === "Tout" || image.lieu === selectedLieu)
+    );
+    console.log("Filtered Images:", filtered);
+    setFilteredImages(filtered);
+  }, [selectedType, selectedLieu]);
 
   const handleTypeChange = (value: string) => {
     setSelectedType(value);
@@ -91,7 +101,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
         if (ref) observer.unobserve(ref);
       });
     };
-  }, []);
+  }, [filteredImages]);
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-center mt-28 mb-32">
@@ -111,7 +121,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
               </div>
             </div>
             <div className="h-8 w-12 lg:h-12 lg:w-20 p-5 lg:p-8 flex items-center justify-center rounded-full border border-zinc-800 bg-transparent text-xl lg:text-3xl font-extralight">
-              103
+              {filteredImages.length}
             </div>
             </div>
           </div>
@@ -161,7 +171,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
 
             <div className="mt-1 lg:mt-0 ml-0 lg:ml-2">
               <Button onClick={handleResetFilters} className="bg-transparent transition active:scale-95 space-x-1 overflow-hidden duration-200 ease-in-out hover:bg-zinc-100 border border-zinc-800 text-zinc-800 rounded-full">
-                <span className="pr-2">Nettoyer filtres</span>
+                <span className="pr-2">Supprimer filtres</span>
                 <UpdateIcon />
               </Button>
             </div>
@@ -170,8 +180,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
       </div>
 <div className='h-fit w-full flex justify-center'>
   <div className='h-fit w-[95%]'>
-    <div className="grid grid-cols-6 gap-2 mt-0 sm:mt-8">
-      {staticImages.map((image, index) => (
+    <div className="grid grid-cols-6 gap-2 mt-8">
+      {filteredImages.map((image, index) => (
         <div 
           key={index} 
           ref={(el) => { imageRefs.current[index] = el; }}
