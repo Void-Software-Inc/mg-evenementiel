@@ -6,10 +6,10 @@ import { useCart } from '@/app/context/CartContext';
 import { ShoppingBag, Plus, Minus, Trash2 } from 'lucide-react';
 
 interface CartSheetProps {
-    trigger?: ReactNode;
+    isWhite?: boolean;
 }
 
-export const CartSheet: React.FC<CartSheetProps> = ({ trigger }) => {
+export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
   const { cart, updateQuantity, removeFromCart } = useCart();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -25,12 +25,10 @@ export const CartSheet: React.FC<CartSheetProps> = ({ trigger }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        {trigger || (
-          <Button className="hover:bg-transparent h-10 w-10" variant="ghost" size="icon">
-            <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
+        <Button className={`hover:bg-transparent h-10 w-10 ${isWhite ? 'text-white hover:text-white' : 'text-black hover:text-black'}`} variant="ghost" size="icon">
+          <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
           <span className="sr-only">Open cart</span>
         </Button>
-        )}
       </SheetTrigger>
       <SheetContent 
         title="Votre panier" 
