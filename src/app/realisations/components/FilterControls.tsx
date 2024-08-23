@@ -69,6 +69,30 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
     setSelectedLieu("Tout");
   };
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+            entry.target.classList.remove('opacity-0', 'translate-y-5');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    imageRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      imageRefs.current.forEach((ref) => {
+        if (ref) observer.unobserve(ref);
+      });
+    };
+  }, []);
+
   return (
     <div className="h-full w-full flex flex-col items-center justify-center mt-28 mb-32">
       <div className="h-fit w-[85%]">
@@ -146,12 +170,12 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
       </div>
 <div className='h-fit w-full flex justify-center'>
   <div className='h-fit w-[95%]'>
-    <div className="grid grid-cols-6 gap-2 mt-8">
+    <div className="grid grid-cols-6 gap-2 mt-0 sm:mt-8">
       {staticImages.map((image, index) => (
         <div 
           key={index} 
           ref={(el) => { imageRefs.current[index] = el; }}
-          className={`relative ${image.isPortrait ? 'col-span-2' : 'col-span-4'}`}
+          className={`relative ${image.isPortrait ? 'col-span-2' : 'col-span-4'} opacity-0 translate-y-5 transition-all duration-700 ease-out`}
           style={{ paddingBottom: '75%' }}
         >
           <Image 
