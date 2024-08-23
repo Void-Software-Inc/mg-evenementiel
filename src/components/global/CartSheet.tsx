@@ -1,9 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Sheet, SheetContent, SheetTrigger, SheetFooter } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useCart } from '@/app/context/CartContext';
 import { ShoppingBag, Plus, Minus, Trash2 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 interface CartSheetProps {
     isWhite?: boolean;
@@ -11,8 +12,14 @@ interface CartSheetProps {
 
 export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
   const { cart, updateQuantity, removeFromCart } = useCart();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const itemCount = cart.length;
 
   const handleQuantityChange = (productId: number, newQuantity: number) => {
     if (newQuantity === 0) {
@@ -27,6 +34,14 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
       <SheetTrigger asChild>
         <Button className={`hover:bg-transparent h-10 w-10 ${isWhite ? 'text-white hover:text-white' : 'text-black hover:text-black'}`} variant="ghost" size="icon">
           <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
+          {mounted && itemCount > 0 && (
+            <Badge 
+              variant="destructive" 
+              className="absolute -top-1 -right-1 px-2 py-1 text-xs rounded-full hover:bg-red-600 hover:text-white"
+            >
+              {itemCount}
+            </Badge>
+          )}
           <span className="sr-only">Open cart</span>
         </Button>
       </SheetTrigger>
