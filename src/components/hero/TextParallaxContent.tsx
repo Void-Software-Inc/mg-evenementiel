@@ -86,11 +86,7 @@ const TextParallaxContent = () => {
                 </Link>
               </nav>
               <div className="absolute right-8 text-white hover:text-gray-200 transition-colors duration-500">
-                <CartSheet trigger={
-                  <Button variant="ghost" size="icon" className="text-white hover:text-white hover:bg-transparent">
-                    <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
-                  </Button>
-                } />
+                <CartSheet isWhite={true} />
               </div>
             </div>
           </div>
