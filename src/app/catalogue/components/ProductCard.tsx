@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/app/context/CartContext';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from 'sonner';
 
 interface ProductCardProps {
   product: Product;
@@ -27,8 +28,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, priority = false }) 
   };
 
   const handleAddToCart = () => {
-    addToCart(product, parseInt(quantity, 10));
+    const quantityToAdd = parseInt(quantity, 10);
+    addToCart(product, quantityToAdd);
     setQuantity("1");
+
+    const itemInCart = cart.find(item => item.id === product.id);
+    const currentQuantity = itemInCart ? itemInCart.quantity : 0;
+    const newQuantity = currentQuantity + quantityToAdd;
+
+    toast.success(`${product.name} ajouté au devis`, {
+      description: `Quantité présente dans le panier: ${newQuantity}`,
+    });
   };
 
   const isOutOfStock = remainingStock === 0;
@@ -64,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, priority = false }) 
                   size="compact"
                   disabled={isOutOfStock}
                 >
-                  {isOutOfStock ? 'Quantité max' : 'Ajouter au devis'}
+                  Ajouter au devis
                 </Button>
               </div>
             </TooltipTrigger>
