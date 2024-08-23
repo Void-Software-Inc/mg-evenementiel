@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useMediaQuery } from "react-responsive";
 import { usePathname } from "next/navigation";
+import { CartSheet } from "@/components/global/CartSheet";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +49,7 @@ export default function Navbar() {
               <span className="sr-only">Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="top" className="w-full h-full">
+          <SheetContent side="top" className="w-full h-full" title="Menu" hideTitle={true} description="Menu de navigation mobile">
             <div className="flex flex-col h-full">
               <div className="flex justify-between items-center pb-4">
                 <Link href="/" className="flex items-center gap-2" onClick={handleItemClick}>
@@ -80,9 +81,7 @@ export default function Navbar() {
           <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={150} height={150} />
         </Link>
 
-        <Link href="/cart" className="text-black">
-          <ShoppingBag className="h-6 w-6" />
-        </Link>
+        <CartSheet />
       </header>
 
       <header 
@@ -109,9 +108,9 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        <Link href="/cart" className="absolute right-8 text-gray-800 hover:text-black transition-colors duration-500">
-          <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
-        </Link>
+        <div className="absolute right-8">
+          <CartSheet />
+        </div>
       </header>
     </>
   )
