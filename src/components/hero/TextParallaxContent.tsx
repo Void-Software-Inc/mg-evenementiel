@@ -7,6 +7,7 @@ import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingBag } from "lucide-react"
+import { CartSheet } from "@/components/global/CartSheet";
 
 const TextParallaxContent = () => {
   const targetRef = useRef(null);
@@ -57,8 +58,8 @@ const TextParallaxContent = () => {
     <>
       <div ref={targetRef} className="relative h-[200%]">
         <div className="hidden md:block absolute h-[10vh] w-full bg-transparent">
-          <div className="sticky h-16 top-0 overflow-hidden z-50 bg-transparent">
-            <div className="p-4 bg-transparent flex items-center">
+          <div className="sticky h-16 top-0 overflow-hidden z-50 bg-transparent flex items-center">
+            <div className="p-4 bg-transparent flex items-center w-full">
               <Link href="/" className="absolute left-2 gap-2 text-lg font-semibold">
                 <Image className="cursor-pointer" src="/static/svg/mgelogowhite.svg" alt="logo" width={is2xlScreen ? 175 : 150} height={is2xlScreen ? 175 : 150} />
               </Link>
@@ -84,9 +85,9 @@ const TextParallaxContent = () => {
                   </span>
                 </Link>
               </nav>
-              <Link href="/cart" className="absolute right-8 text-white hover:text-gray-200 transition-colors duration-500">
-                <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
-              </Link>
+              <div className="absolute right-8 text-white hover:text-gray-200 transition-colors duration-500">
+                <CartSheet isWhite={true} />
+              </div>
             </div>
           </div>
         </div>
