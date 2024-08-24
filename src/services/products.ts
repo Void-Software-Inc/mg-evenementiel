@@ -34,3 +34,18 @@ export async function getProducts(): Promise<Product[]> {
       }, 500); // 500ms delay to simulate network request
     });*/
 }
+
+export async function getProduct(id: number): Promise<Product> {
+  try {
+    const url = `${API_URL}/products/${id}`
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch product with id ${id}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching product with id ${id}:`, error);
+    throw error;
+  }
+}

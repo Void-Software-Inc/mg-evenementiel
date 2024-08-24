@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingBag } from "lucide-react"
 import { CartSheet } from "@/components/global/CartSheet";
 
 const TextParallaxContent = () => {
@@ -56,7 +55,7 @@ const TextParallaxContent = () => {
 
   return (
     <>
-      <div ref={targetRef} className="relative h-[200%]">
+      <div ref={targetRef} className="relative h-[200vh]">
         <div className="hidden md:block absolute h-[10vh] w-full bg-transparent">
           <div className="sticky h-16 top-0 overflow-hidden z-50 bg-transparent flex items-center">
             <div className="p-4 bg-transparent flex items-center w-full">
