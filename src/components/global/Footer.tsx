@@ -4,7 +4,7 @@ import Link from 'next/link';
 const Footer = () => {
   return (
   <div className="h-fit w-full bg-zinc-950 flex flex-col justify-center items-center pt-12 lg:pt-28">
-    <div className='h-fit w-[85%] bg-transparent flex flex-col lg:flex-row justify-between'>
+    <div className='h-fit w-[85%] bg-transparent flex flex-col sm:flex-row justify-between'>
       <div className="space-y-2.5 h-fit">
         <p className='text-4xl lg:text-6xl text-white font-thin tracking-tighter'>+33 07 68 10 96 17</p>
         <p className='text-1xl lg:text-3xl text-white font-thin'>mgevenementiel31@gmail.com</p>
@@ -38,19 +38,20 @@ const Footer = () => {
             <Link href="/contact" passHref><p>CONTACT</p></Link>
           </div>
       </div>
-
-    <img
-      src="/static/svg/mgelogowhite.svg"
-      alt="Logo"
-      width={270}
-      height={270}
-      className="lg:ml-auto -ml-4 lg:-mr-8 pb-8"
-    />
     </div>
     </div>
 
-    <div className='w-[85%] flex justify-center lg:justify-end py-5 lg:py-3'>
-      <p className='text-white lg:text-gray-400 text-sm font-extralight text-center'>© {new Date().getFullYear()} MG Événementiel - Tous droits réservés. Site réalisé par Void Sofwtare Inc.</p>
+    <div className='w-[85%] flex flex-col items-center py-5 lg:py-3'>
+      <img
+        src="/static/svg/footer-logo.svg"
+        alt="Logo"
+        width={450}
+        height={450}
+        className="pb-10 mt-10 lg:-mt-5 lg:pb-8"
+      />
+      <p className='text-white lg:text-gray-300 text-xs font-extralight text-center'>
+        © {new Date().getFullYear()} MG Événementiel - Tous droits réservés. Site réalisé par Void Sofwtare Inc.
+      </p>
     </div>
   </div>
   );
