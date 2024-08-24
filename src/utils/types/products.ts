@@ -22,9 +22,9 @@ export const productTypes: ProductType[] = [
     { value: "nappes", name: "Nappes" },
     { value: "housses", name: "Housses" },
     { value: "chapiteau", name: "Chapiteau" },
-    { value: "vaiselle", name: "Vaiselle" },
+    { value: "vaiselle", name: "Vaisselle" },
     { value: "centreTable", name: "Centre Table" },
-    { value: "decoration", name: "Decoration" },
+    { value: "decoration", name: "Décoration" },
     { value: "acessoires", name: "Acessoires" },
 ];
 
