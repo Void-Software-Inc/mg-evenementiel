@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <CartProvider>
           <Navbar />
-          <Toaster position="bottom-right" />
+          <Toaster position="bottom-left" />
           <section>
             {children}
           </section>
