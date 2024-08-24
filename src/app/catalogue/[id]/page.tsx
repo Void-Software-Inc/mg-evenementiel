@@ -1,10 +1,9 @@
+import ProductDisplay from './ProductDisplay';
 
-export default async function QuotePage({ params }: { params: { id: string } }) {
+export default function ProductPage({ params }: { params: { id: string } }) {
   return (
-    <>
-      <h1 className="text-2xl font-bold text-black h-[100vh] w-full flex justify-center items-center">
-        {params.id}
-      </h1>
-    </>
-  )
+    <div className="h-[100vh] py-8 flex justify-center items-center">
+      <ProductDisplay id={params.id} />
+    </div>
+  );
 }

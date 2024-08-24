@@ -33,9 +33,9 @@ const AnimatedAddButton: React.FC<AnimatedAddButtonProps> = ({ onClick, quantity
       }`}
       onClick={handleClick}
     >
-      <div className={`relative w-4 h-4 transition-transform duration-300 ${isAdded ? 'rotate-45 scale-110 -translate-x-[1px] -translate-y-[1px]' : 'rotate-0 scale-100'}`}>
+      <div className={`relative w-4 h-4 transition-transform duration-300 ${isAdded ? 'rotate-45 scale-110 translate-x-[1px] -translate-y-[2px]' : 'rotate-0 scale-100'}`}>
         <span
-          className={`absolute w-full h-[2px] transition-all duration-300 ${isAdded ? 'bg-white translate-x-[4px] translate-y-[5px] w-[9px]' : 'bg-black'}`}
+          className={`absolute w-full h-[2px] transition-all duration-300 ${isAdded ? 'bg-white translate-x-[4px] translate-y-[7px] w-[8px]' : 'bg-black'}`}
           style={{ top: '50%', left: 0, marginTop: '-1px' }}
         />
         <span
