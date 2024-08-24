@@ -23,17 +23,15 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
         <CartProvider>
           <Navbar />
           <Toaster position="bottom-left" />
-          <section>
+          <main className="flex-grow">
             {children}
-          </section>
-        </CartProvider>
-        <footer>
+          </main>
           <Footer />
-        </footer>
+        </CartProvider>
       </body>
     </html>
   );

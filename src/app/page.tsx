@@ -1,4 +1,3 @@
-import TextParallaxContentExample from "@/components/hero/TextParallaxContent";
 import dynamic from "next/dynamic";
 
 const DynamicComponent = dynamic(() => import("@/components/hero/TextParallaxContent"), {
@@ -7,11 +6,12 @@ const DynamicComponent = dynamic(() => import("@/components/hero/TextParallaxCon
 
 export default function Home() {
   return (
-    <main className="w-full h-[100vh]">
+    <>
       <DynamicComponent />
-      <div className="w-full h-[100vh] bg-white">
-        <h1 className="text-white">Hello</h1>
+      <div className="w-full bg-white h-[100vh] mt-20">
+        <h1 className="text-black text-center text-3xl">MG Événementiel</h1>
+        <p className="text-black text-center mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
       </div>
-    </main>
+    </>
   );
 }
