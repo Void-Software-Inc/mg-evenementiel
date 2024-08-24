@@ -48,61 +48,63 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
       <SheetContent 
         title="Votre panier" 
         description="Review the items in your cart and proceed to checkout."
-        className="w-full sm:max-w-lg md:max-w-lg"
+        className="w-full sm:max-w-lg md:max-w-lg flex flex-col"
         isCloseVisible={true}
       >
-        {cart.length === 0 ? (
-          <p className="text-center py-6">Votre panier est vide</p>
-        ) : (
-          <div className="flex flex-col space-y-4 mt-4">
-            {cart.map((item) => (
-              <div key={item.id} className="flex items-center space-x-4 border-b pb-4">
-                <div className="relative w-16 h-16 flex-shrink-0">
-                  <Image 
-                    src={item.image_url} 
-                    alt={item.name} 
-                    layout="fill" 
-                    objectFit="cover"
-                    className="rounded-md"
-                  />
-                </div>
-                <div className="flex-grow min-w-0">
-                  <h3 className="font-medium truncate">{item.name}</h3>
-                  <p className="text-sm text-gray-500 truncate">{item.price}€</p>
-                </div>
-                <div className="flex items-center space-x-2 flex-shrink-0">
+        <div className="flex-grow overflow-y-auto">
+          {cart.length === 0 ? (
+            <p className="text-center py-6">Votre panier est vide</p>
+          ) : (
+            <div className="flex flex-col space-y-4 mt-4 pr-4">
+              {cart.map((item) => (
+                <div key={item.id} className="flex items-center space-x-4 border-b pb-4">
+                  <div className="relative w-16 h-16 flex-shrink-0">
+                    <Image 
+                      src={item.image_url} 
+                      alt={item.name} 
+                      layout="fill" 
+                      objectFit="cover"
+                      className="rounded-md"
+                    />
+                  </div>
+                  <div className="flex-grow min-w-0">
+                    <h3 className="font-medium truncate">{item.name}</h3>
+                    <p className="text-sm text-gray-500 truncate">{item.price}€</p>
+                  </div>
+                  <div className="flex items-center space-x-2 flex-shrink-0">
+                    <Button 
+                      variant="outline" 
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    <span className="w-6 text-center">{item.quantity}</span>
+                    <Button 
+                      variant="outline" 
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                      disabled={item.quantity >= item.stock}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
                   <Button 
-                    variant="outline" 
+                    variant="ghost" 
                     size="icon"
-                    className="h-8 w-8"
-                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    className="h-8 w-8 flex-shrink-0"
+                    onClick={() => removeFromCart(item.id)}
                   >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  <span className="w-6 text-center">{item.quantity}</span>
-                  <Button 
-                    variant="outline" 
-                    size="icon"
-                    className="h-8 w-8"
-                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                    disabled={item.quantity >= item.stock}
-                  >
-                    <Plus className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="h-8 w-8 flex-shrink-0"
-                  onClick={() => removeFromCart(item.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
-        <SheetFooter className="mt-6">
+              ))}
+            </div>
+          )}
+        </div>
+        <SheetFooter className="mt-6 border-t pt-4">
           <div className="w-full">
             <div className="flex justify-between mb-4">
               <span className="font-medium">Total:</span>

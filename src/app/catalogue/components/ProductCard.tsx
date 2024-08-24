@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Product } from "@/utils/types/products";
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/app/context/CartContext';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from 'sonner';
+import AnimatedAddButton from './AnimatedAddButton';
 
 interface ProductCardProps {
   product: Product;
@@ -12,26 +13,35 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, priority = false }) => {
-  const { addToCart, cart } = useCart();
-  const [quantity, setQuantity] = useState("1");
+  const { addToCart, removeFromCart, cart } = useCart();
   const [remainingStock, setRemainingStock] = useState(product.stock);
+  const [quantityInCart, setQuantityInCart] = useState(0);
 
   useEffect(() => {
     const itemInCart = cart.find(item => item.id === product.id);
-    const quantityInCart = itemInCart ? itemInCart.quantity : 0;
-    setRemainingStock(product.stock - quantityInCart);
+    const quantity = itemInCart ? itemInCart.quantity : 0;
+    setQuantityInCart(quantity);
+    setRemainingStock(product.stock - quantity);
   }, [cart, product.id, product.stock]);
 
-  const handleQuantityChange = (value: string) => {
-    setQuantity(value);
+  const handleQuickAdd = (removeAll: boolean) => {
+    if (quantityInCart === 0) {
+      addToCart(product, 1);
+      toast.success(`${product.name} ajouté au devis`, {
+        description: `Quantité ajoutée: 1`,
+      });
+    } else if (removeAll) {
+      removeFromCart(product.id);
+      toast.info(`${product.name} retiré du devis`, {
+        description: `Quantité retirée: ${quantityInCart}`,
+      });
+    } else {
+      removeFromCart(product.id);
+      toast.info(`${product.name} retiré du devis`, {
+        description: `Quantité retirée: 1`,
+      });
+    }
   };
-
-  const handleAddToCart = () => {
-    addToCart(product, parseInt(quantity, 10));
-    setQuantity("1");
-  };
-
-  const isOutOfStock = remainingStock === 0;
 
   return (
     <div className="flex flex-col space-y-2">
@@ -45,6 +55,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, priority = false }) 
           quality={75}
           priority={priority}
         />
+        <div className="absolute top-2 right-2">
+          <AnimatedAddButton
+            onClick={handleQuickAdd}
+            quantity={quantityInCart}
+          />
+        </div>
       </div>
       
       <div className="flex flex-col justify-center items-center space-y-1">
@@ -53,42 +69,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, priority = false }) 
       </div>
       
       <div className="flex items-center space-x-2">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="flex-grow">
-                <Button
-                  onClick={handleAddToCart}
-                  className="w-full text-xs font-medium text-center text-gray-700 border border-gray-300 rounded hover:bg-gray-50 transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
-                  variant="outline"
-                  size="compact"
-                  disabled={isOutOfStock}
-                >
-                  {isOutOfStock ? 'Quantité max' : 'Ajouter au devis'}
-                </Button>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              {isOutOfStock ? 'Quantité maximale commandée' : `${remainingStock} disponible(s)`}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <Select
-          value={quantity}
-          onValueChange={handleQuantityChange}
-          disabled={isOutOfStock}
-        >
-          <SelectTrigger className="w-20">
-            <SelectValue placeholder="Qté" />
-          </SelectTrigger>
-          <SelectContent>
-            {Array.from({ length: remainingStock }, (_, i) => i + 1).map((num) => (
-              <SelectItem key={num} value={num.toString()}>
-                {num}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <Link href={`/catalogue/${product.id}`} className="w-full">
+          <Button
+            className="w-full text-xs font-medium text-center text-gray-700 rounded hover:bg-gray-50 transition duration-150"
+            variant="outline"
+            size="compact"
+          >
+            Voir le produit
+          </Button>
+        </Link>
       </div>
     </div>
   );
