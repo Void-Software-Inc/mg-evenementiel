@@ -19,7 +19,6 @@ const config = {
         "2xl": "1698px",
       },
       fontSize: {
-        '1xl': '20px', 
         '5-1/2xl':'55px', 
       },
       colors: {
