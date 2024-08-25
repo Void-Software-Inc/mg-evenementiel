@@ -8,6 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCart } from '@/app/context/CartContext';
 import { Minus, Plus } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface ProductDisplayProps {
   id: string;
@@ -19,6 +25,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
   const [error, setError] = useState<string | null>(null);
   const { cart, addToCart, updateQuantity, removeFromCart } = useCart();
   const [inputQuantity, setInputQuantity] = useState('0');
+  const [localQuantity, setLocalQuantity] = useState('1');
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -35,38 +42,57 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
     fetchProduct();
   }, [id]);
 
-  useEffect(() => {
-    if (product) {
-      const cartItem = cart.find(item => item.id === product.id);
-      setInputQuantity(cartItem ? cartItem.quantity.toString() : '0');
-    }
-  }, [cart, product]);
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   if (!product) return <div>Product not found</div>;
 
-  const handleQuantityChange = (newQuantity: number) => {
-    const validQuantity = Math.max(0, Math.min(newQuantity, product.stock));
-    setInputQuantity(validQuantity.toString());
+  const formatDescription = (description: string) => {
+    return description
+      .split('\r\n')
+      .map(item => item.trim().replace(/^•/, '').trim())
+      .filter(item => item !== '');
+  };
 
-    if (validQuantity === 0) {
-      removeFromCart(product.id);
-    } else {
-      updateQuantity(product.id, validQuantity);
-    }
+  const descriptionItems = formatDescription(product.description);
+
+  const handleLocalQuantityChange = (newQuantity: number) => {
+    const validQuantity = Math.max(1, Math.min(newQuantity, product.stock));
+    setLocalQuantity(validQuantity.toString());
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value === '' || /^\d+$/.test(value)) {
-      setInputQuantity(value);
+      setLocalQuantity(value === '' ? '1' : value);
     }
   };
 
   const handleInputBlur = () => {
-    const newQuantity = parseInt(inputQuantity) || 0;
-    handleQuantityChange(newQuantity);
+    const newQuantity = Math.max(1, parseInt(localQuantity) || 1);
+    handleLocalQuantityChange(newQuantity);
+  };
+
+  const handleAddToCart = () => {
+    const quantityToAdd = parseInt(localQuantity);
+    if (quantityToAdd > 0 && product) {
+      const existingItem = cart.find(item => item.id === product.id);
+      if (existingItem) {
+        updateQuantity(product.id, existingItem.quantity + quantityToAdd);
+      } else {
+        addToCart(product, 1);
+      }
+      setLocalQuantity('1');
+    }
+  };
+
+  const getButtonText = () => {
+    const quantity = parseInt(localQuantity);
+    if (quantity === 1) {
+      return "Ajouter au devis";
+    } else if (quantity > 1) {
+      return `Ajouter ${quantity} articles au devis`;
+    }
+    return "Ajouter au devis";
   };
 
   return (
@@ -92,14 +118,14 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
             variant="outline" 
             size="icon"
             className="h-10 w-10 rounded-r-none rounded-l-lg"
-            onClick={() => handleQuantityChange(parseInt(inputQuantity) - 1)}
-            disabled={parseInt(inputQuantity) <= 0}
+            onClick={() => handleLocalQuantityChange(parseInt(localQuantity) - 1)}
+            disabled={parseInt(localQuantity) <= 1}
           >
             <Minus className="h-4 w-4" />
           </Button>
           <Input
             type="text"
-            value={inputQuantity}
+            value={localQuantity}
             onChange={handleInputChange}
             onBlur={handleInputBlur}
             className="w-16 text-center rounded-none"
@@ -109,24 +135,39 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
             variant="outline" 
             size="icon"
             className="h-10 w-10 rounded-r-lg rounded-l-none"
-            onClick={() => handleQuantityChange(parseInt(inputQuantity) + 1)}
-            disabled={parseInt(inputQuantity) >= product.stock}
+            onClick={() => handleLocalQuantityChange(parseInt(localQuantity) + 1)}
+            disabled={parseInt(localQuantity) >= product.stock}
           >
             <Plus className="h-4 w-4" />
           </Button>
         </div>
 
-        <p className="">{product.description}</p>
-        <p className="">Type: {product.type}</p>
-        <p className="">Color: {product.color}</p>
+        <div className="space-y-2">
+
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-xl font-semibold">Description</AccordionTrigger>
+            <AccordionContent>
+            <ul className="text-base list-none pl-0 space-y-1">
+            {descriptionItems.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+            <li><p className="">Color: {product.color}</p></li>
+          </ul>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        </div>
+
+        
         <p className="">In Stock: {product.stock}</p>
         
         <Button 
-          onClick={() => handleQuantityChange(parseInt(inputQuantity) + 1)} 
-          className="w-full md:w-auto"
-          disabled={parseInt(inputQuantity) >= product.stock}
+          onClick={handleAddToCart} 
+          className="w-full md:w-auto rounded-full py-10"
+          disabled={parseInt(localQuantity) < 1 || parseInt(localQuantity) > product.stock}
         >
-          {parseInt(inputQuantity) > 0 ? 'Mettre à jour le panier' : 'Ajouter au Panier'}
+          {getButtonText()}
         </Button>
       </div>
     </div>
