@@ -1,4 +1,4 @@
-import { Product } from "@/utils/types/products";
+import { Product, ProductImage } from "@/utils/types/products";
 import fakeProducts from "@/data/fakeProducts.json";
 
 const API_URL = '/api';
@@ -46,6 +46,22 @@ export async function getProduct(id: number): Promise<Product> {
     return await response.json();
   } catch (error) {
     console.error(`Error fetching product with id ${id}:`, error);
+    throw error;
+  }
+  
+}
+
+export async function getProductImages(id: number): Promise<ProductImage[]> {
+  try {
+    const url = `${API_URL}/products/${id}/images`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch images for product with id ${id}`);
+    }
+    const data = await response.json();
+    return data.productImages;
+  } catch (error) {
+    console.error(`Error fetching images for product with id ${id}:`, error);
     throw error;
   }
 }
