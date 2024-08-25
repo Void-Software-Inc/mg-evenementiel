@@ -14,6 +14,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { toast } from "sonner";
+
 
 interface ProductDisplayProps {
   id: string;
@@ -24,8 +26,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { cart, addToCart, updateQuantity, removeFromCart } = useCart();
-  const [inputQuantity, setInputQuantity] = useState('0');
-  const [localQuantity, setLocalQuantity] = useState('1');
+  const [localQuantity, setLocalQuantity] = useState(1);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -55,38 +56,43 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
 
   const descriptionItems = formatDescription(product.description);
 
+  const cartQuantity = cart.find(item => item.id === product?.id)?.quantity || 0;
+  const remainingStock = product ? product.stock - cartQuantity : 0;
+
   const handleLocalQuantityChange = (newQuantity: number) => {
-    const validQuantity = Math.max(1, Math.min(newQuantity, product.stock));
-    setLocalQuantity(validQuantity.toString());
+    setLocalQuantity(Math.max(1, Math.min(newQuantity, remainingStock)));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value === '' || /^\d+$/.test(value)) {
-      setLocalQuantity(value === '' ? '1' : value);
+    const value = parseInt(e.target.value);
+    if (!isNaN(value)) {
+      handleLocalQuantityChange(value);
     }
   };
 
-  const handleInputBlur = () => {
-    const newQuantity = Math.max(1, parseInt(localQuantity) || 1);
-    handleLocalQuantityChange(newQuantity);
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.select();
   };
 
   const handleAddToCart = () => {
-    const quantityToAdd = parseInt(localQuantity);
+    const quantityToAdd = localQuantity;
     if (quantityToAdd > 0 && product) {
       const existingItem = cart.find(item => item.id === product.id);
       if (existingItem) {
         updateQuantity(product.id, existingItem.quantity + quantityToAdd);
       } else {
-        addToCart(product, 1);
+        addToCart(product, quantityToAdd);
       }
-      setLocalQuantity('1');
+      setLocalQuantity(1);
+      
+      toast.success(`${quantityToAdd} ${product.name} ajouté au devis`, {
+        description: `Total dans le devis: ${existingItem ? existingItem.quantity + quantityToAdd : quantityToAdd}`,
+      });
     }
   };
 
   const getButtonText = () => {
-    const quantity = parseInt(localQuantity);
+    const quantity = localQuantity;
     if (quantity === 1) {
       return "Ajouter au devis";
     } else if (quantity > 1) {
@@ -118,25 +124,27 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
             variant="outline" 
             size="icon"
             className="h-10 w-10 rounded-r-none rounded-l-lg"
-            onClick={() => handleLocalQuantityChange(parseInt(localQuantity) - 1)}
-            disabled={parseInt(localQuantity) <= 1}
+            onClick={() => handleLocalQuantityChange(localQuantity - 1)}
+            disabled={localQuantity <= 1}
           >
             <Minus className="h-4 w-4" />
           </Button>
           <Input
-            type="text"
+            type="number"
             value={localQuantity}
             onChange={handleInputChange}
-            onBlur={handleInputBlur}
-            className="w-16 text-center rounded-none"
+            onFocus={handleInputFocus}
+            min={1}
+            max={remainingStock}
+            className={`w-16 text-center rounded-none`}
             isModifiedCn
           />
           <Button 
             variant="outline" 
             size="icon"
             className="h-10 w-10 rounded-r-lg rounded-l-none"
-            onClick={() => handleLocalQuantityChange(parseInt(localQuantity) + 1)}
-            disabled={parseInt(localQuantity) >= product.stock}
+            onClick={() => handleLocalQuantityChange(localQuantity + 1)}
+            disabled={localQuantity >= remainingStock}
           >
             <Plus className="h-4 w-4" />
           </Button>
@@ -165,7 +173,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
         <Button 
           onClick={handleAddToCart} 
           className="w-full md:w-auto rounded-full py-10"
-          disabled={parseInt(localQuantity) < 1 || parseInt(localQuantity) > product.stock}
+          disabled={localQuantity < 1 || localQuantity > remainingStock}
         >
           {getButtonText()}
         </Button>
