@@ -52,3 +52,9 @@ export const productColors: ProductColor[] = [
     { value: "silver", name: "Argenté", hex: "#C0C0C0" },
     { value: "multicolore", name: "Multicolore", hex: "#000000" },
 ]
+
+export type ProductImage = {
+    id: number;
+    product_id: number;
+    url: string;
+}
