@@ -7,6 +7,13 @@ import { useMediaQuery } from "react-responsive";
 import Link from "next/link";
 import Image from "next/image";
 import { CartSheet } from "@/components/global/CartSheet";
+import { usePathname } from "next/navigation";
+import { Phone } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const TextParallaxContent = () => {
   const targetRef = useRef(null);
@@ -22,6 +29,9 @@ const TextParallaxContent = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 768 });
   const isPortrait = useMediaQuery({ minHeight: 500, maxHeight: 650 });
   const isPortraitSmall = useMediaQuery({ maxHeight: 500 });
+
+  const pathname = usePathname(); // Add this line to get the current path
+  const isActive = (path: string) => pathname === path; // Add this function to check active path
 
   const imageX = useTransform(scrollYProgress, [0, 1], [
     "0%",
@@ -53,6 +63,14 @@ const TextParallaxContent = () => {
   ]);
   const buttonLeftPosition = useTransform(scrollYProgress, [0, 0.9, 1], ["0%", "0%", "88%"]);
 
+  const PhoneCard = () => (
+    <div className="w-fit space-y-1">
+      <h4 className="text-base lg:text-xl font-semibold">+33 07 68 10 96 17</h4>
+      <p className="text-base lg:text-lg font-semibold">mgevenementiel31@gmail.com</p>
+      <p className="text-sm italic lg:pt-4">Du lundi au samedi de 9h à 19h</p>
+  </div>
+  );
+
   return (
     <>
       <div ref={targetRef} className="relative h-[200vh]">
@@ -62,29 +80,40 @@ const TextParallaxContent = () => {
               <Link href="/" className="absolute left-2 gap-2 text-lg font-semibold">
                 <Image className="cursor-pointer" src="/static/svg/mgelogowhite.svg" alt="logo" width={is2xlScreen ? 175 : 150} height={is2xlScreen ? 175 : 150} />
               </Link>
-              <nav className="flex w-full justify-center items-center space-x-6 text-sm 2xl:text-lg font-medium">
-                <Link href="/catalogue" className="text-white hover:text-gray-200 relative group transition-colors duration-500">
-                  <span className="relative inline-block">
-                    CATALOGUE
-                  </span>
-                </Link>
-                <Link href="/realisations" className="text-white hover:text-gray-200 relative group transition-colors duration-500">
-                  <span className="relative inline-block">
-                    RÉALISATIONS
-                  </span>
-                </Link>
-                <Link href="/infos" className="text-white hover:text-gray-200 relative group transition-colors duration-500">
-                  <span className="relative inline-block">
-                    INFOS
-                  </span>
-                </Link>
-                <Link href="/contact" className="text-white hover:text-gray-200 relative group transition-colors duration-500">
-                  <span className="relative inline-block">
-                    CONTACT
-                  </span>
-                </Link>
+              <nav className="flex w-full justify-center items-center space-x-10 text-sm 2xl:text-lg font-medium">
+                {[
+                  { href: '/catalogue', label: 'CATALOGUE' },
+                  { href: '/realisations', label: 'RÉALISATIONS' },
+                  { href: '/infos', label: 'INFOS' },
+                  { href: '/contact', label: 'CONTACT' },
+                ].map(({ href, label }) => (
+                  <div key={href} className="relative group">
+                    <Link href={href} className="text-white font-light tracking-wider relative group transition-colors duration-500">
+                      <span className="relative inline-block">
+                        {label}
+                      </span>
+                    </Link>
+                    <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
+                      <div 
+                        className={`w-full h-2 bg-white rounded-full transition-all duration-300 ease-out origin-center
+                          ${isActive(href) ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
+                        `}
+                      />
+                    </div>
+                  </div>
+                ))}
               </nav>
-              <div className="absolute right-8 text-white hover:text-gray-200 transition-colors duration-500">
+              <div className="absolute right-8 flex items-center space-x-4 text-white font-light tracking-wider transition-colors duration-500">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="text-white hover:text-gray-200 focus:outline-none">
+                      <Phone className="h-7 w-7" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80" side="bottom" align="end">
+                    <PhoneCard />
+                  </PopoverContent>
+                </Popover>
                 <CartSheet isWhite={true} />
               </div>
             </div>
