@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { getProduct, getProductImages } from '@/services/products';
-import { Product, ProductImage } from '@/utils/types/products';
+import { Product, ProductImage, productColors } from '@/utils/types/products';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { useRouter } from 'next/navigation';
 
@@ -30,6 +31,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
   const [localQuantity, setLocalQuantity] = useState(1);
   const [productImages, setProductImages] = useState<ProductImage[]>([]);
   const [currentImage, setCurrentImage] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const changeImage = useCallback((newImageUrl: string) => {
     setCurrentImage(newImageUrl);
@@ -53,9 +55,76 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
     fetchProduct();
   }, [id]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-  if (!product) return <div>Product not found</div>;
+  const handleGoBack = () => {
+    router.push('/catalogue');
+  };
+
+  if (loading) return (
+    <div className="flex flex-col w-[80%] pt-40 mb-24">
+      <div className="absolute top-16 left-0 right-0 w-full h-fit bg-transparent z-10">
+        <div className="container mx-auto">
+          <Button
+            onClick={handleGoBack}
+            variant="outline"
+            className="bg-white/90 mt-4 w-fit"
+          >
+            <ChevronLeft className="mr-2 h-4 w-4" />
+            <span className="decoration-2 decoration-zinc-600">Retour</span>
+          </Button>
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row">
+        <div className="w-full md:w-1/2">
+          <Skeleton className="rounded-lg w-full aspect-square max-w-[500px] mb-5" />
+          <div className="flex space-x-2 overflow-x-auto">
+            {[...Array(2)].map((_, index) => (
+              <Skeleton key={index} className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] rounded-md flex-shrink-0" />
+            ))}
+          </div>
+        </div>
+        <div className="w-full md:w-1/2 md:pl-8 mt-4 md:mt-0 space-y-4 md:space-y-10">
+          <Skeleton className="h-8 md:h-10 w-3/4" />
+          <Skeleton className="h-6 md:h-8 w-1/4" />
+          <div className="w-full md:w-fit flex flex-col">
+            <Skeleton className="h-8 md:h-10 w-full md:w-[300px] mb-4" />
+            <Skeleton className="h-10 md:h-12 w-full md:w-[300px]" />
+          </div>
+          <div className="space-y-2 min-h-[220px]">
+            <Skeleton className="h-6 md:h-8 w-1/2 mb-2" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-3/4" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  if (error || !product) {
+    return (
+      <div className="flex items-center justify-center h-screen w-full">
+        <div className="absolute top-16 left-0 right-0 w-full h-fit bg-transparent z-10">
+            <div className="container mx-auto">
+              <Button
+                onClick={handleGoBack}
+                variant="outline"
+                className="bg-white/90 mt-4 w-fit"
+              >
+                <ChevronLeft className="mr-2 h-4 w-4" />
+                <span className="decoration-2 decoration-zinc-600">Retour</span>
+              </Button>
+            </div>
+        </div>
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold mb-2">
+            {error ? 'Erreur' : 'Produit non trouvé'}
+          </h2>
+          <p className="text-gray-600">
+            {"Le produit demandé n'a pas été trouvé."}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const formatDescription = (description: string) => {
     return description
@@ -69,19 +138,31 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
   const cartQuantity = cart.find(item => item.id === product?.id)?.quantity || 0;
   const remainingStock = product ? product.stock - cartQuantity : 0;
 
-  const handleLocalQuantityChange = (newQuantity: number) => {
-    setLocalQuantity(Math.max(1, Math.min(newQuantity, remainingStock)));
+  const handleLocalQuantityChange = (newQuantity: number | '') => {
+    setLocalQuantity(newQuantity === '' ? 0 : newQuantity);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (!isNaN(value)) {
-      handleLocalQuantityChange(value);
+    const value = e.target.value;
+    if (value === '') {
+      // @ts-ignore
+      setLocalQuantity('');
+    } else {
+      const parsedValue = parseInt(value);
+      if (!isNaN(parsedValue)) {
+        handleLocalQuantityChange(parsedValue);
+      }
     }
   };
 
   const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.target.select();
+  };
+
+  const handleInputBlur = () => {
+    if (typeof localQuantity === 'string' || localQuantity === 0) {
+      setLocalQuantity(1);
+    }
   };
 
   const handleAddToCart = () => {
@@ -111,21 +192,22 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
     return "Ajouter au devis";
   };
 
-  const handleGoBack = () => {
-    router.push('/catalogue');
+  const getColorName = (colorValue: string) => {
+    const color = productColors.find(c => c.value === colorValue);
+    return color ? color.name : colorValue;
   };
 
   return (
     <div className="flex flex-col md:flex-row w-[80%] pt-40 lg:mb-24">
-      <div className="fixed top-16 left-0 right-0 w-full h-fit bg-transparent z-10">
+      <div className="absolute top-16 left-0 right-0 w-full h-fit bg-transparent z-10">
         <div className="container mx-auto">
           <Button
             onClick={handleGoBack}
             variant="outline"
-            className="bg-white/90 mt-4 w-fit underline"
+            className="bg-white/90 mt-4 w-fit"
           >
             <ChevronLeft className="mr-2 h-4 w-4" />
-            <span className="underline decoration-2 decoration-zinc-600">Retour</span>
+            <span className="decoration-2 decoration-zinc-600">Retour</span>
           </Button>
         </div>
       </div>
@@ -196,10 +278,12 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
                 value={localQuantity}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
                 min={1}
                 max={remainingStock}
-                className="w-16 text-center rounded-none"
+                className="w-16 text-center text-base rounded-none"
                 isModifiedCn
+                ref={inputRef}
               />
               <Button 
                 variant="outline" 
@@ -220,7 +304,9 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
           >
             {getButtonText()}
           </Button>
-          <p className="text-sm text-zinc-600 pt-1 text-center">Quantité disponible: {product.stock}</p>
+          <p className="text-sm text-zinc-600 pt-1 text-center">
+            Quantité disponible: {remainingStock}/{product.stock}
+          </p>
         </div>
         </div>
 
@@ -229,16 +315,16 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-xl font-semibold">Description</AccordionTrigger>
               <AccordionContent>
-              <ul className="text-base list-none pl-0 space-y-1">
-              {descriptionItems.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-              <li><p className="">Couleur: {product.color}</p></li>
-            </ul>
+                <ul className="text-base list-none pl-0 space-y-1">
+                  {descriptionItems.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                  <li><p className="">Couleur: {getColorName(product.color)}</p></li>
+                </ul>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>       
+        </div>
       </div>
     </div>
   );

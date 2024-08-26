@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Check, Plus } from 'lucide-react'; // Import Lucide icons
 
 interface AnimatedAddButtonProps {
   onClick: (removeAll: boolean) => void;
@@ -33,18 +34,11 @@ const AnimatedAddButton: React.FC<AnimatedAddButtonProps> = ({ onClick, quantity
       }`}
       onClick={handleClick}
     >
-      <div className={`relative w-4 h-4 transition-transform duration-300 ${isAdded ? 'rotate-45 scale-110 translate-x-[1px] -translate-y-[2px]' : 'rotate-0 scale-100'}`}>
-        <span
-          className={`absolute w-full h-[2px] transition-all duration-300 ${isAdded ? 'bg-white translate-x-[4px] translate-y-[7px] w-[8px]' : 'bg-black'}`}
-          style={{ top: '50%', left: 0, marginTop: '-1px' }}
-        />
-        <span
-          className={`absolute h-full w-[2px] transition-all duration-300 ${isAdded ? 'bg-white translate-x-[4px] -translate-y-[3px]' : 'bg-black'} ${
-            'scale-y-100 translate-y-0'
-          }`}
-          style={{ left: '50%', top: 0, marginLeft: '-1px' }}
-        />
-      </div>
+      {isAdded ? (
+        <Check className="w-4 h-4 text-white" />
+      ) : (
+        <Plus className="w-4 h-4 text-black" />
+      )}
     </button>
   );
 

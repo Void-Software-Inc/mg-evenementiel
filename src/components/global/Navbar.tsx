@@ -82,7 +82,7 @@ export default function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="shrink-0"
+              className="shrink-0 hover:bg-transparent"
             >
               <Menu className="h-5 w-5" />
               <span className="sr-only">Toggle navigation menu</span>
