@@ -3,18 +3,24 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, ShoppingBag, X } from "lucide-react"
+import { Menu, ShoppingBag, X, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useMediaQuery } from "react-responsive";
 import { usePathname } from "next/navigation";
 import { CartSheet } from "@/components/global/CartSheet";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const is2xlScreen = useMediaQuery({ minWidth: 1698 });
   const pathname = usePathname();
+  const [isPhoneCardOpen, setIsPhoneCardOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +40,39 @@ export default function Navbar() {
   const handleItemClick = () => {
     setIsOpen(false);
   }
+
+  const isActive = (path: string) => pathname === path;
+
+  const PhoneCard = () => (
+    <div className="w-fit space-y-1">
+      <h4 className="text-base lg:text-xl font-semibold">+33 07 68 10 96 17</h4>
+      <p className="text-base lg:text-lg font-semibold">mgevenementiel31@gmail.com</p>
+      <p className="text-sm italic lg:pt-4">Du lundi au samedi de 9h à 19h</p>
+    </div>
+  );
+
+  const NavLink = ({ href, label }: { href: string; label: string }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+      <div className="relative flex items-center">
+        <div 
+          className={`absolute left-0 w-5 h-[3px] -ml-3 rounded-full bg-zinc-700 transition-all duration-200 ease-in-out ${
+            isActive(href) || isHovered ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+        <Link 
+          href={href} 
+          className="text-xl font-light tracking-wide text-gray-800 pl-4"
+          onClick={() => setIsOpen(false)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {label}
+        </Link>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -59,19 +98,11 @@ export default function Navbar() {
                   <X className="h-6 w-6" />
                 </Button>
               </div>
-              <nav className="flex flex-col space-y-4 mt-8">
-                <Link href="/catalogue" className="text-xl font-medium" onClick={handleItemClick}>
-                  CATALOGUE
-                </Link>
-                <Link href="/realisations" className="text-xl font-medium" onClick={handleItemClick}>
-                  RÉALISATIONS
-                </Link>
-                <Link href="/infos" className="text-xl font-medium" onClick={handleItemClick}>
-                  INFOS
-                </Link>
-                <Link href="/contact" className="text-xl font-medium" onClick={handleItemClick}>
-                  CONTACT
-                </Link>
+              <nav className="flex flex-col space-y-6 mt-8">
+                <NavLink href="/catalogue" label="CATALOGUE" />
+                <NavLink href="/realisations" label="RÉALISATIONS" />
+                <NavLink href="/infos" label="INFOS" />
+                <NavLink href="/contact" label="CONTACT" />
               </nav>
             </div>
           </SheetContent>
@@ -81,7 +112,19 @@ export default function Navbar() {
           <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={150} height={150} />
         </Link>
 
-        <CartSheet />
+        <div className="flex items-center space-x-4">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="text-gray-800 focus:outline-none">
+                <Phone className="h-7 w-7" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80" side="bottom" align="end">
+              <PhoneCard />
+            </PopoverContent>
+          </Popover>
+          <CartSheet />
+        </div>
       </header>
 
       <header 
@@ -93,22 +136,39 @@ export default function Navbar() {
           <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={is2xlScreen ? 175 : 150} height={is2xlScreen ? 175 : 150} />
         </Link>
 
-        <nav className="flex w-full justify-center items-center space-x-6 text-sm 2xl:text-lg font-medium">
-          <Link href="/catalogue" className="text-gray-800 hover:text-black 2xl:text-lg">
-            CATALOGUE
-          </Link>
-          <Link href="/realisations" className="text-gray-800 hover:text-black 2xl:text-lg">
-            RÉALISATIONS
-          </Link>
-          <Link href="/infos" className="text-gray-800 hover:text-black 2xl:text-lg">
-            INFOS
-          </Link>
-          <Link href="/contact" className="text-gray-800 hover:text-black 2xl:text-lg">
-            CONTACT
-          </Link>
+        <nav className="flex w-full justify-center items-center space-x-10 text-sm 2xl:text-lg font-medium">
+          {[
+            { href: '/catalogue', label: 'CATALOGUE' },
+            { href: '/realisations', label: 'RÉALISATIONS' },
+            { href: '/infos', label: 'INFOS' },
+            { href: '/contact', label: 'CONTACT' },
+          ].map(({ href, label }) => (
+            <div key={href} className="relative group">
+              <Link href={href} className="text-gray-800 font-normal tracking-wider hover:text-black 2xl:text-lg">
+                {label}
+              </Link>
+              <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
+                <div 
+                  className={`w-full h-2 bg-zinc-800 rounded-full transition-all duration-300 ease-out origin-center
+                    ${isActive(href) ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
+                  `}
+                />
+              </div>
+            </div>
+          ))}
         </nav>
 
-        <div className="absolute right-8">
+        <div className="absolute right-8 flex items-center space-x-4">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="text-gray-800 hover:text-black transition-colors duration-300 focus:outline-none">
+                <Phone className="h-7 w-7" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80" side="bottom" align="end">
+              <PhoneCard />
+            </PopoverContent>
+          </Popover>
           <CartSheet />
         </div>
       </header>
