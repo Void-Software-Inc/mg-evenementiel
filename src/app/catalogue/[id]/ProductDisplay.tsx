@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { getProduct, getProductImages } from '@/services/products';
-import { Product, ProductImage } from '@/utils/types/products';
+import { Product, ProductImage, productColors } from '@/utils/types/products';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -192,6 +192,11 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
     return "Ajouter au devis";
   };
 
+  const getColorName = (colorValue: string) => {
+    const color = productColors.find(c => c.value === colorValue);
+    return color ? color.name : colorValue;
+  };
+
   return (
     <div className="flex flex-col md:flex-row w-[80%] pt-40 lg:mb-24">
       <div className="absolute top-16 left-0 right-0 w-full h-fit bg-transparent z-10">
@@ -310,16 +315,16 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-xl font-semibold">Description</AccordionTrigger>
               <AccordionContent>
-              <ul className="text-base list-none pl-0 space-y-1">
-              {descriptionItems.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-              <li><p className="">Couleur: {product.color}</p></li>
-            </ul>
+                <ul className="text-base list-none pl-0 space-y-1">
+                  {descriptionItems.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+                  <li><p className="">Couleur: {getColorName(product.color)}</p></li>
+                </ul>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>       
+        </div>
       </div>
     </div>
   );
