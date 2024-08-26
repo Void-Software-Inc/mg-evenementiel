@@ -116,7 +116,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-[80%] pt-40">
+    <div className="flex flex-col md:flex-row w-[80%] pt-40 lg:mb-24">
       <div className="fixed top-16 left-0 right-0 w-full h-fit bg-transparent z-10">
         <div className="container mx-auto">
           <Button
@@ -224,21 +224,20 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
         </div>
         </div>
 
-        <div className="space-y-2">
-
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="text-xl font-semibold">Description</AccordionTrigger>
-            <AccordionContent>
-            <ul className="text-base list-none pl-0 space-y-1">
-            {descriptionItems.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-            <li><p className="">Couleur: {product.color}</p></li>
-          </ul>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        <div className="space-y-2 min-h-[220px]">
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-xl font-semibold">Description</AccordionTrigger>
+              <AccordionContent>
+              <ul className="text-base list-none pl-0 space-y-1">
+              {descriptionItems.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+              <li><p className="">Couleur: {product.color}</p></li>
+            </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>       
       </div>
     </div>
