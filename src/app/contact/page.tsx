@@ -103,7 +103,7 @@ function ProfileForm() {
           email: values.email,
           telephone: values.telephone,
           date: date ? `${date.from ? format(date.from, 'dd LLL, y', { locale: fr }) : ''} - ${date.to ? format(date.to, 'dd LLL, y', { locale: fr }) : ''}` : "Aucune date sélectionnée",
-          eventType: values.eventType, // Send the selected event type,
+          eventType: values.eventType,
           traiteur: values.traiteur,
           message: values.message,
         }),      
@@ -321,6 +321,7 @@ function ProfileForm() {
 const ContactPage: React.FC = () => {
   return (
     <div>
+      
     <div className="h-full w-full left-0 top-0 -z-10 flex justify-center">
       <div className="h-full w-[90%] sm:w-[93%] lg:w-[70%] mt-28">
         <div className="h-fit w-full text-center pt-14">

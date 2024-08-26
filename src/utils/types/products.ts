@@ -22,9 +22,9 @@ export const productTypes: ProductType[] = [
     { value: "nappes", name: "Nappes" },
     { value: "housses", name: "Housses" },
     { value: "chapiteau", name: "Chapiteau" },
-    { value: "vaiselle", name: "Vaiselle" },
+    { value: "vaiselle", name: "Vaisselle" },
     { value: "centreTable", name: "Centre Table" },
-    { value: "decoration", name: "Decoration" },
+    { value: "decoration", name: "Décoration" },
     { value: "acessoires", name: "Acessoires" },
 ];
 
@@ -52,3 +52,9 @@ export const productColors: ProductColor[] = [
     { value: "silver", name: "Argenté", hex: "#C0C0C0" },
     { value: "multicolore", name: "Multicolore", hex: "#000000" },
 ]
+
+export type ProductImage = {
+    id: number;
+    product_id: number;
+    url: string;
+}
