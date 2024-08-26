@@ -1,10 +1,11 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { Sheet, SheetContent, SheetTrigger, SheetFooter } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useCart } from '@/app/context/CartContext';
 import { ShoppingBag, Plus, Minus, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 
 interface CartSheetProps {
     isWhite?: boolean;
@@ -13,13 +14,49 @@ interface CartSheetProps {
 export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
   const { cart, updateQuantity, removeFromCart } = useCart();
   const [mounted, setMounted] = useState(false);
+  const [localQuantities, setLocalQuantities] = useState<{ [key: number]: number | '' }>({});
+  const inputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    const initialQuantities = cart.reduce((acc, item) => {
+      acc[item.id] = item.quantity;
+      return acc;
+    }, {} as { [key: number]: number });
+    setLocalQuantities(initialQuantities);
+  }, [cart]);
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const itemCount = cart.length;
+
+  const handleLocalQuantityChange = (productId: number, newQuantity: number | '') => {
+    setLocalQuantities(prev => ({ ...prev, [productId]: newQuantity }));
+  };
+
+  const handleInputChange = (productId: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '') {
+      handleLocalQuantityChange(productId, '');
+    } else {
+      const parsedValue = parseInt(value);
+      if (!isNaN(parsedValue)) {
+        handleLocalQuantityChange(productId, parsedValue);
+      }
+    }
+  };
+
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.select();
+  };
+
+  const handleInputBlur = (productId: number) => {
+    const quantity = localQuantities[productId];
+    if (typeof quantity === 'string' || quantity === 0) {
+      handleQuantityChange(productId, 1);
+    } else {
+      handleQuantityChange(productId, quantity);
+    }
+  };
 
   const handleQuantityChange = (productId: number, newQuantity: number) => {
     if (newQuantity === 0) {
@@ -27,6 +64,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
     } else {
       updateQuantity(productId, newQuantity);
     }
+    setLocalQuantities(prev => ({ ...prev, [productId]: newQuantity }));
   };
 
   return (
@@ -42,18 +80,18 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
               {itemCount}
             </Badge>
           )}
-          <span className="sr-only">Open cart</span>
+          <span className="sr-only">Ouvrir le panier</span>
         </Button>
       </SheetTrigger>
       <SheetContent 
-        title="Votre panier" 
+        title="Votre devis" 
         description="Review the items in your cart and proceed to checkout."
         className="w-full sm:max-w-lg md:max-w-lg flex flex-col"
         isCloseVisible={true}
       >
         <div className="flex-grow overflow-y-auto">
           {cart.length === 0 ? (
-            <p className="text-center py-6">Votre panier est vide</p>
+            <p className="text-center py-6">Votre devis est vide</p>
           ) : (
             <div className="flex flex-col space-y-4 mt-4 pr-4">
               {cart.map((item) => (
@@ -76,29 +114,45 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
                       variant="outline" 
                       size="icon"
                       className="h-8 w-8"
-                      onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                      onClick={() => handleQuantityChange(item.id, (localQuantities[item.id] as number) - 1)}
+                      disabled={(localQuantities[item.id] as number) <= 1}
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
-                    <span className="w-6 text-center">{item.quantity}</span>
+                    <Input
+                      type="number"
+                      value={localQuantities[item.id]}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(item.id, e)}
+                      onFocus={handleInputFocus}
+                      onBlur={() => handleInputBlur(item.id)}
+                      min={1}
+                      max={item.stock}
+                      isModifiedCn
+                      className="w-14 text-center rounded-md h-8"
+                      ref={(el: HTMLInputElement | null) => {
+                        if (el) {
+                          inputRefs.current[item.id] = el;
+                        }
+                      }}
+                    />
                     <Button 
                       variant="outline" 
                       size="icon"
                       className="h-8 w-8"
-                      onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                      disabled={item.quantity >= item.stock}
+                      onClick={() => handleQuantityChange(item.id, (localQuantities[item.id] as number) + 1)}
+                      disabled={(localQuantities[item.id] as number) >= item.stock}
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className="h-8 w-8 flex-shrink-0"
+                      onClick={() => removeFromCart(item.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="h-8 w-8 flex-shrink-0"
-                    onClick={() => removeFromCart(item.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
                 </div>
               ))}
             </div>
@@ -111,7 +165,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
               <span className="font-bold">{total.toFixed(2)}€</span>
             </div>
             <Button className="w-full" disabled={cart.length === 0}>
-              Proceed to Checkout
+              Valider le devis
             </Button>
           </div>
         </SheetFooter>
