@@ -111,11 +111,11 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
           <div className="h-fit w-[85%]">
             <div className="w-full h-fit flex justify-start space-x-2 lg:space-x-6">
             <div className="relative pb-12">
-              <p className="text-5-1/2xl sm:text-7xl md:text-9xl font-thin tracking-tighter text-nowrap">
+              <p className="text-4xl sm:text-7xl md:text-9xl font-thin tracking-tighter text-nowrap uppercase">
                 {selectedType === "Tout" ? "Tout" : selectedType}
               </p>
-              <div className='h-fit w-full absolute -mt-3 sm:mt-2 text-end'>
-                <p className="text-1xl sm:text-2xl font-thin">
+              <div className='h-fit w-full absolute -mt-3 text-end'>
+                <p className="text-md pt-1 sm:pt-0 sm:text-2xl font-thin uppercase">
                   {selectedLieu === "Tout" ? "" : selectedLieu}
                 </p>
               </div>
