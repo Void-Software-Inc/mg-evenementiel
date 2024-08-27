@@ -37,18 +37,18 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
   const places = ["Tout", "En intérieur", "En extérieur"];
 
   const staticImages: ImageData[] = [
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/felix-manuel-almonte-ulloa-idJeiwIdZTo-unsplash_1_.webp", alt: "Portrait 1", isPortrait: true, type: "Mariage", lieu: "En intérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/engin-akyurt-i3rFV6ULk-o-unsplash_1_.webp", alt: "Landscape 1", isPortrait: false, type: "Mariage", lieu: "En extérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/mitchell-lawler-tbaoryUol_E-unsplash-1.webp", alt: "Landscape 2", isPortrait: false, type: "Professionnel", lieu: "En intérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/d-l-samuels-ZIRlju8VBXg-unsplash.webp?t=2024-08-23T12%3A27%3A52.400Z", alt: "Portrait 2", isPortrait: true, type: "Baptême", lieu: "En extérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/jeremy-wong-weddings-K8KiCHh4WU4-unsplash(1).webp?t=2024-08-23T12%3A28%3A43.218Z", alt: "Portrait 3", isPortrait: true, type: "Mariage", lieu: "En extérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/wedding-dreamz-pqkn1uIS6jY-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Mariage", lieu: "En extérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/saile-ilyas-SiwrpBnxDww-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Traiteur", lieu: "En intérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/katrien-sterckx-fn0xXL9szcU-unsplash_1__1_.webp", alt: "Landscape 3", isPortrait: true, type: "Traiteur", lieu: "En extérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/kelly-neil-eZX1D12IS9w-unsplash.webp", alt: "Landscape 3", isPortrait: true, type: "Anniversaire", lieu: "En intérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/sirio-hm3efUMoReg-unsplash_2_.webp", alt: "Landscape 3", isPortrait: false, type: "Baby Shower", lieu: "En intérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/paysage/photos-by-lanty-dcb2pog89fQ-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Autre", lieu: "En extérieur" },
-    { src: "https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/realisations/portrait/silas-van-overeem-GNM6W-7gkGI-unsplash.webp", alt: "Landscape 3", isPortrait: true, type: "Anniversaire", lieu: "En extérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/felix-manuel-almonte-ulloa-idJeiwIdZTo-unsplash_1_.webp", alt: "Portrait 1", isPortrait: true, type: "Mariage", lieu: "En intérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/engin-akyurt-i3rFV6ULk-o-unsplash_1_.webp", alt: "Landscape 1", isPortrait: false, type: "Mariage", lieu: "En extérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/mitchell-lawler-tbaoryUol_E-unsplash-1.webp", alt: "Landscape 2", isPortrait: false, type: "Professionnel", lieu: "En intérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/d-l-samuels-ZIRlju8VBXg-unsplash.webp", alt: "Portrait 2", isPortrait: true, type: "Baptême", lieu: "En extérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/jeremy-wong-weddings-K8KiCHh4WU4-unsplash(1).webp", alt: "Portrait 3", isPortrait: true, type: "Mariage", lieu: "En extérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/wedding-dreamz-pqkn1uIS6jY-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Mariage", lieu: "En extérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/saile-ilyas-SiwrpBnxDww-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Traiteur", lieu: "En intérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/katrien-sterckx-fn0xXL9szcU-unsplash_1__1_.webp", alt: "Landscape 3", isPortrait: true, type: "Traiteur", lieu: "En extérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/kelly-neil-eZX1D12IS9w-unsplash.webp", alt: "Landscape 3", isPortrait: true, type: "Anniversaire", lieu: "En intérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/sirio-hm3efUMoReg-unsplash_2_.webp", alt: "Landscape 3", isPortrait: false, type: "Baby Shower", lieu: "En intérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/photos-by-lanty-dcb2pog89fQ-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Autre", lieu: "En extérieur" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/silas-van-overeem-GNM6W-7gkGI-unsplash.webp", alt: "Landscape 3", isPortrait: true, type: "Anniversaire", lieu: "En extérieur" },
   ];
 
   useEffect(() => {
