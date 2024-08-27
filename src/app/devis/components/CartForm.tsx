@@ -77,17 +77,17 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
             name="first_name"
             render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem>
                 <Label className="text-lg font-medium leading-loose text-gray-700">Prénom *</Label>
                 <FormControl>
-                  <Input placeholder="Votre prénom" {...field} />
+                  <Input className="w-full" placeholder="Votre prénom" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
