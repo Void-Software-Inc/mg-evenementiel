@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-const CartStep = () => {
+const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
   const router = useRouter();
   const { cart, updateQuantity, removeFromCart } = useCart();
   const [localQuantities, setLocalQuantities] = useState<{ [key: number]: number | '' }>({});
@@ -149,6 +149,11 @@ const CartStep = () => {
           <span className="font-medium">Total produits:</span>
           <span className="font-bold">{total.toFixed(2)}€</span>
         </div>
+      </div>
+      <div className="mt-4">
+        <Button onClick={onNext} className="w-full rounded-full">
+          Suivant
+        </Button>
       </div>
     </div>
   );

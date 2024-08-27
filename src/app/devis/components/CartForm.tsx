@@ -11,8 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useCart } from '@/app/context/CartContext';
-import { createQuote } from "@/services/quotes";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -36,12 +34,15 @@ const formSchema = z.object({
   description: z.string().min(2, "Veuillez écrire un message"),
 });
 
-const CartForm = () => {
-  const [date, setDate] = useState<DateRange | undefined>(undefined);
-  const { cart } = useCart();
+interface CartFormProps {
+  onNext: (data: any) => void;
+  onPrevious: () => void;
+}
+
+const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [titleMessage, setTitleMessage] = useState("");
-  const [message, setMessage] = useState("");
+  const [titleMessage] = useState("");
+  const [message] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,43 +60,20 @@ const CartForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { date, ...restValues } = values;
     const parisTimeZone = 'Europe/Paris';
-
+  
     const formatDateToParisTime = (date: Date | undefined) => {
       if (!date) return null;
       return date.toLocaleString('en-US', { timeZone: parisTimeZone, hour12: false }).replace(',', '');
     };
-
+  
     const quoteData = {
       ...restValues,
       event_start_date: formatDateToParisTime(date?.from) || "",
       event_end_date: formatDateToParisTime(date?.to) || "",
       is_traiteur: values.is_traiteur === "true",
-      total_cost: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
-      status: "pending",
-      is_paid: false,
-      traiteur_price: 0,
-      other_expenses: 0,
     };
-
-    const quoteItems = cart.map(item => ({
-      id: item.id,
-      quote_id: item.id,
-      product_id: item.id,
-      quantity: item.quantity,
-    }));
-
-    try {
-      const result = await createQuote(quoteData, quoteItems);
-      console.log("Quote created:", result);
-      setTitleMessage("Devis créé avec succès");
-      setMessage("Votre devis a été créé et enregistré. Nous vous contacterons bientôt.");
-      setDialogOpen(true);
-    } catch (error) {
-      console.error("Error creating quote:", error);
-      setTitleMessage("Erreur");
-      setMessage("Une erreur s'est produite lors de la création du devis. Veuillez réessayer.");
-      setDialogOpen(true);
-    }
+  
+    onNext(quoteData);
   };
 
   return (
@@ -106,7 +84,7 @@ const CartForm = () => {
             control={form.control}
             name="first_name"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <Label className="text-lg font-medium leading-loose text-gray-700">Prénom *</Label>
                 <FormControl>
                   <Input placeholder="Votre prénom" {...field} />
@@ -218,12 +196,23 @@ const CartForm = () => {
             )}
           />
 
-          <div className="w-full h-fit flex justify-end">
-            <Button type="submit" className="rounded-full h-[65px] w-full sm:h-[78px] sm:w-[170px] py-6 px-12 flex items-center group ease-in-out transition duration-300 hover:bg-neutral-500">
-              <span className="font-semibold text-xl">Envoyer</span>
-              <span className="ml-2 transition-transform transform group-hover:translate-x-2 duration-300">
-                <svg width="28" height="28" className="text-white" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.18194 4.18185C6.35767 4.00611 6.6426 4.00611 6.81833 4.18185L9.81833 7.18185C9.90272 7.26624 9.95013 7.3807 9.95013 7.50005C9.95013 7.6194 9.90272 7.73386 9.81833 7.81825L6.81833 10.8182C6.6426 10.994 6.35767 10.994 6.18194 10.8182C6.0062 10.6425 6.0062 10.3576 6.18194 10.1819L8.86374 7.50005L6.18194 4.81825C6.0062 4.64251 6.0062 4.35759 6.18194 4.18185Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
-              </span>
+          <div className="flex flex-col gap-4 mt-4">
+            <Button
+              type="button"
+              onClick={() => {
+                onPrevious();
+                window.scrollTo(0, 0);
+              }}
+              variant="outline"
+              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full"
+            >
+              Précédent
+            </Button>
+            <Button
+              type="submit"
+              className="px-4 py-2 bg-black text-white rounded-full"
+            >
+              Suivant
             </Button>
           </div>
         </form>

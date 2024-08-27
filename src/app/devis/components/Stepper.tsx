@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import CartStep from './CartStep';
 import CartForm from './CartForm';
+import CartValidation from './CartValidation';
+import { useCart } from '@/app/context/CartContext';
 
 const steps = [
   { name: 'Produits', number: 1 },
@@ -12,10 +14,15 @@ const steps = [
 
 const Stepper = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState(null);
+  const { cart } = useCart();
 
-  const handleNext = () => {
+  const handleNext = (data = null) => {
     if (currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
+      if (data) {
+        setFormData(data);
+      }
     }
   };
 
@@ -62,27 +69,12 @@ const Stepper = () => {
         </ol>
       </div>
 
-      {currentStep === 1 && <CartStep />}
-      {currentStep === 2 && <CartForm />}
-
-      <div className="mt-8 flex justify-between">
-        <button
-          onClick={handlePrevious}
-          disabled={currentStep === 1}
-          className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50"
-        >
-          Précédent
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={currentStep === steps.length}
-          className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
-        >
-          Suivant
-        </button>
-      </div>
+      {currentStep === 1 && <CartStep onNext={handleNext} />}
+      {currentStep === 2 && <CartForm onNext={handleNext} onPrevious={handlePrevious} />}
+      {currentStep === 3 && <CartValidation formData={formData} cart={cart} onPrevious={handlePrevious} />}
+      
     </div>
   );
-};
+}
 
 export default Stepper;
