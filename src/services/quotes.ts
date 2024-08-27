@@ -7,7 +7,7 @@ const API_URL = '/api';
 export async function createQuote(quoteData: Partial<Quote>, quoteItems?: QuoteItem[]): Promise<{ quote: Quote; quoteItems?: QuoteItem[] }> {
     try {
       const url = `${API_URL}/quotes/create`;
-      const cleanedQuoteItems = quoteItems?.map(({ id, ...item }) => item);
+      const cleanedQuoteItems = quoteItems?.map(({ id, quote_id, ...item }) => item);
       const response = await fetch(url, {
         method: 'POST',
         headers: {
