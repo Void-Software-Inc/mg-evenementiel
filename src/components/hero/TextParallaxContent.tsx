@@ -106,8 +106,8 @@ const TextParallaxContent = () => {
               <div className="absolute right-8 flex items-center space-x-4 text-white font-light tracking-wider transition-colors duration-500">
                 <Popover>
                   <PopoverTrigger asChild>
-                    <button className="text-white hover:text-gray-200 focus:outline-none">
-                      <Phone className="h-7 w-7" />
+                    <button className="text-white focus:outline-none">
+                      <Phone className="h-6 w-6 2xl:h-8 2xl:w-8" />
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-80" side="bottom" align="end">
@@ -222,13 +222,13 @@ const TextParallaxContent = () => {
                 </div>
               ) : (
                 <div className="relative h-full w-full">
-                  <p className="absolute top-48 left-16 text-sm uppercase tracking-wider 2xl:text-lg">Dans le sud de la france</p>
-                  <h1 className="absolute top-56 left-16 text-7xl 2xl:text-8xl font-extralight tracking-wider leading-tight 2xl:leading-snug">
-                    <span className="md:ml-24 lg:ml-48 text-right">ORGANISEZ</span><br />
-                    <span className="md:ml-2 lg:ml-16 text-center">LE PARFAIT</span><br />
-                    <span className="md:ml-20 lg:ml-40 text-right">ÉVÉNEMENT</span>
+                  <p className="absolute top-48 2xl:top-40 4xl:top-48 left-16 text-sm uppercase tracking-wider 2xl:text-lg">Dans le sud de la france</p>
+                  <h1 className="absolute top-56 2xl:top-48 4xl:top-56 left-16 text-7xl 4xl:text-8xl font-extralight tracking-wider leading-tight 2xl:leading-snug">
+                    <span className="md:ml-24 lg:ml-48 2xl:ml-56 text-right">ORGANISEZ</span><br />
+                    <span className="md:ml-2 lg:ml-16 2xl:ml-20 text-center">LE PARFAIT</span><br />
+                    <span className="md:ml-20 lg:ml-40 2xl:ml-52 text-right">ÉVÉNEMENT</span>
                   </h1>
-                  <p className="absolute bottom-32 2xl:bottom-52 left-16 text-lg 2xl:text-xl max-w-xs 2xl:max-w-md">
+                  <p className="absolute bottom-32 2xl:bottom-32 3xl:bottom-32 4xl:bottom-52 left-16 text-lg 2xl:text-xl max-w-xs 2xl:max-w-md">
                     Location de décoration et de mobilier pour vos événements
                   </p>
                   <motion.div 
@@ -236,7 +236,7 @@ const TextParallaxContent = () => {
                     style={{ left: buttonLeftPosition }}
                   >
                     <Button 
-                      className="hover:bg-black rounded-full w-28 h-28 2xl:w-36 2xl:h-36 p-0 flex items-center justify-center text-sm 2xl:text-lg font-medium group"
+                      className="hover:bg-black rounded-full w-28 h-28 2xl:w-32 2xl:h-32 4xl:w-44 4xl:h-44 p-0 flex items-center justify-center text-sm 2xl:text-lg font-medium group"
                       variant="default" 
                       size="default"
                     >
