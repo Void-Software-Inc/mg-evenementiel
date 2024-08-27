@@ -97,7 +97,7 @@ const TextParallaxContent = () => {
           >
             <div className="relative w-full h-full">
               <Image
-                src="https://iccixrimzohdzfbgdegt.supabase.co/storage/v1/object/public/mge-website-images/photo-1525441273400-056e9c7517b3.avif"
+                src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/photo-1525441273400-056e9c7517b3-1.avif"
                 alt="Background"
                 fill
                 sizes="100vw"
