@@ -150,8 +150,13 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
           <span className="font-bold">{total.toFixed(2)}€</span>
         </div>
       </div>
-      <div className="mt-4">
-        <Button onClick={onNext} className="w-full rounded-full">
+      <div onClick={() => {
+        window.scrollTo(0, 0);
+      }} className="mt-4">
+        <Button 
+          className="w-full rounded-full"
+          onClick={onNext}
+        >
           Suivant
         </Button>
       </div>
