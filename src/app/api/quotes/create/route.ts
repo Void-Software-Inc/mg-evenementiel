@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
     // Add timestamps to quoteData
     const quoteWithTimestamps = {
         ...quoteData,
+        status: 'nouveau',
         created_at: parisDate,
         last_update: parisDate
     };

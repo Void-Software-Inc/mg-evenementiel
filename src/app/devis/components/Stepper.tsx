@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import CartStep from './CartStep';
+import CartForm from './CartForm';
 
 const steps = [
   { name: 'Produits', number: 1 },
@@ -62,6 +63,7 @@ const Stepper = () => {
       </div>
 
       {currentStep === 1 && <CartStep />}
+      {currentStep === 2 && <CartForm />}
 
       <div className="mt-8 flex justify-between">
         <button
