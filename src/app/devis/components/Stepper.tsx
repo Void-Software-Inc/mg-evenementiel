@@ -69,14 +69,14 @@ const Stepper = () => {
           disabled={currentStep === 1}
           className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50"
         >
-          Previous
+          Précédent
         </button>
         <button
           onClick={handleNext}
           disabled={currentStep === steps.length}
           className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
         >
-          Next
+          Suivant
         </button>
       </div>
     </div>
