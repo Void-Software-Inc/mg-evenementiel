@@ -112,19 +112,7 @@ export default function Navbar() {
           <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={150} height={150} />
         </Link>
 
-        <div className="flex items-center space-x-4">
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="text-gray-800 focus:outline-none">
-                <Phone className="h-7 w-7" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80" side="bottom" align="end">
-              <PhoneCard />
-            </PopoverContent>
-          </Popover>
-          <CartSheet />
-        </div>
+        {pathname !== '/devis' && <CartSheet />}
       </header>
 
       <header 
@@ -158,18 +146,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="absolute right-8 flex items-center space-x-4">
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="text-gray-800 hover:text-black transition-colors duration-300 focus:outline-none">
-                <Phone className="h-7 w-7" />
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80" side="bottom" align="end">
-              <PhoneCard />
-            </PopoverContent>
-          </Popover>
-          <CartSheet />
+        <div className="absolute right-8">
+          {pathname !== '/devis' && <CartSheet />}
         </div>
       </header>
     </>
