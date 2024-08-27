@@ -146,7 +146,17 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="absolute right-8">
+        <div className="absolute right-8 flex items-center space-x-4 ">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="text-gray-800 hover:text-black transition-colors duration-300 focus:outline-none">
+                <Phone className="h-7 w-7" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80" side="bottom" align="end">
+              <PhoneCard />
+            </PopoverContent>
+          </Popover>
           {pathname !== '/devis' && <CartSheet />}
         </div>
       </header>
