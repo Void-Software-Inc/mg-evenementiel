@@ -28,8 +28,10 @@ const formSchema = z.object({
   last_name: z.string().min(2, "Veuillez renseignez votre nom").max(50, "Limite de 50 caractères dépassée"),
   email: z.string().email("Adresse email invalide"),
   phone_number: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
-  event_start_date: z.date(),
-  event_end_date: z.date(),
+  date: z.object({
+    from: z.date().optional(),
+    to: z.date().optional(),
+  }).optional(),
   is_traiteur: z.enum(["true", "false"], { required_error: "Veuillez sélectionner une option" }),
   description: z.string().min(2, "Veuillez écrire un message"),
 });
@@ -48,20 +50,31 @@ const CartForm = () => {
       last_name: "",
       email: "",
       phone_number: "",
-      event_start_date: new Date(),
-      event_end_date: new Date(),
+      date: undefined,
       is_traiteur: "false",
       description: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const { date, ...restValues } = values;
+    const parisTimeZone = 'Europe/Paris';
+
+    const formatDateToParisTime = (date: Date | undefined) => {
+      if (!date) return null;
+      return date.toLocaleString('en-US', { timeZone: parisTimeZone, hour12: false }).replace(',', '');
+    };
+
     const quoteData = {
-      ...values,
-      event_start_date: values.event_start_date.toISOString(),
-      event_end_date: values.event_end_date.toISOString(),
+      ...restValues,
+      event_start_date: formatDateToParisTime(date?.from) || "",
+      event_end_date: formatDateToParisTime(date?.to) || "",
       is_traiteur: values.is_traiteur === "true",
       total_cost: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+      status: "pending",
+      is_paid: false,
+      traiteur_price: 0,
+      other_expenses: 0,
     };
 
     const quoteItems = cart.map(item => ({
@@ -145,10 +158,18 @@ const CartForm = () => {
             )}
           />
 
-          <div>
-            <Label className="text-lg font-medium leading-loose text-gray-700">Date de l'événement</Label>
-            <DatePickerWithRange date={date} setDate={setDate} />
-          </div>
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+              <FormItem>
+                <Label className="text-lg font-medium leading-loose text-gray-700">Date de l'événement</Label>
+                <FormControl>
+                  <DatePickerWithRange date={field.value as DateRange} setDate={(date) => field.onChange(date as DateRange)} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}
