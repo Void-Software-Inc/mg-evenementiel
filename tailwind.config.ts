@@ -17,6 +17,8 @@ const config = {
     extend: {
       screens: {
         "2xl": "1698px",
+        "3xl": "1920px",
+        "4xl": "2400px",
       },
       fontSize: {
         '5-1/2xl':'55px', 
