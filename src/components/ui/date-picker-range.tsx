@@ -35,14 +35,14 @@ export function DatePickerWithRange({
   }, [date]);
 
   return (
-    <div className={cn("lg:max-w-[624px] w-full drop-shadow-none", className)}>
+    <div className={cn("w-full drop-shadow-none", className)}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
             id="date"
             variant={"outline"}
             className={cn(
-              " min-w-[247px] w-full lg:max-w-[624px] py-6 px-4 justify-start items-center text-left drop-shadow-none bg-transparent rounded-t-md rounded-b-none border border-b border-t-0 border-x-0 border-gray-300 tracking-tight hover:border-gray-700",
+              " min-w-[247px] w-full py-6 px-4 justify-start items-center text-left drop-shadow-none bg-transparent rounded-t-md rounded-b-none border border-b border-t-0 border-x-0 border-gray-300 tracking-tight hover:border-gray-700",
               !date && "text-base text-muted-foreground"
             )}
           >

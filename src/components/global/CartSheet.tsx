@@ -38,6 +38,10 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
     router.push(`/catalogue/${productId}`);
   };
 
+  const handleCloseSheet = () => {
+    closeRef.current?.click();
+  };
+
   const handleLocalQuantityChange = (productId: number, newQuantity: number | '') => {
     setLocalQuantities(prev => ({ ...prev, [productId]: newQuantity }));
   };
@@ -182,9 +186,11 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
               <span className="font-medium">Total:</span>
               <span className="font-bold">{total.toFixed(2)}€</span>
             </div>
-            <Button className="w-full" disabled={cart.length === 0}>
-              Valider le devis
-            </Button>
+            <Link href="/devis" className="w-full">
+              <Button onClick={handleCloseSheet} className="w-full" disabled={cart.length === 0}>
+                Valider le devis
+              </Button>
+            </Link>
           </div>
         </SheetFooter>
       </SheetContent>
