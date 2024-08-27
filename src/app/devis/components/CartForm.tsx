@@ -210,6 +210,9 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
             </Button>
             <Button
               type="submit"
+              onClick={() => {
+                window.scrollTo(0, 0);
+              }}
               className="px-4 py-2 bg-black text-white rounded-full"
             >
               Suivant
