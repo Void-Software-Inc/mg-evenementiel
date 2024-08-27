@@ -81,7 +81,7 @@ export default function Navbar() {
           <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={150} height={150} />
         </Link>
 
-        <CartSheet />
+        {pathname !== '/devis' && <CartSheet />}
       </header>
 
       <header 
@@ -109,7 +109,7 @@ export default function Navbar() {
         </nav>
 
         <div className="absolute right-8">
-          <CartSheet />
+          {pathname !== '/devis' && <CartSheet />}
         </div>
       </header>
     </>
