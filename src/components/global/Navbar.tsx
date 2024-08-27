@@ -149,8 +149,8 @@ export default function Navbar() {
         <div className="absolute right-8 flex items-center space-x-4 ">
           <Popover>
             <PopoverTrigger asChild>
-              <button className="text-gray-800 hover:text-black transition-colors duration-300 focus:outline-none">
-                <Phone className="h-7 w-7" />
+              <button className="text-gray-800 focus:outline-none">
+                <Phone className="h-6 w-6 2xl:h-8 2xl:w-8" />
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-80" side="bottom" align="end">

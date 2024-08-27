@@ -84,7 +84,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
     <Sheet>
       <SheetClose ref={closeRef} className="hidden" />
       <SheetTrigger asChild>
-        <Button className={`hover:bg-transparent h-10 w-10 ${isWhite ? 'text-white hover:text-white' : 'text-black hover:text-black'}`} variant="ghost" size="icon">
+        <Button className={`hover:bg-transparent h-10 w-10 ${isWhite ? 'text-white hover:text-white' : 'text-gray-800'}`} variant="ghost" size="icon">
           <ShoppingBag className="h-6 w-6 2xl:h-8 2xl:w-8" />
           {mounted && itemCount > 0 && (
             <Badge 
