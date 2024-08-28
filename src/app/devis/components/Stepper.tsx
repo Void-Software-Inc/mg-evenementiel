@@ -5,6 +5,7 @@ import CartStep from './CartStep';
 import CartForm from './CartForm';
 import CartValidation from './CartValidation';
 import { useCart } from '@/app/context/CartContext';
+import { useDevis } from '@/app/context/DevisContext';
 
 const steps = [
   { name: 'Produits', number: 1 },
@@ -14,8 +15,8 @@ const steps = [
 
 const Stepper = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState(null);
   const { cart } = useCart();
+  const { formData, setFormData } = useDevis();
 
   const handleNext = (data = null) => {
     if (currentStep < steps.length) {

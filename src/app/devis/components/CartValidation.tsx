@@ -10,7 +10,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const quoteData = {
       ...formData,
       total_cost: total,
-      status: "pending",
+      status: "nouveau",
       is_paid: false,
       traiteur_price: 0,
       other_expenses: 0,
