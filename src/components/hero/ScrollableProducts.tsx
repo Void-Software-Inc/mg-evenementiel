@@ -1,9 +1,8 @@
 'use client';
 
-import { useRef } from "react";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from 'next/image';
-import { useState } from 'react';
 import { Button } from "../ui/button";
 import Link from "next/link";
 
@@ -11,31 +10,39 @@ type ProductMenu = {
   id: number;
   name: string;
   price: number;
-  imageUrl: string;
+  image_url: string;
 };
 /***************************************************************
  *                                                             *
  *                          USAGE                              *        
  *                                                             *
  *  1. Utiliser des images de produit sans background          *
- *  2. Mettre le nom du produit en majuscules                  *
- *  3. Ajouter un tiret à la fin du nom du produit             *
- *  4. Faire figurer les centimes dans le prix (format O.OO)   *
- *                                                             *
+ *  2. Mettre le nom du produit en majuscules          
+ *  3. Ajouter un tiret à la fin du nom du produit              
+ *  4. Faire figurer les centimes dans le prix (format O.OO)  
+ *                                                            
  *                                                             *
  ***************************************************************/
-const products: ProductMenu[] = [
-  { id: 1, name: "VERRE À VIN BLEU -", price: 1.50, imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu/png/verre-bleu-removebg-preview.png?t=2024-08-28T15%3A04%3A23.923Z" },
-  { id: 2, name: "CHAISE EN VELOURS -", price: 3.50, imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu/png/chaise-removebg-preview.png?t=2024-08-28T15%3A07%3A47.274Z" },
-  { id: 3, name: "LOT DE VASES BLEUS -", price: 7.50, imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu/png/vases-removebg-preview.png?t=2024-08-28T15%3A02%3A05.822Z" },
-  { id: 4, name: "NAPPE BLANCHE -", price: 2.00, imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu/png/nappe-removebg-preview.png?t=2024-08-28T15%3A08%3A02.854Z" },
-  { id: 5, name: "BOUQUET DE ROSES -", price: 5.00, imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu/png/roses-removebg-preview.png?t=2024-08-28T15%3A08%3A14.880Z" },
-  { id: 6, name: "GUIRLANDE D'EXTÉRIEUR -", price: 4.00, imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu/png/guirlande-removebg-preview.png?t=2024-08-28T15%3A08%3A34.640Z" },
-  { id: 7, name: "ASSIETTE EN ÉMAIL -", price: 1.00, imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu/png/assiette-removebg-preview.png?t=2024-08-28T15%3A01%3A32.016Z" },
-];
 
 export default function ScrollableProducts() {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [products, setProducts] = useState<ProductMenu[]>([]);
+
+    useEffect(() => {
+      const fetchMenuProducts = async () => {
+        try {
+          const response = await fetch('/api/menu');
+          if (!response.ok) {
+            throw new Error('Failed to fetch menu products');
+          }
+          const data = await response.json();
+          setProducts(data.products);
+        } catch (error) {
+          console.error('Error fetching menu products:', error);
+        }
+      };
+      fetchMenuProducts();
+    }, []);
 
     const scroll = (direction: "left" | "right") => {
         if (scrollContainerRef.current) {
@@ -45,7 +52,7 @@ export default function ScrollableProducts() {
             behavior: "smooth",
           });
         }
-      };
+    };
       
     return (   
         <div className="h-full w-full mb-40 flex flex-col items-center justify-center">
@@ -78,14 +85,16 @@ export default function ScrollableProducts() {
                                 } as React.CSSProperties}
                             >
                                 {products.map((product) => (
+                                <Link href={`/catalogue/${product.id}`} key={product.id}>
                                     <div key={product.id} className="w-[200px] h-[280px] lg:w-[350px] lg:h-[480px] flex-shrink-0 relative bg-gray-100">
                                         <div className="absolute inset-0 p-1 flex items-center justify-center -mt-8 sm:mt-0">
                                             <div className="relative w-full h-full">
                                                 <Image
-                                                    src={product.imageUrl}
+                                                    src={product.image_url}
                                                     alt={product.name}
                                                     layout="fill"
                                                     objectFit="contain"
+                                                    onError={() => console.error(`Failed to load image for product ${product.id}`)}
                                                 />
                                             </div>
                                         </div>
@@ -94,6 +103,7 @@ export default function ScrollableProducts() {
                                             <p className="pl-2 text-2xl font-light">{product.price.toFixed(2)} €</p>
                                         </div>
                                     </div>
+                                </Link>
                                 ))}
                                 {/* Additional zinc-100 div with centered text */}
                                 <div className="w-[200px] h-[280px] lg:w-[350px] lg:h-[480px] flex-shrink-0 flex-col relative bg-zinc-100 flex items-center justify-center">
