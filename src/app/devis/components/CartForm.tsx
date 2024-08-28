@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useDevis } from '@/app/context/DevisContext';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -48,18 +49,23 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [titleMessage] = useState("");
   const [message] = useState("");
+  const { formData, setFormData } = useDevis();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: formData ? {
+      ...formData,
+      date: {
+        from: formData.event_start_date ? new Date(formData.event_start_date) : undefined,
+        to: formData.event_end_date ? new Date(formData.event_end_date) : undefined
+      },
+      is_traiteur: formData.is_traiteur ? "true" : "false"
+    } : {
       first_name: "",
       last_name: "",
       email: "",
       phone_number: "",
-      date: {
-        from: undefined,
-        to: undefined,
-      },
+      date: undefined,
       is_traiteur: "false",
       description: "",
     },
@@ -70,16 +76,17 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
     const parisTimeZone = 'Europe/Paris';
   
     const formatDateToParisTime = (date: Date | undefined) => {
-      if (!date) return null;
+      if (!date) return "";
       return date.toLocaleString('en-US', { timeZone: parisTimeZone, hour12: false }).replace(',', '');
     };
   
     const quoteData = {
       ...restValues,
-      event_start_date: formatDateToParisTime(date?.from ?? undefined) || "",
-      event_end_date: formatDateToParisTime(date?.to ?? undefined) || "",
+      event_start_date: formatDateToParisTime(date?.from),
+      event_end_date: formatDateToParisTime(date?.to),
       is_traiteur: values.is_traiteur === "true",
     };
+    setFormData(quoteData);
     onNext(quoteData);
   };
 
