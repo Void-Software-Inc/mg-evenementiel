@@ -27,9 +27,14 @@ const formSchema = z.object({
   email: z.string().email("Adresse email invalide"),
   phone_number: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
   date: z.object({
-    from: z.date().optional(),
-    to: z.date().optional(),
-  }).optional(),
+    from: z.date(),
+    to: z.date(),
+  }).refine(
+    (data) => data.from !== undefined && data.to !== undefined,
+    {
+      message: "Veuillez sélectionner une date de début et de fin",
+    }
+  ),
   is_traiteur: z.enum(["true", "false"], { required_error: "Veuillez sélectionner une option" }),
   description: z.string().min(2, "Veuillez écrire un message"),
 });
@@ -51,7 +56,10 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
       last_name: "",
       email: "",
       phone_number: "",
-      date: undefined,
+      date: {
+        from: undefined,
+        to: undefined,
+      },
       is_traiteur: "false",
       description: "",
     },
@@ -68,11 +76,10 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   
     const quoteData = {
       ...restValues,
-      event_start_date: formatDateToParisTime(date?.from) || "",
-      event_end_date: formatDateToParisTime(date?.to) || "",
+      event_start_date: formatDateToParisTime(date?.from ?? undefined) || "",
+      event_end_date: formatDateToParisTime(date?.to ?? undefined) || "",
       is_traiteur: values.is_traiteur === "true",
     };
-  
     onNext(quoteData);
   };
 
@@ -141,10 +148,16 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
             name="date"
             render={({ field }) => (
               <FormItem>
-                <Label className="text-lg font-medium leading-loose text-gray-700">Date de l'événement</Label>
+                <Label className="text-lg font-medium leading-loose text-gray-700">Date de l'événement *</Label>
                 <FormControl>
-                  <DatePickerWithRange date={field.value as DateRange} setDate={(date) => field.onChange(date as DateRange)} />
+                  <DatePickerWithRange 
+                    date={field.value as DateRange | undefined} 
+                    setDate={(date) => field.onChange(date)}
+                  />
                 </FormControl>
+                <FormMessage>
+                  {form.formState.errors.date && "Veuillez sélectionner une date de début et de fin"}
+                </FormMessage>
               </FormItem>
             )}
           />
