@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useDevis } from '@/app/context/DevisContext';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -27,9 +28,14 @@ const formSchema = z.object({
   email: z.string().email("Adresse email invalide"),
   phone_number: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
   date: z.object({
-    from: z.date().optional(),
-    to: z.date().optional(),
-  }).optional(),
+    from: z.date(),
+    to: z.date(),
+  }).refine(
+    (data) => data.from !== undefined && data.to !== undefined,
+    {
+      message: "Veuillez sélectionner une date de début et de fin",
+    }
+  ),
   is_traiteur: z.enum(["true", "false"], { required_error: "Veuillez sélectionner une option" }),
   description: z.string().min(2, "Veuillez écrire un message"),
 });
@@ -43,10 +49,18 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [titleMessage] = useState("");
   const [message] = useState("");
+  const { formData, setFormData } = useDevis();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: formData ? {
+      ...formData,
+      date: {
+        from: formData.event_start_date ? new Date(formData.event_start_date) : undefined,
+        to: formData.event_end_date ? new Date(formData.event_end_date) : undefined
+      },
+      is_traiteur: formData.is_traiteur ? "true" : "false"
+    } : {
       first_name: "",
       last_name: "",
       email: "",
@@ -62,17 +76,17 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
     const parisTimeZone = 'Europe/Paris';
   
     const formatDateToParisTime = (date: Date | undefined) => {
-      if (!date) return null;
+      if (!date) return "";
       return date.toLocaleString('en-US', { timeZone: parisTimeZone, hour12: false }).replace(',', '');
     };
   
     const quoteData = {
       ...restValues,
-      event_start_date: formatDateToParisTime(date?.from) || "",
-      event_end_date: formatDateToParisTime(date?.to) || "",
+      event_start_date: formatDateToParisTime(date?.from),
+      event_end_date: formatDateToParisTime(date?.to),
       is_traiteur: values.is_traiteur === "true",
     };
-  
+    setFormData(quoteData);
     onNext(quoteData);
   };
 
@@ -141,10 +155,16 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
             name="date"
             render={({ field }) => (
               <FormItem>
-                <Label className="text-lg font-medium leading-loose text-gray-700">Date de l'événement</Label>
+                <Label className="text-lg font-medium leading-loose text-gray-700">Date de l'événement *</Label>
                 <FormControl>
-                  <DatePickerWithRange date={field.value as DateRange} setDate={(date) => field.onChange(date as DateRange)} />
+                  <DatePickerWithRange 
+                    date={field.value as DateRange | undefined} 
+                    setDate={(date) => field.onChange(date)}
+                  />
                 </FormControl>
+                <FormMessage>
+                  {form.formState.errors.date && "Veuillez sélectionner une date de début et de fin"}
+                </FormMessage>
               </FormItem>
             )}
           />
