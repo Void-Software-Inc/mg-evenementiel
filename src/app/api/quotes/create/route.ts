@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     const { data: createdQuote, error: quoteError } = await supabase
         .from('quotes')
         .insert([quoteWithTimestamps])
-        .select()
+        .select('id')
         .single();
 
     if (quoteError) {
@@ -39,10 +39,9 @@ export async function POST(request: NextRequest) {
             last_update: parisDate
         }));
 
-        const { data: createdItems, error: itemsError } = await supabase
+        const { error: itemsError } = await supabase
             .from('quoteItems')
-            .insert(quoteItemsWithQuoteId)
-            .select();
+            .insert(quoteItemsWithQuoteId);
 
         if (itemsError) {
             console.error('Error creating quote items:', itemsError);
@@ -50,9 +49,7 @@ export async function POST(request: NextRequest) {
             await supabase.from('quotes').delete().eq('id', createdQuote.id);
             return NextResponse.json({ error: itemsError.message }, { status: 500 });
         }
-
-        return NextResponse.json({ quote: createdQuote, quoteItems: createdItems }, { status: 201 });
     }
 
-    return NextResponse.json({ quote: createdQuote }, { status: 201 });
+    return NextResponse.json({ success: true, quoteId: createdQuote.id }, { status: 201 });
 }
