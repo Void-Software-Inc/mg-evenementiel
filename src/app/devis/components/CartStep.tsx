@@ -156,6 +156,7 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
         <Button 
           className="w-full rounded-full"
           onClick={onNext}
+          disabled={cart.length === 0}
         >
           Suivant
         </Button>
