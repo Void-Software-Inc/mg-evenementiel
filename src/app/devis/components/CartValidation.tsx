@@ -16,6 +16,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const router = useRouter();
 
   const handleSubmit = async () => {
+    if (isSubmitting) return; 
     setIsSubmitting(true);
     const quoteData = {
       ...formData,
@@ -100,12 +101,14 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 					}}
 					variant="outline"
 					className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full"
+          disabled={isSubmitting}
 				>
 					Précédent
 				</Button>
 				<Button
 					onClick={handleSubmit}
 					className="px-4 py-2 bg-black text-white rounded-full"
+          disabled={isSubmitting}
 				>
 					Confirmer et envoyer le devis
 				</Button>
