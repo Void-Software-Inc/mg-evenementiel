@@ -58,8 +58,7 @@ export default function PortfolioPics() {
               className={`transition-opacity duration-300 ${
                 isTransitioning ? 'opacity-0' : 'opacity-100'
               }`}
-              priority={currentIndex === 0}
-              loading={currentIndex === 0 ? 'eager' : 'lazy'}
+              priority
             />
           </div>
         </div>
