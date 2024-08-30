@@ -80,6 +80,14 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
     setLocalQuantities(prev => ({ ...prev, [productId]: newQuantity }));
   };
 
+  const handleValidateQuote = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (cart.length === 0) {
+      e.preventDefault();
+    } else {
+      handleCloseSheet();
+    }
+  };
+
   return (
     <Sheet>
       <SheetClose ref={closeRef} className="hidden" />
@@ -186,8 +194,12 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
               <span className="font-medium">Total:</span>
               <span className="font-bold">{total.toFixed(2)}€</span>
             </div>
-            <Link href="/devis" className="w-full">
-              <Button onClick={handleCloseSheet} className="w-full" disabled={cart.length === 0}>
+            <Link 
+              href="/devis" 
+              className={`w-full ${cart.length === 0 ? 'pointer-events-none' : ''}`}
+              onClick={handleValidateQuote}
+            >
+              <Button className="w-full" disabled={cart.length === 0}>
                 Valider le devis
               </Button>
             </Link>
