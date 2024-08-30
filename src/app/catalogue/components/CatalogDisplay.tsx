@@ -1,18 +1,17 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronDownIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { productTypes, productColors, ProductType, ProductColor, Product } from "@/utils/types/products";
 import { getProducts } from "@/services/products";
 import ProductCard from "@/app/catalogue/components/ProductCard";
 import SkeletonProductCard from "@/app/catalogue/components/SkeletonProductCard";
+import { useProductContext } from '@/app/context/ProductContext';
 
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -23,33 +22,58 @@ const CatalogDisplay: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { productsShouldRefetch, setProductsShouldRefetch } = useProductContext();
+  const [isMounted, setIsMounted] = useState(false);
   
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setIsLoading(true);
-      try {
-        const fetchedProducts = await getProducts();
-        console.log("Fetched products:", fetchedProducts);
-        setProducts(fetchedProducts);
-        setFilteredProducts(fetchedProducts);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      } finally {
-        setIsLoading(false);
+  const fetchProducts = async () => {
+    setIsLoading(true);
+    try {
+      const fetchedProducts = await getProducts();
+      console.log("Fetched products:", fetchedProducts);
+      setProducts(fetchedProducts);
+      setFilteredProducts(fetchedProducts);
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('cachedProducts', JSON.stringify(fetchedProducts));
       }
-    };
-    fetchProducts();
-  }, []);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+    setProductsShouldRefetch(false);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    const newFilteredProducts = products.filter(product => {
-      const typeMatch = selectedType === "" || product.type === selectedType;
-      const colorMatch = selectedColors.length === 0 || selectedColors.includes(product.color);
-      const searchMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return typeMatch && colorMatch && searchMatch;
-    });
-    setFilteredProducts(newFilteredProducts);
-  }, [selectedType, selectedColors, searchQuery, products]);
+    setIsMounted(true);
+    if (productsShouldRefetch) {
+      fetchProducts();
+    } else {
+      if (typeof window !== 'undefined') {
+        const cachedProducts = sessionStorage.getItem('cachedProducts');
+        if (cachedProducts) {
+          const parsedProducts = JSON.parse(cachedProducts);
+          setProducts(parsedProducts);
+          setFilteredProducts(parsedProducts);
+          setIsLoading(false);
+        } else {
+          fetchProducts();
+        }
+      }
+    }
+  }, [productsShouldRefetch]);
+
+  const memoizedProducts = useMemo(() => products, [products]);
+
+  useEffect(() => {
+    if (isMounted) {
+      const newFilteredProducts = memoizedProducts.filter(product => {
+        const typeMatch = selectedType === "" || product.type === selectedType;
+        const colorMatch = selectedColors.length === 0 || selectedColors.includes(product.color);
+        const searchMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return typeMatch && colorMatch && searchMatch;
+      });
+      setFilteredProducts(newFilteredProducts);
+    }
+  }, [selectedType, selectedColors, searchQuery, memoizedProducts, isMounted]);
 
   const handleTypeChange = (type: string) => {
     setSelectedType(prev => prev === type ? "" : type);
