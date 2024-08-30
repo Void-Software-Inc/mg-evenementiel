@@ -75,8 +75,8 @@ export default function PortfolioPics() {
         ))}
       </div>
       <div className="w-[80%] h-full flex justify-end my-8">
-        <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full px-6 py-3 flex items-center space-x-2 transition-all duration-300 group">
-          <Link href="/catalogue">
+        <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
+          <Link href="/realisations">
             <span className="text-sm font-medium">TOUT VOIR</span>
             <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
           </Link>

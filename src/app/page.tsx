@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import ScrollableProducts from "@/components/hero/ScrollableProducts";
-import ServicesPresentation from "@/components/hero/ServicesPresentation";
+import Prestations from "@/components/hero/Prestations";
 import PortfolioPics from "@/components/hero/PortofolioPics";
 import StepsSection from "@/components/hero/StepsSection";
 
@@ -16,7 +16,7 @@ export default function Home() {
       </div>
       <ScrollableProducts />
       <PortfolioPics/>
-      <ServicesPresentation/>
+      <Prestations/>
       <StepsSection/>
     </>
   );

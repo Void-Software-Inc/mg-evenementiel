@@ -21,7 +21,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ Icon, title, description }) =
     </div>
 );
 
-export default function ServicesPresentation() {
+export default function Prestations() {
     const services = [
         {
             Icon: Truck,
@@ -56,8 +56,8 @@ export default function ServicesPresentation() {
                 ))}
             </div>
             <div className="w-[85%] h-full flex justify-end my-5 sm:my-16">
-                <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full px-6 py-3 flex items-center space-x-2 transition-all duration-300 group">
-                    <Link href="/catalogue">
+                <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
+                    <Link href="/infos">
                         <span className="text-sm font-medium">EN SAVOIR PLUS</span>
                         <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
                     </Link>
