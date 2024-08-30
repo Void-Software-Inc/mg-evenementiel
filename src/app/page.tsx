@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import ScrollableProducts from "@/components/hero/ScrollableProducts";
 import ServicesPresentation from "@/components/hero/ServicesPresentation";
 import PortfolioPics from "@/components/hero/PortofolioPics";
+import StepsSection from "@/components/hero/StepsSection";
 
 const DynamicComponent = dynamic(() => import("@/components/hero/TextParallaxContent"), {
   ssr: false,
@@ -16,6 +17,7 @@ export default function Home() {
       <ScrollableProducts />
       <PortfolioPics/>
       <ServicesPresentation/>
+      <StepsSection/>
     </>
   );
 }
