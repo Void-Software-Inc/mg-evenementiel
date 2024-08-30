@@ -26,7 +26,7 @@ export default function ServicesPresentation() {
         {
             Icon: Truck,
             title: "LIVRAISON",
-            description: "Nous nous chargeons de vous livrez le matériel pour votre événement dans toute la région sud de la France."
+            description: "Nous nous chargeons de vous livrer le matériel pour votre événement dans toute la région sud de la France."
         },
         {
             Icon: WandSparkles,
