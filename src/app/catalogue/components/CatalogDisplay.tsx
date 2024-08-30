@@ -244,7 +244,7 @@ const CatalogDisplay: React.FC = () => {
                   <ProductCard 
                     key={product.id} 
                     product={product} 
-                    priority={index < 4}
+                    priority={index < 8}
                   />
                 ))
             }
