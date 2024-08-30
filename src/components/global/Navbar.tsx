@@ -108,11 +108,25 @@ export default function Navbar() {
           </SheetContent>
         </Sheet>
 
-        <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+        <Link href="/" className="absolute left-0 right-2 flex items-center justify-center gap-2 text-lg font-semibold">
           <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={150} height={150} />
         </Link>
 
-        {pathname !== '/devis' && <CartSheet />}
+        
+
+        <div className={`absolute right-2 flex items-center space-x-1 ${pathname !== '/devis' ? 'right-2' : 'right-4'}`}>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="text-gray-800 focus:outline-none">
+                <Phone className="h-6 w-6 2xl:h-8 2xl:w-8" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80" side="bottom" align="end">
+              <PhoneCard />
+            </PopoverContent>
+          </Popover>
+          {pathname !== '/devis' && <CartSheet />}
+        </div>
       </header>
 
       <header 
