@@ -26,7 +26,7 @@ export default function ServicesPresentation() {
         {
             Icon: Truck,
             title: "LIVRAISON",
-            description: "Nous nous chargeons de vous livrez le matériel pour votre événement dans toute la région sud de la France."
+            description: "Nous nous chargeons de vous livrer le matériel pour votre événement dans toute la région sud de la France."
         },
         {
             Icon: WandSparkles,
@@ -48,7 +48,7 @@ export default function ServicesPresentation() {
     return (   
         <div className="h-full w-full mb-40 flex items-center justify-center flex-col">
             <div className="w-[85%] h-full flex justify-start mb-8 sm:mb-16">
-                <p className="text-zinc-800 text-4xl sm:text-6xl xl:text-7xl font-extralight">NOS SERVICES</p>
+                <p className="text-zinc-800 text-4xl sm:text-6xl xl:text-7xl font-extralight">NOS PRESTATIONS</p>
             </div>
             <div className="w-[60%] lg:w-[85%] h-full flex flex-row flex-wrap items-center justify-center  gap-4">
                 {services.map((service, index) => (
