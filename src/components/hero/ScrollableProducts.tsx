@@ -110,7 +110,7 @@ export default function ScrollableProducts() {
                                     <p className="text-zinc-800 text-2xl font-extralight text-center px-4 pb-6">
                                         DÉCOUVREZ LE CATALOGUE COMPLET
                                     </p>
-                                    <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full px-6 py-3 flex items-center space-x-2 transition-all duration-300 group">
+                                    <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
                                         <Link href="/catalogue">
                                         <span className="text-sm font-medium">VOIR PLUS</span>
                                         <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
@@ -119,21 +119,21 @@ export default function ScrollableProducts() {
                                 </div>
                             </div>
                         </div>
-                        <button
+                        <Button
                             onClick={() => scroll("left")}
                             className="z-10 absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/50 p-2 rounded-full lg:hidden"
                         >
                             <ChevronLeft className="w-6 h-6 text-black" />
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             onClick={() => scroll("right")}
                             className="z-10 absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/50 p-2 rounded-full lg:hidden"
                         >
                             <ChevronRight className="w-6 h-6 text-black" />
-                        </button>
+                        </Button>
             </div>
             <div className="w-[93%] h-fit flex justify-end">
-            <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full px-6 py-3 flex items-center space-x-2 transition-all duration-300 group">
+            <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
                                         <Link href="/catalogue">
                                         <span className="text-sm font-medium">CATALOGUE</span>
                                         <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
