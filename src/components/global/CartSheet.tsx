@@ -97,7 +97,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
           {mounted && itemCount > 0 && (
             <Badge 
               variant="destructive" 
-              className="absolute top-2 right-3 md:-top-1 md:-right-1 px-2 py-1 text-xs rounded-full hover:bg-red-600 hover:text-white"
+              className="absolute -top-1 -right-0.5 md:-top-1 md:-right-1 px-2 py-1 text-xs rounded-full hover:bg-red-600 hover:text-white"
             >
               {itemCount}
             </Badge>

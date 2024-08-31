@@ -21,7 +21,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ Icon, title, description }) =
     </div>
 );
 
-export default function ServicesPresentation() {
+export default function Prestations() {
     const services = [
         {
             Icon: Truck,
@@ -47,17 +47,22 @@ export default function ServicesPresentation() {
 
     return (   
         <div className="h-full w-full mb-40 flex items-center justify-center flex-col">
-            <div className="w-[85%] h-full flex justify-start mb-8 sm:mb-16">
-                <p className="text-zinc-800 text-4xl sm:text-6xl xl:text-7xl font-extralight">NOS PRESTATIONS</p>
+            <div className="w-full max-w-4xl px-4 mb-12 flex flex-col items-center justify-center">
+                <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
+                NOS PRESTATIONS
+                </h2>
+                <p className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
+                Des services complets pour répondre à tous vos besoins événementiels
+                </p>
             </div>
             <div className="w-[60%] lg:w-[85%] h-full flex flex-row flex-wrap items-center justify-center  gap-4">
                 {services.map((service, index) => (
                     <ServiceCard key={index} {...service} />
                 ))}
             </div>
-            <div className="w-[85%] h-full flex justify-end my-5 sm:my-16">
-                <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full px-6 py-3 flex items-center space-x-2 transition-all duration-300 group">
-                    <Link href="/catalogue">
+            <div className="w-[95%] h-full flex justify-end my-5 sm:my-16">
+                <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
+                    <Link href="/infos">
                         <span className="text-sm font-medium">EN SAVOIR PLUS</span>
                         <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
                     </Link>
