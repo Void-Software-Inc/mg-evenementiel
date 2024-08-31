@@ -7,10 +7,14 @@ import Link from 'next/link';
 const StepsSection = () => {
   return (
     <div className='w-full h-fit flex flex-col justify-center items-center'>
-    
-      <div className="w-[85%] h-full flex flex-col justify-start mb-3 sm:mb-12">
-                <p className="text-zinc-800 text-4xl sm:text-6xl xl:text-7xl font-extralight">EN QUELQUES CLICKS</p>
-            </div>
+      <div className="w-full max-w-4xl px-4 mb-12 flex flex-col items-center justify-center">
+        <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
+          EN QUELQUES CLICKS
+        </h2>
+        <p className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
+          Simplifiez votre expérience événementielle en quatre étapes faciles
+        </p>
+      </div>
   
     <div className="h-full w-full mb-12 flex flex-col lg:flex-row items-center justify-center gap-6 p-0">
       {steps.map((step, index) => (
@@ -31,7 +35,7 @@ const StepsSection = () => {
       ))}
       
     </div>
-    <div className="w-[85%] h-full flex justify-end mb-20">
+    <div className="w-[95%] h-full flex justify-end mb-20">
                 <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
                     <Link href="/infos">
                         <span className="text-sm font-medium">EN SAVOIR PLUS</span>
