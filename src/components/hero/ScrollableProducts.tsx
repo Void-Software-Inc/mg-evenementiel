@@ -56,12 +56,12 @@ export default function ScrollableProducts() {
         <div className="h-full w-full mb-40 flex flex-col items-center justify-center">
             <div className="w-[80%] h-full sm:mb-10 flex lg:flex-row flex-col items-center justify-center">
                     <div className="h-fit w-full lg:w-1/2 flex flex-col space-y-1 sm:space-y-4 justify-start">
-                        <p className="text-zinc-800 text-4xl sm:text-6xl xl:text-7xl font-extralight  xl:-ml-0">LOCATION</p>
-                        <p className="text-zinc-800 text-4xl sm:text-6xl xl:text-7xl text-left xl:text-center font-extralight xl:-ml-20 pb-4 lg:pb-0">DE MATÉRIEL</p>
+                        <p className="text-zinc-800 text-center lg:text-left text-4xl sm:text-6xl xl:text-7xl font-extralight  xl:-ml-0">LOCATION</p>
+                        <p className="text-zinc-800 text-4xl sm:text-6xl xl:text-7xl text-center lg:text-left xl:text-center font-extralight xl:-ml-20 pb-4 lg:pb-0">DE MATÉRIEL</p>
                     </div>
                     <div className="h-fit w-full lg:w-1/2 flex items-end justify-start lg:justify-end xl:justify-center mb-10 sm:mb-0">
                         <div className="w-full xl:w-[480px] h-[40px]">
-                        <p className="text-zinc-800 xl:text-left text-lg sm:text-xl xl:text-2xl font-extralight">Une large gamme de produits pour décorer et personnaliser vos événements</p>
+                        <p className="text-zinc-800 text-center lg:text-left text-lg sm:text-xl xl:text-2xl font-extralight">Une large gamme de produits pour décorer et personnaliser vos événements</p>
                         </div>
                     </div>
                     </div>
@@ -132,7 +132,7 @@ export default function ScrollableProducts() {
                             <ChevronRight className="w-6 h-6 text-black" />
                         </Button>
             </div>
-            <div className="w-[93%] h-fit flex justify-end">
+            <div className="w-[95%] h-fit flex justify-end">
             <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
                                         <Link href="/catalogue">
                                         <span className="text-sm font-medium">CATALOGUE</span>
