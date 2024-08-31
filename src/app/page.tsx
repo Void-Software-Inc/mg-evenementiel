@@ -13,8 +13,6 @@ export default function Home() {
   return (
     <>
       <DynamicComponent />
-      <div className="h-full w-full bg-white mb-32 flex flex-col items-center justify-center">
-      </div>
       <ScrollableProducts />
       <PortofolioPics/>
       <Prestations/>
