@@ -8,9 +8,14 @@ import { ChevronRight } from "lucide-react";
 export const PortofolioPics = () => {
   return (
     <div className="relative">
-      <h2 className="text-zinc-800 text-4xl sm:text-6xl xl:text-7xl font-extralight mb-4 text-center">
-        NOS RÉALISATIONS
-      </h2>
+      <div className="w-full px-4 flex flex-col items-center justify-center mb-12">
+        <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
+          NOS RÉALISATIONS
+        </h2>
+        <p className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
+          Découvrez nos créations uniques et personnalisées pour vos événements
+        </p>
+      </div>
       
       <section className="relative grid min-h-screen w-full place-content-center overflow-hidden bg-gray-50">
         <h2 className="relative z-0 text-[20vw] font-black text-neutral-800 md:text-[200px]">
@@ -21,7 +26,7 @@ export const PortofolioPics = () => {
 
       <div className="flex justify-end w-[97%] mt-4 mb-20">
         <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
-          <Link href="/catalogue">
+          <Link href="/realisations">
             <span className="text-sm font-medium">VOIR PLUS</span>
             <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
           </Link>

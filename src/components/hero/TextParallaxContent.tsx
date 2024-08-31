@@ -8,7 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CartSheet } from "@/components/global/CartSheet";
 import { usePathname } from "next/navigation";
-import { Phone } from "lucide-react";
+import { ChevronRight, Phone } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -149,14 +149,16 @@ const TextParallaxContent = () => {
               className="absolute inset-0 bg-white"
               style={{ x: contentX, y: contentY, width: contentWidth }}
             >
-              <div className="h-full flex items-center justify-center">
+              <div className="h-[100vh] flex items-center justify-center">
                 <div className="max-w-md px-8 text-center">
                   <p className="text-sm uppercase tracking-wider mb-4">Dans le sud de la france</p>
                   <h1 className="text-4xl font-bold mb-6">ORGANISEZ LE PARFAIT ÉVÉNEMENT</h1>
                   <p className="text-lg mb-8">Location de décoration et de mobilier pour vos événements</p>
-                  <Button variant="default" size="default">
-                    DÉCOUVRIR
-                    <span className="ml-2">→</span>
+                  <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
+                    <Link href="/catalogue">
+                      <span className="text-sm font-medium">DÉCOUVRIR</span>
+                      <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
+                    </Link>
                   </Button>
                 </div>
               </div>
