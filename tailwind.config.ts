@@ -24,6 +24,8 @@ const config = {
         '5-1/2xl':'55px', 
       },
       colors: {
+        zinc150: "#F0F0F0",
+        zinc350: "#C1C1C1",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -32,6 +34,7 @@ const config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
