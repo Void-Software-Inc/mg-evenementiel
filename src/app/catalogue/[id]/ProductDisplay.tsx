@@ -315,7 +315,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-xl font-semibold">Description</AccordionTrigger>
               <AccordionContent>
-                <ul className="text-base list-none pl-0 space-y-1">
+                <ul className="text-base list-disc pl-5 space-y-1">
                   {descriptionItems.map((item, index) => (
                     <li key={index}>{item}</li>
                   ))}

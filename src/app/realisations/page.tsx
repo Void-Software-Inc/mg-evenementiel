@@ -44,12 +44,7 @@ export default async function RealisationsPage() {
 
   return (
     <div>
-      
-          <FilterControls initialFilters={initialFilters} />
-
-         
-         
-      
+      <FilterControls initialFilters={initialFilters} />
     </div>
   );
 }
