@@ -9,8 +9,8 @@ import Footer from "@/components/global/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MG Événementiel",
-  description: "Pouvoir réaliser vos événements avec des produits de qualité",
+  title: "MG Événements",
+  description: "Location de matériel pour événements",
   icons: [
     { rel: 'icon', url: '/favicon_io/favicon.ico' },
     { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon_io/apple-touch-icon.png' },
@@ -25,9 +25,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>MG Événements</title>
+        
+        <meta property="og:description" content="Réalisez vos événements avec des produits de qualité et un service impeccable." />
+        <meta property="og:image" content="/path/to/og-image.jpg" />
+        <meta property="og:url" content="https://www.mgevénementiel.com" />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://www.mgevenements.com" />
         <link rel="icon" href="/favicon_io/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png" />
