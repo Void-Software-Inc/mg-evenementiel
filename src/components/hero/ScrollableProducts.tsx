@@ -17,7 +17,7 @@ export default function ScrollableProducts() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [products, setProducts] = useState<ProductMenu[]>([]);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [canScrollRight, setCanScrollRight] = useState(true);  // Set to true by default
 
   useEffect(() => {
     const fetchMenuProducts = async () => {
@@ -51,6 +51,13 @@ export default function ScrollableProducts() {
     }
     return () => scrollContainer?.removeEventListener('scroll', checkScroll);
   }, []);
+
+  useEffect(() => {
+    // Check if we can scroll right after products are loaded
+    if (products.length > 0) {
+      checkScroll();
+    }
+  }, [products]);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
