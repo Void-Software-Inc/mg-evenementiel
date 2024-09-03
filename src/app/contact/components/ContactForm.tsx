@@ -340,6 +340,7 @@ import {
       <div className="h-full w-full left-0 top-0 -z-10 flex justify-center">
         <div className="h-full w-[90%] sm:w-[93%] lg:w-[70%] mt-28">
           <div className="h-fit w-full text-center pt-14">
+          <h1 className='text-xs sm:text-sm font-extralight sm:font-light text-zinc-700 ml-0 sm:ml-2'>CONTACT</h1>
             <p className="text-6xl sm:text-7xl md:text-8xl font-thin tracking-tight block mb-6">DISCUTONS DE VOTRE PROJET !</p>
            
             <p className="text-2xl font-light text-gray-600">Une idée ou une question ? Contactez-nous et discutons.</p>
