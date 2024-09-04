@@ -168,7 +168,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
                 <div 
                   key={index} 
                   ref={(el) => { imageRefs.current[index] = el; }}
-                  className="relative aspect-video xl:aspect-auto xl:min-h-[325px] opacity-0 translate-y-5 transition-all duration-700 ease-out cursor-pointer"
+                  className="relative aspect-video xl:aspect-auto xl:min-h-[325px] 2xl:min-h-[400px] opacity-0 translate-y-5 transition-all duration-700 ease-out cursor-pointer"
                   onClick={() => handleImageClick(index)}
                 >
                   <Image 
