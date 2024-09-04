@@ -1,9 +1,12 @@
 import React from 'react';
+import { AboutMG } from './components/AboutMG';
+import Faq from './components/Faq';
 
 export default function InfosPage() {
   return (
-    <div className="flex items-center justify-center h-screen">
-      <h1 className="text-2xl font-bold">Page infos en construction !</h1>
+    <div className="h-fit w-full flex flex-col items-center justify-center mt-32">
+      <AboutMG/>
+      <Faq/>
     </div>
   );
 }

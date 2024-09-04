@@ -158,7 +158,8 @@ const CatalogDisplay: React.FC = () => {
         <div className="h-fit w-[85%]">
           <div className="w-full h-fit flex justify-start space-x-2 lg:space-x-6">
             <div className="relative pb-12">
-              <p className="text-5-1/2xl sm:text-7xl md:text-9xl font-thin tracking-tighter text-nowrap">
+              <h1 className='text-xs sm:text-sm font-extralight sm:font-light text-zinc-700 ml-0 sm:ml-2'>CATALOGUE</h1>
+              <p className="text-4xl sm:text-7xl md:text-9xl font-thin tracking-tighter text-nowrap uppercase">
                 {productTypes.find(t => t.value === selectedType)?.name || 'Tout'}
               </p>
               <div className='h-fit w-full absolute -mt-3 sm:mt-2 text-end'>
