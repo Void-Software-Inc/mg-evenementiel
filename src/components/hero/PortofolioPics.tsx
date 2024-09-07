@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 export const PortofolioPics = () => {
   return (
@@ -19,7 +20,7 @@ export const PortofolioPics = () => {
       
       <section className="relative grid min-h-screen w-full place-content-center overflow-hidden bg-gray-50">
         <h2 className="relative z-0 text-[20vw] font-black text-neutral-800 md:text-[200px]">
-          <img src="/static/svg/rea-logo.svg" alt="Example image" width={1000} height={1000} />
+          <Image src="/static/svg/rea-logo.svg" alt="Example image" width={1000} height={1000} />
         </h2>
         <Cards />
       </section>
@@ -43,8 +44,8 @@ const Cards = () => {
     <div className="absolute inset-0 z-10" ref={containerRef}>
       <Card
         containerRef={containerRef}
-        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/felix-manuel-almonte-ulloa-idJeiwIdZTo-unsplash_1_.webp"
-        alt="Example image"
+        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r13.webp"
+        alt="Présentation de la réalisation"
         rotate="6deg"
         top="20%"
         left="25%"
@@ -52,8 +53,8 @@ const Cards = () => {
       />
       <Card
         containerRef={containerRef}
-        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/thomas-william-Q3PzwHKpEdc-unsplash.webp"
-        alt="Example image"
+        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r16.webp"
+        alt="Présentation de la réalisation"
         rotate="12deg"
         top="45%"
         left="60%"
@@ -61,8 +62,8 @@ const Cards = () => {
       />
       <Card
         containerRef={containerRef}
-        src="https://images.unsplash.com/photo-1503751071777-d2918b21bbd9?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Example image"
+        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r25.webp"
+        alt="Présentation de la réalisation"
         rotate="-6deg"
         top="20%"
         left="40%"
@@ -70,7 +71,7 @@ const Cards = () => {
       />
       <Card
         containerRef={containerRef}
-        src="https://images.unsplash.com/photo-1620428268482-cf1851a36764?q=80&w=2609&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r6.webp"
         alt="Example image"
         rotate="8deg"
         top="50%"
@@ -79,8 +80,8 @@ const Cards = () => {
       />
       <Card
         containerRef={containerRef}
-        src="https://images.unsplash.com/photo-1602212096437-d0af1ce0553e?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Example image"
+        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r7.webp"
+        alt="Présentation de la réalisation"
         rotate="18deg"
         top="20%"
         left="65%"
@@ -88,8 +89,8 @@ const Cards = () => {
       />
       <Card
         containerRef={containerRef}
-        src="https://images.unsplash.com/photo-1622313762347-3c09fe5f2719?q=80&w=2640&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Example image"
+        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r17.webp"
+        alt="Présentation de la réalisation"
         rotate="-3deg"
         top="35%"
         left="55%"
@@ -148,7 +149,7 @@ const Card = ({
         zIndex,
       }}
       className={twMerge(
-        "drag-elements absolute w-48 bg-neutral-200 p-1 pb-4",
+        "drag-elements absolute object-cover min-w-52 md:min-w-64 bg-neutral-200 p-1 pb-4",
         className
       )}
       src={src}
