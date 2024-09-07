@@ -139,7 +139,8 @@ const TextParallaxContent = () => {
                 className="absolute inset-0 flex flex-col items-center justify-center text-white bg-black bg-opacity-30"
                 style={{ opacity: useTransform(scrollYProgress, [0.5, 1], [1, 0]) }}
               >
-                <p className="text-base w-[90%] sm:w-full sm:text-xl font-light sm:font-extralight 2xl:text-2xl uppercase tracking-wider mb-4 text-center">TRANSFORMEZ VOS MOMENTS SPÉCIAUX EN CÉLÉBRATIONS UNIQUES</p>
+                <p className="text-base w-[90%] hidden md:block sm:w-full sm:text-xl font-light sm:font-extralight 2xl:text-2xl uppercase tracking-wider mb-4 text-center">TRANSFORMEZ VOS MOMENTS SPÉCIAUX EN CÉLÉBRATIONS UNIQUES</p>
+                <p className="text-base w-[90%] md:hidden sm:w-full sm:text-xl font-light sm:font-extralight 2xl:text-2xl uppercase tracking-wider mb-4 text-center">Chaque détail est important</p>
                 <p className="text-3xl sm:text-5xl font-normal mb-6 text-center px-2 md:px-10 leading-snug sm:font-light">LOCATION DE MOBILIER ET DE DÉCORATION POUR ÉVÉNEMENTS</p>
               </motion.div>
             </div>
