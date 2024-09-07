@@ -49,7 +49,7 @@ const Cards = () => {
         rotate="6deg"
         top="20%"
         left="25%"
-        className="w-36 md:w-56"
+        className="w-44 md:w-56 xl:w-72"
       />
       <Card
         containerRef={containerRef}
@@ -58,7 +58,7 @@ const Cards = () => {
         rotate="12deg"
         top="45%"
         left="60%"
-        className="w-24 md:w-48"
+        className="w-44 md:w-56 xl:w-72"
       />
       <Card
         containerRef={containerRef}
@@ -67,7 +67,7 @@ const Cards = () => {
         rotate="-6deg"
         top="20%"
         left="40%"
-        className="w-52 md:w-80"
+        className="w-44 md:w-56 xl:w-72"
       />
       <Card
         containerRef={containerRef}
@@ -76,7 +76,7 @@ const Cards = () => {
         rotate="8deg"
         top="50%"
         left="40%"
-        className="w-48 md:w-72"
+        className="w-44 md:w-56 xl:w-72"
       />
       <Card
         containerRef={containerRef}
@@ -85,7 +85,7 @@ const Cards = () => {
         rotate="18deg"
         top="20%"
         left="65%"
-        className="w-40 md:w-64"
+        className="w-44 md:w-56 xl:w-72"
       />
       <Card
         containerRef={containerRef}
@@ -94,7 +94,7 @@ const Cards = () => {
         rotate="-3deg"
         top="35%"
         left="55%"
-        className="w-24 md:w-48"
+        className="w-64 md:w-72"
       />
     </div>
   );
@@ -149,7 +149,7 @@ const Card = ({
         zIndex,
       }}
       className={twMerge(
-        "drag-elements absolute object-cover min-w-52 md:min-w-64 bg-neutral-200 p-1 pb-4",
+        "drag-elements absolute object-cover bg-neutral-200 p-1 pb-4",
         className
       )}
       src={src}
