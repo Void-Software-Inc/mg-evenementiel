@@ -241,7 +241,6 @@ import {
                 <Label className="block text-lg font-medium leading-loose text-gray-700 pt-4">Quel type d'événement ? *</Label>
                 <div className="max-w-[600px] mt-1 pb-5 space-y-2 flex-wrap">
                 <button type="button" className={getButtonClass('Mariage')} onClick={() => handleButtonClick('Mariage')}>Mariage</button>
-                        <button type="button" className={getButtonClass('Baby Shower')} onClick={() => handleButtonClick('Baby Shower')}>Baby Shower</button>
                         <button type="button" className={getButtonClass('Anniversaire')} onClick={() => handleButtonClick('Anniversaire')}>Anniversaire</button>
                         <button type="button" className={getButtonClass('Baptême')} onClick={() => handleButtonClick('Baptême')}>Baptême</button>
                         <button type="button" className={getButtonClass('Professionnel')} onClick={() => handleButtonClick('Professionnel')}>Professionnel</button>
