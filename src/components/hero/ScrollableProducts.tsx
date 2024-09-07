@@ -81,7 +81,7 @@ export default function ScrollableProducts() {
       </div>
       <div className="w-full h-full flex items-center justify-center relative">
         <div 
-          className="w-full bg-transparent p-8 overflow-x-auto" 
+          className="w-full bg-transparent p-8 overflow-x-auto scrollbar-hide" 
           ref={scrollContainerRef}
           style={{
             msOverflowStyle: 'none',
@@ -104,8 +104,9 @@ export default function ScrollableProducts() {
                       <Image
                         src={product.image_url}
                         alt={product.name}
-                        layout="fill"
-                        objectFit="contain"
+                        fill
+                        sizes="(max-width: 768px) 200px, 350px"
+                        style={{ objectFit: "contain" }}
                         onError={() => console.error(`Failed to load image for product ${product.id}`)}
                       />
                     </div>
