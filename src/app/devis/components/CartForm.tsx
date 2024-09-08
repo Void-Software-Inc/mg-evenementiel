@@ -228,7 +228,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
             )}
           />
 
-<div className="flex flex-col sm:flex-row justify-end gap-4 mt-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-4 mt-4">
             <Button
               type="button"
               onClick={() => {
