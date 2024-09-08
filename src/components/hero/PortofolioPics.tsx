@@ -44,7 +44,7 @@ const Cards = () => {
     <div className="absolute inset-0 z-10" ref={containerRef}>
       <Card
         containerRef={containerRef}
-        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r13.webp"
+        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r84.webp"
         alt="Présentation de la réalisation"
         rotate="6deg"
         top="20%"
@@ -53,7 +53,7 @@ const Cards = () => {
       />
       <Card
         containerRef={containerRef}
-        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r16.webp"
+        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r8.webp"
         alt="Présentation de la réalisation"
         rotate="12deg"
         top="45%"
@@ -81,6 +81,15 @@ const Cards = () => {
       <Card
         containerRef={containerRef}
         src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r7.webp"
+        alt="Présentation de la réalisation"
+        rotate="18deg"
+        top="20%"
+        left="65%"
+        className="w-44 md:w-56 xl:w-72"
+      />
+      <Card
+        containerRef={containerRef}
+        src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r42.webp"
         alt="Présentation de la réalisation"
         rotate="18deg"
         top="20%"
