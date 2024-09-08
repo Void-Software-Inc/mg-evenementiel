@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { useDevis } from '@/app/context/DevisContext';
 import { useCart } from '@/app/context/CartContext';
 import { useRouter } from 'next/navigation';
+import { ChevronRight, ChevronLeft } from "lucide-react";
+
 
 const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: any, onPrevious: () => void }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,7 +53,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       <div className="w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Devis envoyé avec succès!</h2>
         <p className="mb-4">Merci pour votre demande. Nous vous contacterons bientôt.</p>
-        <Button onClick={() => router.push('/')} className="px-4 py-2 bg-black text-white rounded-full">
+        <Button onClick={() => router.push('/')} className="mt-3 rounded-full py-6 px-8 text-lg font-light">
           Retour à l'accueil
         </Button>
       </div>
@@ -71,7 +73,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div>
+    <div className="w-full h-full max-w-2xl mx-auto sm:mt-20">
       <h2 className="text-2xl font-bold mb-4">Récapitulatif de votre devis</h2>
       <div className="mb-6">
         <h3 className="text-xl font-semibold mb-2">Informations personnelles</h3>
@@ -93,27 +96,31 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           <span>{total.toFixed(2)}€</span>
         </div>
       </div>
-      <div className="flex justify-between mt-4">
+     
+    </div>
+    <div className="w-full h-full flex flex-col sm:flex-row justify-end bottom-0 gap-4 mt-24">
 				<Button
 					onClick={() => {
 						onPrevious();
 						window.scrollTo(0, 0);
 					}}
 					variant="outline"
-					className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full"
+					className="bg-zinc-200 text-gray-800 h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full border-none p-6 flex items-center space-x-4 transition-all duration-300 group"
           disabled={isSubmitting}
 				>
-					Précédent
+          <ChevronLeft className="min-w-6 min-h-6 text-gray-800 transition-transform duration-300 group-hover:-translate-x-2" />
+					<span className='font-semibold text-gray-800 text-xl'>Précédent</span>
 				</Button>
 				<Button
 					onClick={handleSubmit}
-					className="px-4 py-2 bg-black text-white rounded-full"
+					className="h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full p-6 flex items-center space-x-4 transition-all duration-300 group"
           disabled={isSubmitting}
 				>
-					Confirmer et envoyer le devis
+          <span className='font-semibold text-xl'>Envoyer</span>
+          <ChevronRight className="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-x-2" />
 				</Button>
 			</div>
-    </div>
+  </div>
   );
 };
 
