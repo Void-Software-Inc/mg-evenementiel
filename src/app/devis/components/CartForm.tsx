@@ -103,7 +103,9 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 <FormControl>
                   <Input className="w-full" placeholder="Votre prénom" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>
+                  {form.formState.errors.first_name && "Veuillez renseignez votre prénom"}
+                </FormMessage>
               </FormItem>
             )}
           />
@@ -117,7 +119,9 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 <FormControl>
                   <Input placeholder="Votre nom" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>
+                  {form.formState.errors.last_name && "Veuillez renseignez votre nom"}
+                </FormMessage>
               </FormItem>
             )}
           />
@@ -131,7 +135,9 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 <FormControl>
                   <Input type="email" placeholder="Votre email" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>
+                  {form.formState.errors.email && "Adresse email invalide"}
+                </FormMessage>
               </FormItem>
             )}
           />
@@ -145,7 +151,9 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 <FormControl>
                   <Input placeholder="Votre numéro de téléphone" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>
+                  {form.formState.errors.phone_number && "Numéro de téléphone invalide"}
+                </FormMessage>
               </FormItem>
             )}
           />
@@ -211,7 +219,9 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 <FormControl>
                   <Textarea placeholder="Votre message..." {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>
+                  {form.formState.errors.description && "Veuillez sélectionner une date de début et de fin"}
+                </FormMessage>
               </FormItem>
             )}
           />
