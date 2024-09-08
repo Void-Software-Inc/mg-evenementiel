@@ -31,12 +31,12 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
 
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const types = ["Tout", "Mariage", "Baptême", "Anniversaire", "Traiteur", "Professionnel", "Autre"];
+  const types = ["Tout", "Mariage", "Baptême", "Anniversaire", "Traiteur", "Autre"];
 
   const staticImages: ImageData[] = [
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/felix-manuel-almonte-ulloa-idJeiwIdZTo-unsplash_1_.webp", alt: "Portrait 1", isPortrait: true, type: "Mariage" },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/engin-akyurt-i3rFV6ULk-o-unsplash_1_.webp", alt: "Landscape 1", isPortrait: false, type: "Mariage" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/mitchell-lawler-tbaoryUol_E-unsplash-1.webp", alt: "Landscape 2", isPortrait: false, type: "Professionnel" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/mitchell-lawler-tbaoryUol_E-unsplash-1.webp", alt: "Landscape 2", isPortrait: false, type: "Anniversaire" },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/d-l-samuels-ZIRlju8VBXg-unsplash.webp", alt: "Portrait 2", isPortrait: true, type: "Baptême" },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/jeremy-wong-weddings-K8KiCHh4WU4-unsplash(1).webp", alt: "Portrait 3", isPortrait: true, type: "Mariage" },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/wedding-dreamz-pqkn1uIS6jY-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Mariage" },
