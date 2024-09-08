@@ -6,6 +6,7 @@ import { Plus, Minus, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ChevronRight } from "lucide-react";
 
 const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
   const router = useRouter();
@@ -152,13 +153,14 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
       </div>
       <div onClick={() => {
         window.scrollTo(0, 0);
-      }} className="mt-4">
+      }} className="mt-4 xl:mt-10 w-full flex justify-end">
         <Button 
-          className="w-full rounded-full"
+          className="h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full p-6 flex items-center space-x-4 transition-all duration-300 group"
           onClick={onNext}
           disabled={cart.length === 0}
         >
-          Suivant
+          <span className='font-semibold text-xl'>Suivant</span>
+          <ChevronRight className="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-x-2" />
         </Button>
       </div>
     </div>
