@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useDevis } from '@/app/context/DevisContext';
+import { ChevronRight, ChevronLeft } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -21,6 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
+
 
 const formSchema = z.object({
   first_name: z.string().min(2, "Veuillez renseignez votre prénom").max(50, "Limite de 50 caractères dépassée"),
@@ -91,9 +93,9 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex justify-center">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-[90%] sm:w-[700px] pt-14">
           <FormField
             control={form.control}
             name="first_name"
@@ -226,7 +228,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
             )}
           />
 
-          <div className="flex flex-col gap-4 mt-4">
+<div className="flex flex-col sm:flex-row justify-end gap-4 mt-4">
             <Button
               type="button"
               onClick={() => {
@@ -234,18 +236,21 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 window.scrollTo(0, 0);
               }}
               variant="outline"
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-full"
+              className=" bg-zinc-200 text-gray-700 h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full border-none p-6 flex items-center space-x-4 transition-all duration-300 group"
             >
-              Précédent
+              <ChevronLeft className="min-w-6 min-h-6 text-gray-800 transition-transform duration-300 space-x-4  group-hover:-translate-x-2" />
+              <span className='font-semibold text-gray-800 text-xl'>Précédent</span>
             </Button>
+
             <Button
               type="submit"
               onClick={() => {
                 window.scrollTo(0, 0);
               }}
-              className="px-4 py-2 bg-black text-white rounded-full"
+              className="h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full p-6 flex items-center space-x-4 transition-all duration-300 group"
             >
-              Suivant
+              <span className='font-semibold text-xl'>Suivant</span>
+              <ChevronRight className="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-x-2" />
             </Button>
           </div>
         </form>
