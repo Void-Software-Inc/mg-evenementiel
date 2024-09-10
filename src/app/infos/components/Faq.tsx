@@ -13,7 +13,7 @@ export default function Faq() {
     const faqItems = [
         {
             question: "Quels types d'événements couvrez-vous ?",
-            answer: "Nous sommes spécialisés dans la location de matiériel pour les mariages, anniversaires, baptêmes, événements professionnels et autres occasions dans le même esprit."
+            answer: "Nous sommes spécialisés dans la location de matiériel pour les mariages, anniversaires, baptêmes, et autres occasions dans le même esprit."
         },
         {
             question: "Offrez-vous des services de livraison et d'installation pour les meubles et décorations ?",
