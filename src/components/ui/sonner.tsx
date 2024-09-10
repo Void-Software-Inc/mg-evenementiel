@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
-import { CheckCircledIcon } from '@radix-ui/react-icons'
+import { CheckIcon } from "lucide-react"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
@@ -26,7 +26,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         },
       }}
       icons={{
-        success: <CheckCircledIcon className="h-5 w-5 text-green-500" />,
+        success: <CheckIcon className="h-5 w-5 text-green-500" />,
       }}
       {...props}
     />

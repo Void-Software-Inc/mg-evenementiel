@@ -28,7 +28,6 @@ import {
   export interface FormData {
     prenom: string;
     nom: string;
-    societe: string;
     email: string;
     telephone: string;
     date?: DateRange | null;
@@ -38,7 +37,6 @@ import {
   const formSchema = z.object({
     prenom: z.string().min(2, "Veuillez renseignez votre prénom").max(50, "Limite de 50 caractères dépassée"),
     nom: z.string().min(2, "Veuillez renseignez votre nom").max(20, "Limite de 50 caractères dépassée"),
-    societe: z.string(),
     email: z.string().email("Adresse email invalide"),
     telephone: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
     date: z.any().optional(),
@@ -65,7 +63,6 @@ import {
       defaultValues: {
         prenom: "",
         nom: "",
-        societe: "",
         email: "",
         telephone: "",
         date: undefined,
@@ -101,7 +98,6 @@ import {
           body: JSON.stringify({
             prenom: values.prenom,
             nom: values.nom,
-            societe: values.societe,
             email: values.email,
             telephone: values.telephone,
             date: date ? `${date.from ? format(date.from, 'dd LLL, y', { locale: fr }) : ''} - ${date.to ? format(date.to, 'dd LLL, y', { locale: fr }) : ''}` : "Aucune date sélectionnée",
@@ -170,19 +166,6 @@ import {
                   </FormItem>
                 )}
               />
-
-            <FormField
-                control={form.control}
-                name="societe"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Nom de la société" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-left" />
-                  </FormItem>
-                )}
-              />
   
               <FormField
                 control={form.control}
@@ -243,7 +226,6 @@ import {
                 <button type="button" className={getButtonClass('Mariage')} onClick={() => handleButtonClick('Mariage')}>Mariage</button>
                         <button type="button" className={getButtonClass('Anniversaire')} onClick={() => handleButtonClick('Anniversaire')}>Anniversaire</button>
                         <button type="button" className={getButtonClass('Baptême')} onClick={() => handleButtonClick('Baptême')}>Baptême</button>
-                        <button type="button" className={getButtonClass('Professionnel')} onClick={() => handleButtonClick('Professionnel')}>Professionnel</button>
                         <button type="button" className={getButtonClass('Autre')} onClick={() => handleButtonClick('Autre')}>Autre</button>
                 </div>
                 <FormMessage className="text-left" />
