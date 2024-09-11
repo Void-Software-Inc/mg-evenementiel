@@ -49,14 +49,14 @@ export const AboutMG = () => {
             </div>
         </div>
         <div className="w-full lg:w-1/3 h-full flex justify-end mt-12 lg:mt-0">
-          <div className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[28rem] xl:h-[32rem]">
+          <div className="relative w-full h-[400px] sm:h-[300px] md:h-[450px] lg:h-[680px]">
             <Image
-              src="/static/bday.jpg"
+              src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r22.webp"
               alt="Birthday celebration"
               layout="fill"
               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-              style={{ objectFit: "cover" }}
-              className=""
+              style={{ objectFit: "contain" }}
+              className="aspect-auto"
             />
           </div>
         </div>
