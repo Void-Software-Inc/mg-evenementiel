@@ -51,12 +51,12 @@ export const AboutMG = () => {
         <div className="w-full lg:w-1/3 h-full flex justify-end mt-12 lg:mt-0">
           <div className="relative w-full h-[400px] sm:h-[300px] md:h-[450px] lg:h-[680px]">
             <Image
-              src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r22.webp"
-              alt="Birthday celebration"
+              src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r22.webp?t=2024-09-11T13%3A11%3A05.273Z"
+              alt="Man working"
               layout="fill"
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-              style={{ objectFit: "contain" }}
-              className="aspect-auto"
+              sizes=""
+              style={{ objectFit: "cover" }}
+              className=""
             />
           </div>
         </div>
