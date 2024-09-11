@@ -20,7 +20,7 @@ interface ImageData {
   src: string;
   alt: string;
   isPortrait: boolean;
-  types: string[]; // Changed to an array of strings
+  types: string[];
 }
 
 const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
@@ -34,54 +34,87 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
   const types = ["Tout", "Mariage", "Baptême", "Anniversaire", "Traiteur", "Autre"];
 
   const staticImages: ImageData[] = [
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r17.webp", alt: "Portrait 1", isPortrait: true, types: ["Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r1.webp", alt: "Landscape 1", isPortrait: false, types: ["Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r42.webp", alt: "Landscape 2", isPortrait: false, types: ["Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r13.webp", alt: "Portrait 3", isPortrait: true, types: ["Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r25.webp", alt: "Landscape 1", isPortrait: false, types: ["Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r14.webp", alt: "Landscape 2", isPortrait: false, types: ["Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r8.webp", alt: "Landscape 2", isPortrait: false, types: ["Anniversaire", "Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r19.webp", alt: "Landscape 3", isPortrait: false, types: ["Anniversaire", "Traiteur"] },  
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r52.webp", alt: "Landscape 2", isPortrait: false, types: ["Anniversaire", "Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r58.webp", alt: "Portrait 3", isPortrait: true, types: ["Anniversaire", "Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r53.webp", alt: "Landscape 3", isPortrait: false, types: ["Anniversaire", "Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r83.webp", alt: "Landscape 1", isPortrait: false, types: ["Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r3.webp", alt: "Landscape 1", isPortrait: false, types: ["Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r26.webp", alt: "Landscape 1", isPortrait: false, types: ["Mariage", "Autre", "Baptême", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r27.webp", alt: "Landscape 2", isPortrait: false, types: ["Mariage", "Autre", "Baptême", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r21.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r29.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r11.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Mariage", "Anniversaire" ] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r91.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Mariage", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r90.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r97.webp", alt: "Landscape 2", isPortrait: false, types: ["Mariage"] },
-     
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r84.webp", alt: "Landscape 2", isPortrait: false, types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r87.webp", alt: "Landscape 2", isPortrait: false, types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r18.webp", alt: "Landscape 2", isPortrait: false, types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r17.webp", alt: "Table Anniversaire Rose", isPortrait: true, types: ["Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r1.webp", alt: "Table Anniversaire Rose", isPortrait: false, types: ["Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r42.webp", alt: "Table Anniversaire Rose", isPortrait: false, types: ["Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r13.webp", alt: "Table Mariage Vert", isPortrait: true, types: ["Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r25.webp", alt: "Table Mariage Vert", isPortrait: false, types: ["Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r14.webp", alt: "Table Mariage Vert", isPortrait: false, types: ["Mariage"] },
+    
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r54.webp", alt: "Table Mariage Vert", isPortrait: true, types: ["Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r55.webp", alt: "Table Mariage Vert", isPortrait: false, types: ["Mariage"] },
+  
+    
+    
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r19.webp", alt: "Buffet", isPortrait: false, types: ["Anniversaire", "Traiteur"] },  
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r8.webp", alt: "Gâteau Anniversaire Framboises", isPortrait: false, types: ["Anniversaire", "Traiteur"] },
 
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r4.webp", alt: "Landscape 2", isPortrait: false, types: ["Autre"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r20.webp", alt: "Landscape 2", isPortrait: false, types: ["Mariage","Autre", "Anniversaire","Baptême"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r5.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r76.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r47.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r48.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r52.webp", alt: "Buffet", isPortrait: false, types: ["Anniversaire", "Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r58.webp", alt: "Buffet", isPortrait: true, types: ["Anniversaire", "Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r53.webp", alt: "Gâteau Anniversaire 20", isPortrait: false, types: ["Anniversaire", "Traiteur"] },
+    
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r23.webp", alt: "Gâteau Anniversaire 2", isPortrait: true, types: ["Anniversaire", "Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r28.webp", alt: "Gâteau Anniversaire 0", isPortrait: true, types: ["Anniversaire", "Traiteur"] },
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r83.webp", alt: "Table Mariage Or", isPortrait: false, types: ["Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r3.webp", alt: "Table Mariage Or", isPortrait: false, types: ["Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r26.webp", alt: "Chapiteau 5m", isPortrait: false, types: ["Mariage", "Autre", "Baptême", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r27.webp", alt: "Chapiteau 4m", isPortrait: false, types: ["Mariage", "Autre", "Baptême", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r21.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r29.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r11.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Mariage", "Anniversaire" ] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r91.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Mariage", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r90.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r97.webp", alt: "Table blanche mariage", isPortrait: false, types: ["Mariage"] },
+     
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r84.webp", alt: "Table bleu et or", isPortrait: false, types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r87.webp", alt: "Table bleu et or", isPortrait: false, types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r18.webp", alt: "Table bleu et or", isPortrait: false, types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r4.webp", alt: "Table Noël", isPortrait: false, types: ["Autre"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r20.webp", alt: "Table Mariage rouge", isPortrait: false, types: ["Mariage","Autre", "Anniversaire","Baptême"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r5.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r76.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r47.webp", alt: "Cocktail fraise", isPortrait: false, types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r48.webp", alt: "Cocktail Maracuja", isPortrait: false, types: ["Traiteur"] },
       
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r6.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Mariage", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r7.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r39.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
-     
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r2.webp", alt: "Landscape 2", isPortrait: false, types: ["Mariage"] },
-//    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r15.webp", alt: "Landscape 2", isPortrait: false, types: ["Professionnel"] },
 
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r10.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur"] },
-  //  { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r2.webp", alt: "Landscape 2", isPortrait: false, types: ["Professionnel"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r94.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur"] },
- //   { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r2.webp", alt: "Landscape 2", isPortrait: false, types: ["Professionnel"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r12.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r16.webp", alt: "Landscape 2", isPortrait: false, types: ["Traiteur"] },
-//    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r2.webp", alt: "Landscape 2", isPortrait: false, types: ["Professionnel"] },
-];
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r81.webp", alt: "Cocktail Menthe", isPortrait: false, types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r82.webp", alt: "Cocktail Ananas", isPortrait: false, types: ["Traiteur"] },
+
+
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r6.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Mariage", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r7.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r39.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur", "Anniversaire"] },
+     
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r86.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r88.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r89.webp", alt: "Amuse-bouche", isPortrait: false, types: ["Traiteur"] },
+
+
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r2.webp", alt: "Table Mariage Automne", isPortrait: false, types: ["Mariage"] },
+     
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r15.webp", alt: "Plateau Charcuteries", isPortrait: false, types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r45.webp", alt: "Plateau Fromages", isPortrait: false, types: ["Traiteur"] },
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r10.webp", alt: "Citrons", isPortrait: false, types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r94.webp", alt: "Poulet", isPortrait: false, types: ["Traiteur"] },
+ 
+ 
+       { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r9.webp", alt: "Crevettes", isPortrait: false, types: ["Traiteur"] },
+       { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r92.webp", alt: "Poivrons", isPortrait: false, types: ["Traiteur"] },
+       { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r99.webp", alt: "Moules", isPortrait: false, types: ["Traiteur"] },
+
+    
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r12.webp", alt: "Paella", isPortrait: false, types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r16.webp", alt: "Paella assiettes", isPortrait: false, types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r46.webp", alt: "Paella assiettes", isPortrait: false, types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r93.webp", alt: "Frites", isPortrait: false, types: ["Traiteur"] },
+
+  ];
 
   useEffect(() => {
     console.log("Static Images:", staticImages);
@@ -212,7 +245,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     style={{ objectFit: 'cover' }}
-                    priority
+                    
+                    loading="lazy"
                   />
                 </div>
               ))}
