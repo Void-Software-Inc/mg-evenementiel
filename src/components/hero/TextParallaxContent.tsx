@@ -153,7 +153,7 @@ const TextParallaxContent = () => {
               <div className="h-[100vh] flex items-center justify-center">
                 <div className="max-w-md px-8 text-center">
                   <p className="text-sm uppercase tracking-wider mb-4">Dans le sud de la france</p>
-                  <h1 className="text-4xl font-bold mb-6">ORGANISEZ LE PARFAIT ÉVÉNEMENT</h1>
+                  <p className="text-4xl font-bold mb-6">ORGANISEZ LE PARFAIT ÉVÉNEMENT</p>
                   <p className="text-lg mb-8">Location de décoration et de mobilier pour vos événements</p>
                   <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
                     <Link href="/catalogue">
@@ -238,17 +238,20 @@ const TextParallaxContent = () => {
                     className="absolute bottom-8 2xl:bottom-22"
                     style={{ left: buttonLeftPosition }}
                   >
-                    <Button 
-                      className="hover:bg-black rounded-full w-28 h-28 2xl:w-32 2xl:h-32 4xl:w-44 4xl:h-44 p-0 flex items-center justify-center text-sm 2xl:text-lg font-medium group"
-                      variant="default" 
-                      size="default"
-                    >
-                      <div className="flex flex-col items-center justify-center w-full h-full">
-                        <span>DÉCOUVRIR</span>
-                        <span className="text-xl transform transition-transform duration-700 group-hover:rotate-[360deg]">→</span>
-                      </div>
-                    </Button>
-                  </motion.div>
+                    <Link href="/catalogue" passHref>
+                      <Button 
+                        className="hover:bg-black rounded-full w-28 h-28 2xl:w-32 2xl:h-32 4xl:w-44 4xl:h-44 p-0 flex items-center justify-center text-sm 2xl:text-lg font-medium group"
+                        variant="default" 
+                        size="default"
+                      >
+                        <div className="flex flex-col items-center justify-center w-full h-full">
+                          <span>DÉCOUVRIR</span>
+                          <span className="text-xl transform transition-transform duration-700 group-hover:rotate-[360deg]">→</span>
+                        </div>
+                      </Button>
+                    </Link>
+</motion.div>
+
                 </div>
               )}
             </motion.div>
