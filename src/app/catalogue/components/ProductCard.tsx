@@ -67,7 +67,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, priority = false }) 
         </div>
         
         <div className="w-full h-fit flex flex-col justify-start items-start space-y-1">
-          <h3 className="text-sm xl:text-lg font-light text-gray-900 truncate tracking-tight">{product.name.toUpperCase()}</h3>
+          <h3 className="text-sm xl:text-lg font-light text-gray-900  tracking-tight max-w-[98%] sm:w-full truncate ...">{product.name.toUpperCase()}</h3>
           <p className="text-sm xl:text-3xl font-light text-gray-900">{typeof product.price === 'number' ? `${product.price.toFixed(2)} €` : `À partir de ${product.price}`}</p>
         </div>
       </div>
