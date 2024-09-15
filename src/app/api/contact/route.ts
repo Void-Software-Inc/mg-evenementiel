@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
     await transporter.sendMail({
       from: email,
-      to: 'evab.onbon37@gmail.com',
+      to: 'mgevenementiel31@gmail.com',
       subject: `MG Événementiel - Nouvelle Demande de ${prenom} ${nom}`,
       html: `
       <div style="font-size: 18px; line-height: 1.6;">
