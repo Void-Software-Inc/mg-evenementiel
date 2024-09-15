@@ -67,7 +67,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
       last_name: "",
       email: "",
       phone_number: "",
-      date: undefined,
+      date: { from: new Date(), to: new Date() }, // Initialize with current date
       is_traiteur: "false",
       description: "",
     },
@@ -75,20 +75,14 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { date, ...restValues } = values;
-    const parisTimeZone = 'Europe/Paris';
-  
-    const formatDateToParisTime = (date: Date | undefined) => {
-      if (!date) return "";
-      return date.toLocaleString('en-US', { timeZone: parisTimeZone, hour12: false }).replace(',', '');
-    };
-  
+
     const quoteData = {
       ...restValues,
-      event_start_date: formatDateToParisTime(date?.from),
-      event_end_date: formatDateToParisTime(date?.to),
-      is_traiteur: values.is_traiteur === "true",
+      event_start_date: date.from.toISOString(), // Use ISO format for consistency
+      event_end_date: date.to.toISOString(), // Use ISO format for consistency
+      is_traiteur: values.is_traiteur === "true", // Ensure this is set correctly
     };
-    setFormData(quoteData);
+    setFormData(quoteData); // Ensure this is correctly setting the formData
     onNext(quoteData);
   };
 
@@ -169,7 +163,10 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 <FormControl>
                   <DatePickerWithRange 
                     date={field.value as DateRange | undefined} 
-                    setDate={(date) => field.onChange(date)}
+                    setDate={(date) => {
+                      // Ensure the date is set correctly
+                      field.onChange(date);
+                    }}
                   />
                 </FormControl>
                 <FormMessage>
