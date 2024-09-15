@@ -31,16 +31,18 @@ export const AboutMG = () => {
                 </div>
                 </div>
                 <div className="w-full lg:w-[50%] flex flex-col justify-center items-center">
-                    <p className="text-base xl:text-lg text-zinc-700 font-extralight mb-2 ">Créée en 2019, MG Événements est une entreprise familiale basée à Toulouse. 
-                    Nous avons pour passion l'organisation d'évéments. Nous proposons à la location plus de 200 articles comprenant matériel, meubles et décoration.</p>
-                    <p className="text-base xl:text-lg text-zinc-700 font-extralight">Depuis 2022, nous proposons également un service de traiteur.</p>
+                    <p className="text-base xl:text-lg text-zinc-700 font-extralight mb-2 ">L’histoire de MG Événements se résume en trois mots: Famille, Réussite et Conception. 
+                    Nous sommes une entreprise familiale créée en 2022 dans le but d’organiser et de décorer vos festivités de tout type. Nous réalisons des prestations de service mais également de la location de matériels et de mobiliers,vaisselles.. cela favorise une prise en charge efficace et complète de votre événement. </p>
+                    <p className="text-base xl:text-lg text-zinc-700 font-extralight">Le développement de notre service traiteur connaît son ampleur pour son produit 100% frais et local. 
+                    </p>
                 </div>
             </div>
 
             <div className="w-full h-fit flex justify-center lg:justify-start flex-col sm:flex-row sm:space-x-10">
                 <div className="h-fit w-full sm:w-[50%] flex flex-col">
-                    <p className="text-base xl:text-lg text-zinc-700 font-extralight mb-2">Nos valeurs reposent sur le professionnalisme, la ponctualité et l'attention minutieuse aux détails. Nous nous engageons à faire de vos événements une réussite. </p>
-                    <p className="text-base xl:text-lg text-zinc-700 font-extralight">Présents à chaque étape, nous nous investissons pleinement pour transformer vos idées en réalité, en veillant à ce que vos moments spéciaux se déroulent en toute sérénité.</p>
+                    <p className="text-base xl:text-lg text-zinc-700 font-extralight mb-2">Le professionnalisme, l’écoute minutieuse et l’expertise font parties de nos valeurs de prédilection.
+                    MG évènements est le détail qui fait la différence pour que vos idées se transforment en réalité, nous nous investissons pleinement en veillant à ce que vos moments spéciaux se déroulent en toute sérénité. </p>
+                    <p className="text-base xl:text-lg text-zinc-700 font-extralight">Passion rime avec création, c’est pour cela que MG événements conçoit vos événements sur mesure et de haute qualité.</p>
                 </div>
                 <div className="hidden sm:flex 2xl:h-72 2xl:w-72 lg:h-64 lg:w-64 h-52 w-52 rounded-full bg-white border border-zinc-800 flex-col items-center justify-center">
                     <p className="text-5xl text-zinc-700 font-extralight leading-tight">+80</p>
