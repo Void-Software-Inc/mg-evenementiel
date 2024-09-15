@@ -111,9 +111,9 @@ export default function ScrollableProducts() {
                       />
                     </div>
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-transparent text-zinc-700 p-2">
-                    <p className="pl-2 text-md font-light tracking-tighter">
-                      {product.name.toUpperCase()} -
+                  <div className="w-full absolute bottom-0 left-0 right-0 bg-transparent text-zinc-700 p-2">
+                    <p className="pl-2 text-md font-light tracking-tighter w-[95%] truncate">
+                      {product.name.toUpperCase()}
                     </p>
                     <p className="pl-2 text-2xl font-light">{product.price.toFixed(2)} €</p>
                   </div>
