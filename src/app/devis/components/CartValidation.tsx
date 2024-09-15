@@ -33,7 +33,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       return;
     }
 
-    const { first_name, last_name, email, phone_number, event_start_date, event_end_date } = formData;
+    const { first_name, last_name, email, phone_number, event_start_date, event_end_date, is_traiteur } = formData;
 
     // Prepare PDF data
     const pdfContent = {
@@ -42,6 +42,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         last_name, 
         email, 
         phone_number, 
+        is_traiteur, // Include traiteur option
         date: { from: new Date(event_start_date), to: new Date(event_end_date) } // Ensure date is included
       },
       products: cart.map((item: { name: string; quantity: number; price: number }) => ({
@@ -73,16 +74,16 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     doc.setFontSize(12);
     doc.text(`Email: ${userInfo.email}`, 10, 30);
     doc.text(`Téléphone: ${userInfo.phone_number}`, 10, 40);
+    doc.text(`Option traiteur: ${userInfo.is_traiteur ? 'Oui' : 'Non'}`, 10, 50); // Include traiteur option
     
     // Handle dates properly
     const eventFromDate = formatDateToParisTime(userInfo.date.from);
     const eventToDate = formatDateToParisTime(userInfo.date.to);
-    doc.text(`Date de l'événement: ${eventFromDate} au ${eventToDate}`, 10, 50); // Include both dates
+    doc.text(`Date de l'événement: ${eventFromDate} au ${eventToDate}`, 10, 60); // Include both dates
 
     // Table headers
     const headers = [['Produit', 'Quantité', 'Prix']];
-    const data = products.map((item: { id: any; name: any; quantity: any; totalPrice: any; }) => [
-      //item.id,
+    const data = products.map((item: { name: string; quantity: number; totalPrice: string }) => [
       item.name,
       item.quantity,
       `${item.totalPrice}€`
@@ -93,7 +94,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       head: headers,
       headStyles: { fillColor: [50, 50, 50], textColor: [255, 255, 255] }, // Dark gray background and white text
       body: data,
-      startY: 60,
+      startY: 70,
     });
 
     // Add total price
@@ -103,6 +104,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const pageCount = doc.internal.pages.length - 1;
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
+      doc.setFontSize(12);
       doc.text(`Page ${i} sur ${pageCount}`, doc.internal.pageSize.getWidth() - 40, doc.internal.pageSize.getHeight() - 10);
     }
     // Save the generated PDF

@@ -12,26 +12,27 @@ export default function QuotePDF({ user, products, totalPrice }: { user: any, pr
 
     // Add user information
     doc.text(`Email: ${user.email}`, 10, 20);
-    doc.text(`Phone: ${user.phone_number}`, 10, 30);
-    doc.text(`Event Date: ${user.date?.to ? formatDateToParisTime(user.date.to) : 'N/A'}`, 10, 40);
+    doc.text(`Téléphone: ${user.phone_number}`, 10, 30);
+    doc.text(`Date de l'événement: ${user.date?.to ? formatDateToParisTime(user.date.to) : 'N/A'}`, 10, 40);
+    doc.text(`Option traiteur: ${user.is_traiteur ? 'Oui' : 'Non'}`, 10, 50); // Include traiteur option
 
     // Prepare table content
-    const tableHeaders = [['Product Name', 'Quantity', 'Price']];
+    const tableHeaders = [['Nom du Produit', 'Quantité', 'Prix']];
     const tableRows = products.map(product => [
       product.name,
       product.quantity,
-      `$${(product.price * product.quantity).toFixed(2)}`
+      `${(product.price * product.quantity).toFixed(2)}€`
     ]);
 
     // Generate table
     (doc as any).autoTable({
       head: tableHeaders,
       body: tableRows,
-      startY: 50,
+      startY: 60,
     });
 
     // Add total price below the table
-    doc.text(`Total Price: $${totalPrice.toFixed(2)}`, 10, (doc as any).lastAutoTable.finalY + 10);
+    doc.text(`Prix Total: ${totalPrice.toFixed(2)}€`, 10, (doc as any).lastAutoTable.finalY + 10);
 
     // Save PDF
     doc.save('quote.pdf');
@@ -43,5 +44,5 @@ export default function QuotePDF({ user, products, totalPrice }: { user: any, pr
 const formatDateToParisTime = (date: Date | undefined) => {
   const parisTimeZone = 'Europe/Paris';
   if (!date) return '';
-  return new Date(date).toLocaleString('en-US', { timeZone: parisTimeZone, hour12: false }).replace(',', '');
+  return new Date(date).toLocaleString('fr-FR', { timeZone: parisTimeZone, hour12: false }).replace(',', '');
 };

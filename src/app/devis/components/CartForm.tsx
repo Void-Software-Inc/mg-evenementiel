@@ -80,7 +80,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
       ...restValues,
       event_start_date: date.from.toISOString(), // Use ISO format for consistency
       event_end_date: date.to.toISOString(), // Use ISO format for consistency
-      is_traiteur: values.is_traiteur === "true",
+      is_traiteur: values.is_traiteur === "true", // Ensure this is set correctly
     };
     setFormData(quoteData); // Ensure this is correctly setting the formData
     onNext(quoteData);
