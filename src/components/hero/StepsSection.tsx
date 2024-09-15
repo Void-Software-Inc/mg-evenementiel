@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const StepsSection = () => {
   return (
-    <div className='w-full h-fit flex flex-col justify-center items-center'>
+    <div className='w-full h-fit flex flex-col justify-center items-center mb-20'>
       <div className="w-full max-w-4xl px-4 mb-12 flex flex-col items-center justify-center">
         <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
           EN QUELQUES CLICKS
