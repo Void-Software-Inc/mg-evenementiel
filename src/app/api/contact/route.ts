@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       subject: `MG Événementiel - Nouvelle Demande de ${prenom} ${nom}`,
       html: `
       <div style="font-size: 18px; line-height: 1.6;">
-        <p style="color: gray;"><strong>Nouvelle Demande via le formulaire de contact</strong></p>        
+        <p><strong>Nouvelle Demande via le formulaire de contact</strong></p>        
         <p><strong>Nom & Prénom:</strong> ${prenom} ${nom}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Téléphone:</strong> ${telephone}</p>
