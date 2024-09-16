@@ -13,31 +13,31 @@ export default function Faq() {
     const faqItems = [
         {
             question: "Quels types d'événements couvrez-vous ?",
-            answer: "Nous sommes spécialisés dans la location de matiériel pour les mariages, anniversaires, baptêmes, et autres occasions dans le même esprit."
+            answer: "..."
         },
         {
             question: "Offrez-vous des services de livraison et d'installation pour les meubles et décorations ?",
-            answer: "Notre équipe vous livrera le matériel, directement sur le lieu de l'événement et installera meubles et décoration pour le J."
+            answer: "..."
         },
         {
             question: "Comment fonctionne le processus de location ?",
-            answer: "Tout d'abord, sélectionnez les articles qui vous plaisent et ajoutez les à votre devis. Renseignez vos coordonnées, la date de l'événement et envoyez-nous votre devis depuis le site. Nous vous contacterons dans un délai de 48h afin fixer un rendez-vous où nous pourrons prendre le temps de discuter de votre événement. Une fois les préparatifs validés, nous vous transmettrons une facture. À l'accompte reçu, le matériel que vous aviez sélectionné pour le jour de votre événement vous sera réservé.",
+            answer: "..."
         },
         {
             question: "Quels types de menus proposez-vous ?",
-            answer: "Nous proposons des menus de saison et sur mesure, selon vos préférences."
+            answer: "..."
         },
         {
             question: "Gérez-vous également le service à table et le nettoyage après l'événement ?",
-            answer: "Nous ne gérons pas le service à table. En revanche, nous prenons en charge le nettoyage du matériel appartenant à MG Événements."
+            answer: "..."
         },
         {
             question: "Quels sont les frais supplémentaires éventuels ?",
-            answer: "Au prix de la location du matériel devra être ajouté les frais de livraison et de collecte du matériel pour les zones en dehors du département d'Haute Garonne."
+            answer: "..."
         },
         {
             question: "Quelles sont vos conditions de paiement et d'annulation ?",
-            answer: "Afin de réserver effectivement le matériel pour votre événement, un accompte de 30% du prix total vous sera demandé. En cas d'annulation, nous vous remboursons le montant de la facture moins l'accompte. L'annulation ne donnera lieu à aucun remboursement si l'événement est annulé la semaine même."
+            answer: "..."
         },
         {
             question: "Quelle est la durée de location des meubles et décorations ?",
@@ -47,7 +47,6 @@ export default function Faq() {
             question: "Que se passe-t-il si un meuble ou une décoration est endommagé(e) pendant l'événement ?",
             answer: "..."
         },
-        
     ];
 
     const getBackgroundColor = (index: number) => {
