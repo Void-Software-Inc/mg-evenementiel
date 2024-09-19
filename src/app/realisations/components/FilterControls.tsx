@@ -110,6 +110,20 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r16.webp", alt: "Paella assiettes", types: ["Traiteur"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r46.webp", alt: "Paella assiettes",  types: ["Traiteur"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r93.webp", alt: "Frites", types: ["Traiteur"] },
+    
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r30.webp", alt: "Plateau fromage", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r37.webp", alt: "Plateau charcuterie", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r32.webp", alt: "Verrines avec fleur", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r33.webp", alt: "Verrines taboulé", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r34.webp", alt: "Bagels saumon", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r35.webp", alt: "Crevettes frites", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r36.webp", alt: "Bagels", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r38.webp", alt: "Boîte de verrines", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r40.webp", alt: "Verrines salade", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r41.webp", alt: "Wraps", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r31.webp", alt: "Boîte MG traiteur", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r51.webp", alt: "Mur à cocktails", types: ["Traiteur"] },
+
 
   ];
 
