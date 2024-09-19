@@ -14,46 +14,127 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<'success' | 'error' | null>(null);
   const total = cart.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
+  const [pdfData, setPdfData] = useState<any>(null); // State to hold PDF data
   const { clearFormData } = useDevis();
   const { clearCart } = useCart();
   const router = useRouter();
-  const [pdfData, setPdfData] = useState<any>(null); // State to hold PDF data
 
   // Ensure that formData has the necessary user info and check that formData is not undefined
   useEffect(() => {
-    if (formData && (!formData.email || !formData.first_name || !formData.last_name || !formData.phone_number)) {
+    if (formData && (!formData.first_name || !formData.last_name || !formData.phone_number)) {
       console.error("User information is incomplete:", formData);
     }
   }, [formData]);
 
   const generatePDFData = () => {
-    if (!formData) {
-      console.error('formData is null');
-      alert('Unable to generate PDF: Missing form data.');
-      return;
+    if (!formData || !cart || cart.length === 0) {
+        console.error("formData or cart is null or empty");
+        return null; // Handle the case where formData or cart is not available
     }
 
     const { first_name, last_name, email, phone_number, event_start_date, event_end_date, is_traiteur } = formData;
 
     // Prepare PDF data
     const pdfContent = {
-      userInfo: { 
-        first_name, 
-        last_name, 
-        email, 
-        phone_number, 
-        is_traiteur, // Include traiteur option
-        date: { from: new Date(event_start_date), to: new Date(event_end_date) } // Ensure date is included
-      },
-      products: cart.map((item: { name: string; quantity: number; price: number }) => ({
-        name: item.name,
-        quantity: item.quantity,
-        totalPrice: (item.price * item.quantity).toFixed(2),
-      })),
-      totalPrice: total.toFixed(2),
+        userInfo: { 
+            first_name, 
+            last_name, 
+            email, 
+            phone_number, 
+            is_traiteur, 
+            date: { from: new Date(event_start_date), to: new Date(event_end_date) }
+        },
+        products: cart.map((item: { name: string; quantity: number; price: number }) => ({
+            name: item.name,
+            quantity: item.quantity,
+            totalPrice: (item.price * item.quantity).toFixed(2),
+        })),
+        totalPrice: total.toFixed(2),
+      };
+
+    return pdfContent; // Return the PDF content
+  };
+
+  const handleSubmit = async () => {
+    if (isSubmitting) return; 
+    setIsSubmitting(true);
+
+    const quoteData = {
+      ...formData,
+      total_cost: total,
+      status: "nouveau",
+      is_paid: false,
+      traiteur_price: 0,
+      other_expenses: 0,
     };
 
-    setPdfData(pdfContent); // Store PDF data in state
+    const quoteItems = cart.map((item: any) => ({
+      product_id: item.id,
+      quantity: item.quantity,
+    }));
+
+    try {
+      // Create the quote
+      const result = await createQuote(quoteData, quoteItems);
+      console.log("Quote created:", result);
+
+      // Generate PDF data
+      const pdfContent = generatePDFData(); // Generate PDF data here
+      if (!pdfContent) {
+        setSubmitResult('error'); // Set error if PDF content is invalid
+        return; // Exit if PDF content is not valid
+      }
+
+      // Send email with the quote data and PDF
+      await sendEmail(quoteData, pdfContent); // Send email with PDF content
+      setPdfData(pdfContent); // Store PDF data for downloading later
+
+      // Do not clear formData here if you want to retain it
+      // clearFormData(); // Comment this out
+      clearCart();
+      setSubmitResult('success');
+    } catch (error) {
+      console.error("Error creating quote or sending email:", error);
+      setSubmitResult('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  const formatDateToParisTime = (date: Date | undefined) => {
+    const parisTimeZone = 'Europe/Paris';
+    if (!date) return '';
+    // Format the date to 'dd/mm/yyyy' format
+    return new Date(date).toLocaleDateString('fr-FR', { timeZone: parisTimeZone });
+  };
+  const sendEmail = async (quoteData: any, pdfContent: any) => {
+    try {
+      const response = await fetch('/api/quotes/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          first_name: quoteData.first_name,
+          last_name: quoteData.last_name,
+          phone_number: quoteData.phone_number,
+          event_start_date: quoteData.event_start_date,
+          event_end_date: quoteData.event_end_date,
+          is_traiteur: quoteData.is_traiteur,
+          description: quoteData.description,
+          pdfContent: pdfContent, // Include PDF content
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Email sending failed:', errorData);
+        throw new Error(`Failed to send email: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      throw error; // Rethrow to handle in the main try-catch
+    }
   };
 
   const downloadPDF = () => {
@@ -110,63 +191,24 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     // Save the generated PDF
     doc.save(`Devis_${userInfo.first_name}_${new Date().toLocaleDateString('fr-FR')}.pdf`); // Save the PDF
   };
-
-  // Helper to format date to Paris time without time
-  const formatDateToParisTime = (date: Date | undefined) => {
-    const parisTimeZone = 'Europe/Paris';
-    if (!date) return '';
-    // Format the date to 'dd/mm/yyyy' format
-    return new Date(date).toLocaleDateString('fr-FR', { timeZone: parisTimeZone });
-  };
-
-  // Call generatePDFData before submitting
-  const handleSubmit = async () => {
-    if (isSubmitting) return; 
-    setIsSubmitting(true);
-    generatePDFData(); // Prepare PDF data before submitting
-
-    const quoteData = {
-      ...formData,
-      total_cost: total,
-      status: "nouveau",
-      is_paid: false,
-      traiteur_price: 0,
-      other_expenses: 0,
-    };
-
-    const quoteItems = cart.map((item: any) => ({
-      product_id: item.id,
-      quantity: item.quantity,
-    }));
-
-    try {
-      const result = await createQuote(quoteData, quoteItems);
-      console.log("Quote created:", result);
-      clearFormData();
-      clearCart();
-      setSubmitResult('success');
-    } catch (error) {
-      console.error("Error creating quote:", error);
-      setSubmitResult('error');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  
 
   // Update the button to download the PDF
   if (submitResult === 'success') {
+    console.log("Current formData:", formData); // Debugging log
     return (
       <div className="w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Devis envoyé avec succès!</h2>
         <p className="mb-4">Merci pour votre demande. Vous pouvez télécharger votre devis ci-dessous.</p>
         {/* Download PDF Button */}
-        <Button
-          onClick={downloadPDF} // Trigger download on button click
-          className="mt-3 rounded-full py-6 px-8 text-lg font-light bg-green-500 hover:bg-green-700"
-        >
-          Télécharger le devis en PDF
-        </Button>
-        {/* Optionally, you can also include the 'Retour à l'accueil' button */}
+        {formData && ( // Only render if formData is available
+          <Button
+            onClick={downloadPDF} // Trigger download on button click
+            className="mt-3 rounded-full py-6 px-8 text-lg font-light bg-green-500 hover:bg-green-700"
+          >
+            Télécharger le devis en PDF
+          </Button>
+        )}
         <Button onClick={() => router.push('/')} className="mt-3 rounded-full py-6 px-8 text-lg font-light">
           Retour à l'accueil
         </Button>
@@ -225,7 +267,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           <span className="font-semibold text-gray-800 text-xl">Précédent</span>
         </Button>
         <Button
-          onClick={handleSubmit}
+          onClick={handleSubmit} // Send email on button click
           className="h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full p-6 flex items-center space-x-4 transition-all duration-300 group"
           disabled={isSubmitting}
         >

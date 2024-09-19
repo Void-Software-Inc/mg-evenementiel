@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
-
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   first_name: z.string().min(2, "Veuillez renseignez votre prénom").max(50, "Limite de 50 caractères dépassée"),
@@ -52,6 +52,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   const [titleMessage] = useState("");
   const [message] = useState("");
   const { formData, setFormData } = useDevis();
+  const router = useRouter(); // Add router for navigation
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -83,6 +84,8 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
       is_traiteur: values.is_traiteur === "true", // Ensure this is set correctly
     };
     setFormData(quoteData); // Ensure this is correctly setting the formData
+
+    // Proceed to the next step
     onNext(quoteData);
   };
 
