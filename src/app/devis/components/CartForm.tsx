@@ -29,6 +29,12 @@ const formSchema = z.object({
   last_name: z.string().min(2, "Veuillez renseignez votre nom").max(50, "Limite de 50 caractères dépassée"),
   email: z.string().email("Adresse email invalide"),
   phone_number: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
+  voie: z.string().min(2, "Données requises").max(100, "Limite de 100 caractères dépassée"),
+  compl: z.string().max(100, "Limite de 100 caractères dépassée").optional(),
+  cp: z.string().min(5, "Données requises").max(5, "Format invalide"),
+  ville: z.string().min(2, "Données requises").max(100, "Limite de 100 caractères dépassée"),
+  region: z.string().default("Occitanie"), 
+  pays: z.string().default("France"), 
   date: z.object({
     from: z.date(),
     to: z.date(),
@@ -68,6 +74,12 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
       last_name: "",
       email: "",
       phone_number: "",
+      voie: "",
+      compl: "",
+      cp: "",
+      ville: "",
+      region: "",
+      pays: "France",  
       date: { from: new Date(), to: new Date() }, // Initialize with current date
       is_traiteur: "false",
       description: "",
@@ -156,6 +168,85 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
               </FormItem>
             )}
           />
+
+              <FormField
+                control={form.control}
+                name="voie"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label className="text-lg font-medium leading-loose text-gray-700">Addresse *</Label>
+                    <FormControl>
+                      <Input placeholder="Voie" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="compl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Complément d'adresse" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="cp"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Code Postal" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="ville"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Ville" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="region"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Région" {...field} /> 
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="pays"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="France" {...field} disabled /> 
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
 
           <FormField
             control={form.control}
