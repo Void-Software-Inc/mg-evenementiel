@@ -150,7 +150,7 @@ import {
             compl: "",
             cp: "",
             ville: "",
-            region: "Occitanie",
+            region: "",
             pays: "France",
             date: undefined,
             eventType: "",
@@ -282,20 +282,20 @@ import {
                 )}
               />
 
-<FormField
+              <FormField
                 control={form.control}
                 name="region"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="Région" {...field} disabled />
+                      <Input placeholder="Région" {...field} />
                     </FormControl>
                     <FormMessage className="text-left" />
                   </FormItem>
                 )}
               />
 
-<FormField
+              <FormField
                 control={form.control}
                 name="pays"
                 render={({ field }) => (

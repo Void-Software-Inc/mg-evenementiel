@@ -32,7 +32,22 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         return null; // Handle the case where formData or cart is not available
     }
 
-    const { first_name, last_name, email, phone_number, event_start_date, event_end_date, is_traiteur } = formData;
+    // Set default values for region and pays
+    const { 
+        first_name, 
+        last_name, 
+        email, 
+        phone_number, 
+        voie, 
+        compl, 
+        cp, 
+        ville, 
+        region,
+        pays = "France", // Default value for pays
+        event_start_date, 
+        event_end_date, 
+        is_traiteur 
+    } = formData;
 
     // Prepare PDF data
     const pdfContent = {
@@ -41,6 +56,12 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             last_name, 
             email, 
             phone_number, 
+            voie, // Include address fields
+            compl, // Include address fields
+            cp, // Include address fields
+            ville, // Include address fields
+            region,
+            pays, 
             is_traiteur, 
             date: { from: new Date(event_start_date), to: new Date(event_end_date) }
         },
@@ -50,7 +71,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             totalPrice: (item.price * item.quantity).toFixed(2),
         })),
         totalPrice: total.toFixed(2),
-      };
+    };
 
     return pdfContent; // Return the PDF content
   };
@@ -68,6 +89,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       other_expenses: 0,
     };
 
+    // Remove address fields from formData for quoteData
+    const { voie, compl, cp, ville, region, pays, ...quoteDataWithoutAddress } = quoteData;
+
     const quoteItems = cart.map((item: any) => ({
       product_id: item.id,
       quantity: item.quantity,
@@ -75,7 +99,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
     try {
       // Create the quote
-      const result = await createQuote(quoteData, quoteItems);
+      const result = await createQuote(quoteDataWithoutAddress, quoteItems);
       console.log("Quote created:", result);
 
       // Generate PDF data
@@ -109,31 +133,37 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   };
   const sendEmail = async (quoteData: any, pdfContent: any) => {
     try {
-      const response = await fetch('/api/quotes/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          first_name: quoteData.first_name,
-          last_name: quoteData.last_name,
-          phone_number: quoteData.phone_number,
-          event_start_date: quoteData.event_start_date,
-          event_end_date: quoteData.event_end_date,
-          is_traiteur: quoteData.is_traiteur,
-          description: quoteData.description,
-          pdfContent: pdfContent, // Include PDF content
-        }),
-      });
+        const response = await fetch('/api/quotes/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                first_name: quoteData.first_name,
+                last_name: quoteData.last_name,
+                phone_number: quoteData.phone_number,
+                email: quoteData.email,
+                voie: formData.voie,
+                compl: formData.compl,
+                cp: formData.cp,
+                ville: formData.ville,
+                region: formData.region,
+                event_start_date: quoteData.event_start_date,
+                event_end_date: quoteData.event_end_date,
+                is_traiteur: quoteData.is_traiteur,
+                description: quoteData.description,
+                pdfContent: pdfContent, // Include PDF content
+            }),
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Email sending failed:', errorData);
-        throw new Error(`Failed to send email: ${errorData.message}`);
-      }
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Email sending failed:', errorData);
+            throw new Error(`Failed to send email: ${errorData.message}`);
+        }
     } catch (error) {
-      console.error('Error sending email:', error);
-      throw error; // Rethrow to handle in the main try-catch
+        console.error('Error sending email:', error);
+        throw error; // Rethrow to handle in the main try-catch
     }
   };
 
@@ -149,18 +179,64 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
     // Add title
     doc.setFontSize(24);
-    doc.text(`Devis pour ${userInfo.first_name} ${userInfo.last_name}`, 10, 20);
+    doc.text(`DEVIS`, 10, 20);
 
-    // Add user Information
-    doc.setFontSize(12);
-    doc.text(`Email: ${userInfo.email}`, 10, 30);
-    doc.text(`Téléphone: ${userInfo.phone_number}`, 10, 40);
-    doc.text(`Option traiteur: ${userInfo.is_traiteur ? 'Oui' : 'Non'}`, 10, 50); // Include traiteur option
-    
-    // Handle dates properly
+    // Add client options and event dates on the right
     const eventFromDate = formatDateToParisTime(userInfo.date.from);
     const eventToDate = formatDateToParisTime(userInfo.date.to);
-    doc.text(`Date de l'événement: ${eventFromDate} au ${eventToDate}`, 10, 60); // Include both dates
+    doc.setFontSize(12);
+
+    const optionsAndDates = [
+      `Date(s) de l'événement: ${eventFromDate} au ${eventToDate}`,
+      `Option traiteur: ${userInfo.is_traiteur ? 'Oui' : 'Non'}`
+    ];
+
+    optionsAndDates.forEach((line, index) => {
+      const textWidth = doc.getTextWidth(line); // Get the width of the text
+      const pageWidth = doc.internal.pageSize.getWidth(); // Get the page width
+      const xPosition = pageWidth - textWidth - 10; // Calculate x position for right alignment
+      doc.text(line, xPosition, 30 + (index * 7)); // Adjusted vertical spacing to 10 for 
+    })
+
+    // Add quote creation date and number
+    const quoteDate = new Date().toLocaleDateString('fr-FR');
+//    const quoteNumber = "Quote #12345"; // Replace with actual quote number if available
+    doc.setFontSize(12);
+    doc.text(`Date: ${quoteDate}`, 10, 30); // Adjusted position
+ //   doc.text(quoteNumber, 10, 40); // Adjusted position
+
+    // Draw horizontal line
+    doc.setLineWidth(0.5);
+    doc.line(10, 50, 200, 50); // Adjust line position as needed
+
+    // Add client info on the left with adjusted spacing
+    const clientInfo = [
+        `À l'attention de: ${userInfo.first_name} ${userInfo.last_name}`,
+        `${userInfo.email}`,
+        `${userInfo.phone_number}`,
+        `${formData.voie}${formData.compl ? `, ${formData.compl}` : ''}`,
+        `${formData.cp} ${formData.ville}`,
+        `${formData.region}`
+    ];
+    clientInfo.forEach((line, index) => {
+        doc.text(line, 10, 60 + (index *7)); // Adjusted vertical spacing to 10 for closer lines
+    });
+
+    // Add company info on the right with adjusted spacing
+    const companyInfo = [
+      "MG Événements",
+      "07 68 10 96 17",
+      "mgevenementiel31@gmail.com",
+      "3 Rue Guy de Maupassant",
+      "31240 Toulouse"
+  ];
+
+    companyInfo.forEach((line, index) => {
+        const textWidth = doc.getTextWidth(line); // Get the width of the text
+        const pageWidth = doc.internal.pageSize.getWidth(); // Get the page width
+        const xPosition = pageWidth - textWidth - 10; // Calculate x position for right alignment
+        doc.text(line, xPosition, 60 + (index * 7)); // Adjusted vertical spacing to 10 for closer lines
+    });
 
     // Table headers
     const headers = [['Produit', 'Quantité', 'Prix']];
@@ -173,9 +249,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     // Generate table with the product details
     (doc as any).autoTable({
       head: headers,
-      headStyles: { fillColor: [50, 50, 50], textColor: [255, 255, 255] }, // Dark gray background and white text
+      headStyles: { fillColor: [50, 50, 50], textColor: [255, 255, 255] },
       body: data,
-      startY: 70,
+      startY: 105,
     });
 
     // Add total price
