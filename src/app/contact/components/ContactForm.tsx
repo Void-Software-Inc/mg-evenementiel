@@ -30,6 +30,12 @@ import {
     nom: string;
     email: string;
     telephone: string;
+    voie: string;
+    compl: string;
+    cp: string;
+    ville: string;
+    region: string;
+    pays: string; 
     date?: DateRange | null;
     message: string;
   }
@@ -39,6 +45,12 @@ import {
     nom: z.string().min(2, "Veuillez renseignez votre nom").max(20, "Limite de 50 caractères dépassée"),
     email: z.string().email("Adresse email invalide"),
     telephone: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
+    voie: z.string().min(2, "Données requises").max(100, "Limite de 100 caractères dépassée"),
+    compl: z.string().max(100, "Limite de 100 caractères dépassée").optional(),
+    cp: z.string().min(5, "Données requises").max(5, "Format invalide"),
+    ville: z.string().min(2, "Données requises").max(100, "Limite de 100 caractères dépassée"),
+    region: z.string().default("Occitanie"), 
+    pays: z.string().default("France"), 
     date: z.any().optional(),
     eventType: z.string().min(1, "Veuillez choisir un type d'événement"),
     traiteur: z.enum(["oui", "non"], { required_error: "Veuillez sélectionner une option" }),
@@ -66,9 +78,15 @@ import {
         nom: "",
         email: "",
         telephone: "",
+        voie: "",
+        compl: "",
+        cp: "",
+        ville: "",
+        region: "Occitanie",
+        pays: "France",   
         date: undefined,
         eventType: "",
-        message: "",
+        message: "",      
       },
     });
   
@@ -107,6 +125,12 @@ import {
             nom: values.nom,
             email: values.email,
             telephone: values.telephone,
+            voie: values.voie,
+            compl: values.compl,
+            cp: values.cp,
+            ville: values.ville,
+            region: values.region,
+            pays: values.pays,
             date: date ? `${date.from ? format(date.from, 'dd LLL, y', { locale: fr }) : ''} - ${date.to ? format(date.to, 'dd LLL, y', { locale: fr }) : ''}` : "Aucune date sélectionnée",
             eventType: values.eventType,
             traiteur: values.traiteur,
@@ -122,6 +146,12 @@ import {
             nom: "",
             email: "",
             telephone: "",
+            voie: "",
+            compl: "",
+            cp: "",
+            ville: "",
+            region: "",
+            pays: "France",
             date: undefined,
             eventType: "",
             traiteur: "non",
@@ -194,6 +224,84 @@ import {
                   <FormItem>
                     <FormControl>
                       <Input type="tel" placeholder="Téléphone" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="voie"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Voie" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="compl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Complément d'adresse" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="cp"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Code Postal" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="ville"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Ville" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="region"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Région" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="pays"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Pays" {...field} disabled />
                     </FormControl>
                     <FormMessage className="text-left" />
                   </FormItem>
@@ -286,6 +394,7 @@ import {
               </FormItem>
             )}
           />
+        
           <div className="w-full h-fit flex justify-end">
            <Button type="submit" className="rounded-full h-[65px] w-full sm:h-[78px] sm:w-[170px] py-6 px-12 flex items-center group ease-in-out transition duration-300 hover:bg-neutral-500">
             <span className="font-semibold text-xl">Envoyer</span>

@@ -5,7 +5,7 @@ import nodemailer from 'nodemailer';
 // Handler for POST requests
 export async function POST(request: Request) {
   try {
-    const { prenom, nom, email, telephone, date, eventType, traiteur, message } = await request.json();
+    const { prenom, nom, email, telephone, voie, compl, cp, ville, region, pays, date, eventType, traiteur, message } = await request.json();
 
     // Setup Nodemailer transporter
     const transporter = nodemailer.createTransport({
@@ -27,6 +27,12 @@ export async function POST(request: Request) {
         <p><strong>Nom & Prénom:</strong> ${prenom} ${nom}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Téléphone:</strong> ${telephone}</p>
+        <p><strong>Voie:</strong> ${voie}</p>
+        <p><strong>Complément d'Adresse:</strong> ${compl}</p>
+        <p><strong>Code Postal:</strong> ${cp}</p>
+        <p><strong>Ville:</strong> ${ville}</p>
+        <p><strong>Région:</strong> ${region}</p>
+        <p><strong>Pays:</strong> ${pays}</p>
         <p><strong>Date(s) de l'événement souhaitée(s):</strong> ${date}</p>
         <p><strong>Type d'événement:</strong> ${eventType}</p>
         <p><strong>Option Traiteur:</strong> ${traiteur}</p>
