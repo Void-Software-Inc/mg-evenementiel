@@ -14,14 +14,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { CheckCircledIcon, CopyIcon } from "@radix-ui/react-icons";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const is2xlScreen = useMediaQuery({ minWidth: 1698 });
   const pathname = usePathname();
-  const [isPhoneCardOpen, setIsPhoneCardOpen] = useState(false);
-
+  const [copied, setCopied] = useState<{ phone: boolean; email: boolean }>({
+    phone: false,
+    email: false,
+  });
   useEffect(() => {
     const handleScroll = () => {
       if (pathname === '/') {
@@ -41,15 +44,59 @@ export default function Navbar() {
     setIsOpen(false);
   }
 
+  const handleCopy = (text: string, type: 'phone' | 'email') => {
+    navigator.clipboard.writeText(text);
+    setCopied((prev) => ({ ...prev, [type]: true }));
+    setTimeout(() => setCopied((prev) => ({ ...prev, [type]: false })), 2000);
+  };
+
   const isActive = (path: string) => pathname === path;
 
-  const PhoneCard = () => (
-    <div className="w-fit space-y-1">
-      <h4 className="text-base lg:text-xl font-semibold">+33 07 68 10 96 17</h4>
-      <p className="text-base lg:text-lg font-semibold">mgevenementiel31@gmail.com</p>
-      <p className="text-sm italic lg:pt-4">Du lundi au samedi de 9h à 19h</p>
-    </div>
-  );
+  const PhoneCard = () => {
+    const phoneNumber = "+33 07 68 10 96 17";
+    const email = "mgevenementiel31@gmail.com";
+
+    return (
+      <div className="w-full space-y-1">
+        <div className="flex justify-start items-center space-x-3">
+          <h4 className="text-base lg:text-xl font-semibold">{phoneNumber}</h4>
+          {/* Copy button for phone number */}
+          <button
+            className="focus:outline-none text-gray-800 transition-all duration-300"
+            onClick={() => handleCopy(phoneNumber, "phone")}
+            title="Copier le numéro de téléphone"
+          >
+            {/* Toggle between copy icon and check circled icon with transition */}
+            {copied.phone ? (
+              <CheckCircledIcon className="h-5 w-5 text-green-500" />
+            ) : (
+              <CopyIcon className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <p className="text-base lg:text-lg font-semibold">{email}</p>
+          {/* Copy button for email address */}
+          <button
+            className="focus:outline-none text-gray-800 transition-all duration-300"
+            onClick={() => handleCopy(email, "email")}
+            title="Copier l'addresse email"
+          >
+            {/* Toggle between copy icon and check circled icon with transition */}
+            {copied.email ? (
+              <CheckCircledIcon className="h-5 w-5 text-green-500" />
+            ) : (
+              <CopyIcon className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+
+        <p className="text-sm italic lg:pt-4">Du lundi au samedi de 9h à 19h</p>
+      </div>
+    );
+  };
+
 
   const NavLink = ({ href, label }: { href: string; label: string }) => {
     const [isHovered, setIsHovered] = useState(false);
