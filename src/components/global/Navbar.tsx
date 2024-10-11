@@ -92,7 +92,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        <p className="text-sm italic lg:pt-4">Du lundi au samedi de 9h à 19h</p>
+        <p className="text-sm italic lg:pt-4">Du lundi au samedi de 8h à 20h</p>
       </div>
     );
   };
