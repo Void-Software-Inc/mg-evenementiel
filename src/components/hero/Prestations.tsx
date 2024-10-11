@@ -51,9 +51,9 @@ export default function Prestations() {
                 <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
                 NOS PRESTATIONS
                 </h2>
-                <p className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
+                <h3 className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
                 Des services complets pour répondre à tous vos besoins événementiels
-                </p>
+                </h3>
             </div>
             <div className="w-[60%] lg:w-[85%] h-full flex flex-row flex-wrap items-center justify-center  gap-4">
                 {services.map((service, index) => (

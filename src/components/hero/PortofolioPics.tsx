@@ -13,9 +13,9 @@ export const PortofolioPics = () => {
         <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
           NOS RÉALISATIONS
         </h2>
-        <p className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
+        <h3 className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
           Découvrez nos créations uniques et personnalisées pour vos événements
-        </p>
+        </h3>
       </div>
       
       <section className="relative grid min-h-screen w-full place-content-center overflow-hidden bg-gray-50">

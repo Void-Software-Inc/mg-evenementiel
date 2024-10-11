@@ -9,8 +9,8 @@ import Footer from "@/components/global/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MG Événements",
-  description: "Location de matériel pour événements",
+  title: "MG Événementiel - Location de Matériel et Mobilier pour Événements dans le Sud de la France",
+  description: "Découvrez MG Événementiel, experts en location de mobilier et matériel pour réceptions dans le Sud de la France. Service rapide et fiable, basé à Toulouse, dans le 31.",
   icons: [
     { rel: 'icon', url: '/favicon_io/favicon.ico' },
     { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon_io/apple-touch-icon.png' },
