@@ -9,11 +9,11 @@ const StepsSection = () => {
     <div className='w-full h-fit flex flex-col justify-center items-center mb-20'>
       <div className="w-full max-w-4xl px-4 mb-12 flex flex-col items-center justify-center">
         <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
-          EN QUELQUES CLICS
+          LES ÉTAPES
         </h2>
-        <p className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
-          Simplifiez votre expérience événementielle en quatre étapes faciles
-        </p>
+        <h3 className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
+          Organisez votre événement en quelques clics, tout simplement !
+        </h3>
       </div>
   
     <div className="h-full w-full mb-12 flex flex-col lg:flex-row items-center justify-center gap-6 p-0">
