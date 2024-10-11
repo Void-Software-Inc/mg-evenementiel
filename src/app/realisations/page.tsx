@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import FilterControls from './components/FilterControls';
+import Head from 'next/head';
 
 interface ImageProps {
   url: string;
@@ -43,8 +44,32 @@ export default async function RealisationsPage() {
   const initialFilters = { type: "Tout", lieu: "" };
 
   return (
+    <>
+    <Head>
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "MG Événementiel",
+          "url": "https://www.mgevenements.fr",
+          "logo": "https://www.mgevenements.fr/favicon_io/favicon.ico",
+          "description": "Découvrez nos réalisations : une galerie mettant en avant nos services de location de mobilier et de matériel pour des mariages et buffets réussis dans le Sud de la France.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Toulouse",
+            "addressRegion": "Occitanie",
+            "addressCountry": "France"
+          },
+          "sameAs": [
+            "https://www.mariages.net/chapiteau-mariage/mg-evenementiel--e331790",
+            "https://www.instagram.com/mg_evenementiel/"
+          ]
+        })}
+      </script>
+    </Head>
     <div>
       <FilterControls initialFilters={initialFilters} />
     </div>
+    </>
   );
-}
+};
