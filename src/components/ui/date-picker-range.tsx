@@ -28,9 +28,9 @@ export function DatePickerWithRange({
 
   React.useEffect(() => {
     if (date) {
-      console.log("Selected Date:", date.from, date.to);
+ //     console.log("Selected Date:", date.from, date.to);
     } else {
-      console.log("No selected date");
+//      console.log("No selected date");
     }
   }, [date]);
 

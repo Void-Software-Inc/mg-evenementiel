@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     // Generate PDF
     const pdfBuffer = generatePDF(pdfContent); // Generate PDF from the content
 
-    console.log("Preparing to send email to:", staticEmail); // Log the email address
+    //console.log("Preparing to send email to:", staticEmail); // Log the email address
     // Send email to the static email address
     await transporter.sendMail({
       from: process.env.MAILGUN_USER, // Sender address
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
       ],
     });
 
-    console.log("Email sent successfully to:", staticEmail); // Log success
+ //   console.log("Email sent successfully to:", staticEmail); // Log success
     return NextResponse.json({ message: 'Email sent successfully' });
   } catch (error: any) {
     console.error('Error sending email:', error); // Log the error details
