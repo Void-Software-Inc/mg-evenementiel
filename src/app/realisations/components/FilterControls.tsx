@@ -128,14 +128,14 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
   ];
 
   useEffect(() => {
-    console.log("Static Images:", staticImages);
+ //   console.log("Static Images:", staticImages);
   }, []);
 
   useEffect(() => {
     const filtered = staticImages.filter(image => 
       selectedType === "Tout" || image.types.includes(selectedType) // Check if selectedType is in image.types
     );
-    console.log("Filtered Images:", filtered);
+ //   console.log("Filtered Images:", filtered);
     setFilteredImages(filtered);
   }, [selectedType]);
 

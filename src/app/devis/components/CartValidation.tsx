@@ -100,7 +100,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     try {
       // Create the quote
       const result = await createQuote(quoteDataWithoutAddress, quoteItems);
-      console.log("Quote created:", result);
+ //     console.log("Quote created:", result);
 
       // Generate PDF data
       const pdfContent = generatePDFData(); // Generate PDF data here
@@ -271,7 +271,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
   // Update the button to download the PDF
   if (submitResult === 'success') {
-    console.log("Current formData:", formData); // Debugging log
+  //  console.log("Current formData:", formData); // Debugging log
     return (
       <div className="w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Devis envoyé avec succès!</h2>
