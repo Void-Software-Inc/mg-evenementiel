@@ -12,40 +12,40 @@ export default function Faq() {
 
     const faqItems = [
         {
-            question: "Quels types d'événements couvrez-vous ?",
-            answer: "..."
+            question: "Quels sont les types d'événements qui peuvent être organisés ?",
+            answer: "Nous prenons en charge une grande variété d’événements, tels que les mariages, anniversaires, baptêmes, crémaillères, séminaires, cérémonies, soirées à thème, fêtes, congrès, salons, forums..."
         },
         {
-            question: "Offrez-vous des services de livraison et d'installation pour les meubles et décorations ?",
-            answer: "..."
+            question: "Proposez-vous des services de livraison, d'installation et de décoration ?",
+            answer: "Oui, nous offrons non seulement la location de notre matériel, mais nous pouvons également vous accompagner dans votre projet en fournissant des services tels que l'installation, la mise en place, le dressage des tables, la décoration intérieure, et la livraison."
         },
         {
             question: "Comment fonctionne le processus de location ?",
-            answer: "..."
+            answer: "Après avoir choisi vos prestations, nous vous enverrons un devis détaillé avec le montant total et les options de paiement disponibles pour le règlement de l’acompte. La réservation est confirmée une fois le devis signé et l’acompte versé. Ensuite, nous convenons ensemble de la date et du lieu de livraison du matériel. Un rappel sera fait 24 heures avant l’événement pour confirmer notre intervention."
         },
         {
             question: "Quels types de menus proposez-vous ?",
-            answer: "..."
+            answer: "Nous pouvons créer un menu entièrement personnalisé selon vos souhaits. Nous proposons également des menus élaborés par nos soins, ainsi que des formules spécifiques (par exemple, moules & frites, paella...), en fonction du nombre de convives. Par ailleurs, nous pouvons organiser des apéritifs dînatoires avec un assortiment de mignardises salées et/ou sucrées."
         },
         {
-            question: "Gérez-vous également le service à table et le nettoyage après l'événement ?",
-            answer: "..."
+            question: "Prenez-vous en charge le service à table et le nettoyage après l’événement ?",
+            answer: "Oui, nous proposons ces services à la demande du client."
         },
         {
-            question: "Quels sont les frais supplémentaires éventuels ?",
-            answer: "..."
+            question: "Y a-t-il des frais supplémentaires éventuels ?",
+            answer: "Des frais supplémentaires peuvent s'appliquer selon les options choisies ou recommandées. Ces frais concernent généralement des services supplémentaires que nous effectuons pour faciliter la réussite de votre événement."
         },
         {
-            question: "Quelles sont vos conditions de paiement et d'annulation ?",
-            answer: "..."
+            question: "Quelles sont les conditions de paiement et d'annulation ?",
+            answer: "Le montant total de la commande doit être réglé selon les modalités convenues. Les paiements peuvent être effectués par carte bancaire, espèces, virement bancaire ou PayPal. En cas d’annulation, l’acompte versé ne sera pas remboursé, quel que soit le délai."
         },
         {
             question: "Quelle est la durée de location des meubles et décorations ?",
-            answer: "..."
+            answer: "Nos tarifs sont valables pour une période allant du jeudi au lundi."
         },
         {
-            question: "Que se passe-t-il si un meuble ou une décoration est endommagé(e) pendant l'événement ?",
-            answer: "..."
+            question: "Que se passe-t-il en cas de dommage sur un meuble ou une décoration pendant l’événement ?",
+            answer: "Lors de la signature du contrat, une caution est demandée. Cette somme servira à couvrir les éventuels dommages causés à nos meubles ou décorations pendant l’événement."
         },
     ];
 
@@ -87,7 +87,7 @@ export default function Faq() {
                             openIndex === index ? 'max-h-96' : 'max-h-0'
                         }`}
                     >
-                        <p className="p-4 text-gray-600 text-base font-light">{item.answer}</p>
+                        <p className="p-4 text-gray-700 text-base font-light">{item.answer}</p>
                     </div>
                 </div>
             ))}
