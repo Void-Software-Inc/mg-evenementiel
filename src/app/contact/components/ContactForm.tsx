@@ -338,10 +338,13 @@ import {
               <FormItem>
                 <Label className="block text-lg font-medium leading-loose text-gray-700 pt-4">Quel type d'événement ? *</Label>
                 <div className="max-w-[600px] mt-1 pb-5 space-y-2 flex-wrap">
-                <button type="button" className={getButtonClass('Mariage')} onClick={() => handleButtonClick('Mariage')}>Mariage</button>
-                        <button type="button" className={getButtonClass('Anniversaire')} onClick={() => handleButtonClick('Anniversaire')}>Anniversaire</button>
-                        <button type="button" className={getButtonClass('Baptême')} onClick={() => handleButtonClick('Baptême')}>Baptême</button>
-                        <button type="button" className={getButtonClass('Autre')} onClick={() => handleButtonClick('Autre')}>Autre</button>
+                  <button type="button" className={getButtonClass('Mariage')} onClick={() => handleButtonClick('Mariage')}>Mariage</button>
+                  <button type="button" className={getButtonClass('Anniversaire')} onClick={() => handleButtonClick('Anniversaire')}>Anniversaire</button>
+                  <button type="button" className={getButtonClass('Baptême')} onClick={() => handleButtonClick('Baptême')}>Baptême</button>
+                  <button type="button" className={getButtonClass('Professionnel')} onClick={() => handleButtonClick('Professionnel')}>Professionnel</button>
+                  <button type="button" className={getButtonClass('Cérémonie')} onClick={() => handleButtonClick('Cérémonie')}>Cérémonie</button>
+                  <button type="button" className={getButtonClass('Fête privée')} onClick={() => handleButtonClick('Fête privée')}>Fête privée</button>
+                  <button type="button" className={getButtonClass('Autre')} onClick={() => handleButtonClick('Autre')}>Autre</button>
                 </div>
                 <FormMessage className="text-left" />
             </FormItem>
