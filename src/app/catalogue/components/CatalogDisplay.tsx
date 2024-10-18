@@ -29,7 +29,7 @@ const CatalogDisplay: React.FC = () => {
     setIsLoading(true);
     try {
       const fetchedProducts = await getProducts();
-      console.log("Fetched products:", fetchedProducts);
+ //     console.log("Fetched products:", fetchedProducts);
       setProducts(fetchedProducts);
       setFilteredProducts(fetchedProducts);
       if (typeof window !== 'undefined') {
