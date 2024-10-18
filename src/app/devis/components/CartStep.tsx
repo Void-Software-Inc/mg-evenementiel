@@ -148,7 +148,7 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
       <div className="mt-6 pt-4">
         <div className="flex justify-between mb-4">
           <span className="font-medium">Total produits:</span>
-          <span className="font-bold">{total.toFixed(2)}€</span>
+          <span className="font-bold">{total.toFixed(2)}€ HT</span>
         </div>
       </div>
       <div onClick={() => {

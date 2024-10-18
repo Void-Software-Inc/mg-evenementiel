@@ -67,7 +67,7 @@ export async function POST(request: Request) {
 // Function to generate PDF
 const generatePDF = (pdfContent: any): Buffer => {
   const doc = new jsPDF();
-  const { userInfo, products, totalPrice } = pdfContent;
+  const { userInfo, products, totalHT, tva, totalTTC } = pdfContent;
 
   // Add title
   doc.setFontSize(24);
@@ -103,8 +103,10 @@ const generatePDF = (pdfContent: any): Buffer => {
   });
 
   // Add total price
-  doc.setFontSize(18);
-  doc.text(`Montant provisoire: ${totalPrice}€`, 10, (doc as any).lastAutoTable.finalY + 10);
+  doc.setFontSize(14);
+  doc.text(`TVA: ${tva}€`, 10, (doc as any).lastAutoTable.finalY + 20);
+  doc.text(`Prix HT: ${totalHT}€`, 10, (doc as any).lastAutoTable.finalY + 30);
+  doc.text(`Prix TTC: ${totalTTC}€`, 10, (doc as any).lastAutoTable.finalY + 40);
 
   return Buffer.from(doc.output('arraybuffer'));
 };
