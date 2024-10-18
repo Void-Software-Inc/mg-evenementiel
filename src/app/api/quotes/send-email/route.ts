@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     // Generate PDF
     const pdfBuffer = generatePDF(pdfContent); // Generate PDF from the content
 
-    console.log("Preparing to send email to:", staticEmail); // Log the email address
+    //console.log("Preparing to send email to:", staticEmail); // Log the email address
     // Send email to the static email address
     await transporter.sendMail({
       from: process.env.MAILGUN_USER, // Sender address
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
       ],
     });
 
-    console.log("Email sent successfully to:", staticEmail); // Log success
+ //   console.log("Email sent successfully to:", staticEmail); // Log success
     return NextResponse.json({ message: 'Email sent successfully' });
   } catch (error: any) {
     console.error('Error sending email:', error); // Log the error details
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
 // Function to generate PDF
 const generatePDF = (pdfContent: any): Buffer => {
   const doc = new jsPDF();
-  const { userInfo, products, totalPrice } = pdfContent;
+  const { userInfo, products, totalHT, tva, totalTTC } = pdfContent;
 
   // Add title
   doc.setFontSize(24);
@@ -103,8 +103,10 @@ const generatePDF = (pdfContent: any): Buffer => {
   });
 
   // Add total price
-  doc.setFontSize(18);
-  doc.text(`Montant provisoire: ${totalPrice}€`, 10, (doc as any).lastAutoTable.finalY + 10);
+  doc.setFontSize(14);
+  doc.text(`TVA: ${tva}€`, 10, (doc as any).lastAutoTable.finalY + 20);
+  doc.text(`Prix HT: ${totalHT}€`, 10, (doc as any).lastAutoTable.finalY + 30);
+  doc.text(`Prix TTC: ${totalTTC}€`, 10, (doc as any).lastAutoTable.finalY + 40);
 
   return Buffer.from(doc.output('arraybuffer'));
 };

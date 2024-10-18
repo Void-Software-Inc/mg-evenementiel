@@ -13,8 +13,7 @@ import 'jspdf-autotable';
 const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: any, onPrevious: () => void }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<'success' | 'error' | null>(null);
-  const total = cart.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
-  const [pdfData, setPdfData] = useState<any>(null); // State to hold PDF data
+  const [pdfData, setPdfData] = useState<any>(null);
   const { clearFormData } = useDevis();
   const { clearCart } = useCart();
   const router = useRouter();
@@ -26,13 +25,16 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     }
   }, [formData]);
 
+  const totalHT = cart.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
+  const tva = totalHT * 0.20; // 20% TVA
+  const totalTTC = totalHT + tva;
+
   const generatePDFData = () => {
     if (!formData || !cart || cart.length === 0) {
         console.error("formData or cart is null or empty");
-        return null; // Handle the case where formData or cart is not available
+        return null;
     }
 
-    // Set default values for region and pays
     const { 
         first_name, 
         last_name, 
@@ -43,23 +45,22 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         cp, 
         ville, 
         region,
-        pays = "France", // Default value for pays
+        pays = "France",
         event_start_date, 
         event_end_date, 
         is_traiteur 
     } = formData;
 
-    // Prepare PDF data
     const pdfContent = {
         userInfo: { 
             first_name, 
             last_name, 
             email, 
             phone_number, 
-            voie, // Include address fields
-            compl, // Include address fields
-            cp, // Include address fields
-            ville, // Include address fields
+            voie,
+            compl,
+            cp,
+            ville,
             region,
             pays, 
             is_traiteur, 
@@ -70,10 +71,12 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             quantity: item.quantity,
             totalPrice: (item.price * item.quantity).toFixed(2),
         })),
-        totalPrice: total.toFixed(2),
+        totalHT: totalHT.toFixed(2),
+        tva: tva.toFixed(2),
+        totalTTC: totalTTC.toFixed(2),
     };
 
-    return pdfContent; // Return the PDF content
+    return pdfContent;
   };
 
   const handleSubmit = async () => {
@@ -82,7 +85,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
     const quoteData = {
       ...formData,
-      total_cost: total,
+      total_cost: totalTTC, // Use totalTTC instead of total
       status: "nouveau",
       is_paid: false,
       traiteur_price: 0,
@@ -98,23 +101,17 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     }));
 
     try {
-      // Create the quote
       const result = await createQuote(quoteDataWithoutAddress, quoteItems);
-      console.log("Quote created:", result);
 
-      // Generate PDF data
-      const pdfContent = generatePDFData(); // Generate PDF data here
+      const pdfContent = generatePDFData();
       if (!pdfContent) {
-        setSubmitResult('error'); // Set error if PDF content is invalid
-        return; // Exit if PDF content is not valid
+        setSubmitResult('error');
+        return;
       }
 
-      // Send email with the quote data and PDF
-      await sendEmail(quoteData, pdfContent); // Send email with PDF content
-      setPdfData(pdfContent); // Store PDF data for downloading later
+      await sendEmail(quoteData, pdfContent);
+      setPdfData(pdfContent);
 
-      // Do not clear formData here if you want to retain it
-      // clearFormData(); // Comment this out
       clearCart();
       setSubmitResult('success');
     } catch (error) {
@@ -175,7 +172,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     }
 
     const doc = new jsPDF();
-    const { userInfo, products, totalPrice } = pdfData;
+    const { userInfo, products, totalHT, tva, totalTTC } = pdfData;
 
     // Add title
     doc.setFontSize(24);
@@ -254,9 +251,11 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       startY: 105,
     });
 
-    // Add total price
-    doc.setFontSize(18);
-    doc.text(`Montant provisoire: ${totalPrice}€`, 10, (doc as any).lastAutoTable.finalY + 10);
+  
+    doc.setFontSize(16);
+    doc.text(`TVA: ${tva}€`, 10, (doc as any).lastAutoTable.finalY + 20);
+    doc.text(`Prix HT: ${totalHT}€`, 10, (doc as any).lastAutoTable.finalY + 30);
+    doc.text(`Prix TTC: ${totalTTC}€`, 10, (doc as any).lastAutoTable.finalY + 40);
 
     const pageCount = doc.internal.pages.length - 1;
     for (let i = 1; i <= pageCount; i++) {
@@ -264,14 +263,14 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       doc.setFontSize(12);
       doc.text(`Page ${i} sur ${pageCount}`, doc.internal.pageSize.getWidth() - 40, doc.internal.pageSize.getHeight() - 10);
     }
-    // Save the generated PDF
+
     doc.save(`Devis_${userInfo.first_name}_${new Date().toLocaleDateString('fr-FR')}.pdf`); // Save the PDF
   };
   
 
   // Update the button to download the PDF
   if (submitResult === 'success') {
-    console.log("Current formData:", formData); // Debugging log
+  //  console.log("Current formData:", formData); // Debugging log
     return (
       <div className="w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Devis envoyé avec succès!</h2>
@@ -323,9 +322,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
               <span>{(item.price * item.quantity).toFixed(2)}€</span>
             </div>
           ))}
-          <div className="flex justify-between font-bold mt-2">
+          <div className="flex text-lg justify-between font-bold mt-6">
             <span>Total:</span>
-            <span>{total.toFixed(2)}€</span>
+            <span>{totalHT.toFixed(2)}€ HT</span>
           </div>
         </div>
       </div>
