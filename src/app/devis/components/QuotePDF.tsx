@@ -3,38 +3,39 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-export default function QuotePDF({ user, products, totalPrice }: { user: any, products: any[], totalPrice: number }) {
+export default function QuotePDF({ user, products, totalHT, tva, totalTTC }: { user: any, products: any[], totalHT: number, tva: number, totalTTC: number }) {
   const generatePDF = () => {
     const doc = new jsPDF();
 
     // Add title
     doc.text(`Devis pour ${user.first_name} ${user.last_name}`, 10, 10);
 
-    // Add user information
+  
     doc.text(`Email: ${user.email}`, 10, 20);
     doc.text(`Téléphone: ${user.phone_number}`, 10, 30);
     doc.text(`Date de l'événement: ${user.date?.to ? formatDateToParisTime(user.date.to) : 'N/A'}`, 10, 40);
-    doc.text(`Option traiteur: ${user.is_traiteur ? 'Oui' : 'Non'}`, 10, 50); // Include traiteur option
+    doc.text(`Option traiteur: ${user.is_traiteur ? 'Oui' : 'Non'}`, 10, 50);
 
     // Prepare table content
-    const tableHeaders = [['Nom du Produit', 'Quantité', 'Prix']];
+    const tableHeaders = [['Nom du Produit', 'Quantité', 'Prix HT']];
     const tableRows = products.map(product => [
       product.name,
       product.quantity,
       `${(product.price * product.quantity).toFixed(2)}€`
     ]);
 
-    // Generate table
     (doc as any).autoTable({
       head: tableHeaders,
       body: tableRows,
       startY: 60,
     });
 
-    // Add total price below the table
-    doc.text(`Prix Total: ${totalPrice.toFixed(2)}€`, 10, (doc as any).lastAutoTable.finalY + 10);
+    const finalY = (doc as any).lastAutoTable.finalY;
 
-    // Save PDF
+    doc.text(`Total HT: ${totalHT.toFixed(2)}€`, 10, finalY + 10);
+    doc.text(`TVA (20%): ${tva.toFixed(2)}€`, 10, finalY + 20);
+    doc.text(`Total TTC: ${totalTTC.toFixed(2)}€`, 10, finalY + 30);
+
     doc.save('quote.pdf');
   };
 
