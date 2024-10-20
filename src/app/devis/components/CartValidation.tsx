@@ -251,11 +251,38 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       startY: 105,
     });
 
-  
-    doc.setFontSize(16);
-    doc.text(`TVA: ${tva}€`, 10, (doc as any).lastAutoTable.finalY + 20);
-    doc.text(`Prix HT: ${totalHT}€`, 10, (doc as any).lastAutoTable.finalY + 30);
-    doc.text(`Prix TTC: ${totalTTC}€`, 10, (doc as any).lastAutoTable.finalY + 40);
+    // Add payment terms and conditions on the left
+    doc.setFontSize(14);
+    doc.text("Termes et conditions", 10, (doc as any).lastAutoTable.finalY + 20);
+    doc.setFontSize(12);
+    doc.text("• Paiement dû sous un mois", 15, (doc as any).lastAutoTable.finalY + 30);
+    doc.text("• Un acompte de 30% est requis", 15, (doc as any).lastAutoTable.finalY + 40);
+
+    // Add totals
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const rectWidth = 70;
+    const rectHeight = 8;
+    const startX = pageWidth - rectWidth - 10;
+    const startY = (doc as any).lastAutoTable.finalY + 20;
+    const lineSpacing = rectHeight + 2; // Consistent spacing between lines
+
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0); // Set text color to black for HT and TVA
+
+    // Total HT
+    doc.text(`Total HT: ${totalHT}€`, startX, startY);
+
+    // TVA
+    doc.text(`TVA: ${tva}€`, startX, startY + lineSpacing);
+
+    // Total TTC with black background and white text
+    doc.setFillColor(50, 50, 50);
+    doc.rect(startX, startY + lineSpacing+5 , rectWidth, rectHeight, 'F');
+    doc.setTextColor(255, 255, 255); // Set text color to white for TTC
+    doc.text(`Total TTC: ${totalTTC}€`, startX + 2, startY + lineSpacing + 11);
+
+    // Reset text color to black for the rest of the document
+    doc.setTextColor(0, 0, 0);
 
     const pageCount = doc.internal.pages.length - 1;
     for (let i = 1; i <= pageCount; i++) {
