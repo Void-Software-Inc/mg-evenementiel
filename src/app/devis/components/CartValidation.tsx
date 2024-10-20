@@ -255,7 +255,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     doc.setFontSize(14);
     doc.text("Termes et conditions", 10, (doc as any).lastAutoTable.finalY + 20);
     doc.setFontSize(12);
-    doc.text("• Paiement dû sous un mois", 15, (doc as any).lastAutoTable.finalY + 30);
+    doc.text("• Devis valable un mois", 15, (doc as any).lastAutoTable.finalY + 30);
     doc.text("• Un acompte de 30% est requis", 15, (doc as any).lastAutoTable.finalY + 40);
 
     // Add totals
@@ -273,7 +273,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     doc.text(`Total HT: ${totalHT}€`, startX, startY);
 
     // TVA
-    doc.text(`TVA: ${tva}€`, startX, startY + lineSpacing);
+    doc.text(`TVA 20%: ${tva}€`, startX, startY + lineSpacing);
 
     // Total TTC with black background and white text
     doc.setFillColor(50, 50, 50);
@@ -335,23 +335,34 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       <div className="w-full h-full max-w-2xl mx-auto sm:mt-20">
         <h2 className="text-2xl font-bold mb-4">Récapitulatif de votre devis</h2>
         <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">Informations personnelles</h3>
+          <p className="text-xl font-semibold mb-2">Informations personnelles</p>
           <p>Nom: {formData?.last_name}</p>
           <p>Prénom: {formData?.first_name}</p>
           <p>Email: {formData?.email}</p>
           <p>Téléphone: {formData?.phone_number}</p>
         </div>
         <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">Produits</h3>
+          <p className="text-xl font-semibold mb-2">Produits</p>
           {cart.map((item: any) => (
             <div key={item.id} className="flex justify-between mb-2">
               <span>{item.name} x {item.quantity}</span>
               <span>{(item.price * item.quantity).toFixed(2)}€</span>
             </div>
           ))}
-          <div className="flex text-lg justify-between font-bold mt-6">
-            <span>Total:</span>
-            <span>{totalHT.toFixed(2)}€ HT</span>
+          <p className="text-xl font-semibold mb-2 mt-6">Total</p>
+          <div className="flex flex-col items-start text-lg font-medium">
+            <div className="flex justify-between w-full sm:w-1/2 md:w-1/3">
+              <span>Total HT:</span>
+              <span className='font-semibold'>{totalHT.toFixed(2)}€</span>
+            </div>
+            <div className="flex justify-between w-full sm:w-1/2 md:w-1/3">
+              <span>TVA 20%:</span>
+              <span className='font-semibold'>{tva.toFixed(2)}€</span>
+            </div>
+            <div className="flex justify-between w-full sm:w-1/2 md:w-1/3">
+              <span>Total TTC:</span>
+              <span className='font-semibold'>{totalTTC.toFixed(2)}€</span>
+            </div>
           </div>
         </div>
       </div>
