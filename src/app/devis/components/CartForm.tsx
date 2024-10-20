@@ -23,6 +23,13 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { useRouter } from 'next/navigation';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const formSchema = z.object({
   first_name: z.string().min(2, "Veuillez renseignez votre prénom").max(50, "Limite de 50 caractères dépassée"),
@@ -33,7 +40,7 @@ const formSchema = z.object({
   compl: z.string().max(100, "Limite de 100 caractères dépassée").optional(),
   cp: z.string().min(5, "Données requises").max(5, "Format invalide"),
   ville: z.string().min(2, "Données requises").max(100, "Limite de 100 caractères dépassée"),
-  region: z.string().default("Occitanie"), 
+  depart: z.string().min(1, "Veuillez sélectionner un département"),
   pays: z.string().default("France"), 
   date: z.object({
     from: z.date(),
@@ -78,7 +85,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
       compl: "",
       cp: "",
       ville: "",
-      region: "",
+      depart: "",
       pays: "France",  
       date: { from: new Date(), to: new Date() }, // Initialize with current date
       is_traiteur: "false",
@@ -222,13 +229,39 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 )}
               />
 
-              <FormField
+<FormField
                 control={form.control}
-                name="region"
+                name="depart"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="Région" {...field} /> 
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Sélectionnez un département" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Ariege">Ariège</SelectItem>
+                          <SelectItem value="Aude">Aude</SelectItem>
+                          <SelectItem value="Aveyron">Aveyron</SelectItem>
+                          <SelectItem value="Bouches-du-Rhone">Bouches-du-Rhône</SelectItem>
+                          <SelectItem value="Gard">Gard</SelectItem>
+                          <SelectItem value="Gers">Gers</SelectItem>
+                          <SelectItem value="Gironde">Gironde</SelectItem>
+                          <SelectItem value="Haute-Garonne">Haute-Garonne</SelectItem>
+                          <SelectItem value="Hautes-Alpes">Hautes-Alpes</SelectItem>
+                          <SelectItem value="Hautes-Pyrenees">Hautes-Pyrénées</SelectItem>
+                          <SelectItem value="Herault">Hérault</SelectItem>
+                          <SelectItem value="Landes">Landes</SelectItem>
+                          <SelectItem value="Lot">Lot</SelectItem>
+                          <SelectItem value="Lot-et-Garonne">Lot-et-Garonne</SelectItem>
+                          <SelectItem value="Pyrenees-Atlantiques">Pyrénées-Atlantiques</SelectItem>
+                          <SelectItem value="Pyrenees-Orientales">Pyrénées-Orientales</SelectItem>
+                          <SelectItem value="Tarn">Tarn</SelectItem>
+                          <SelectItem value="Tarn-et-Garonne">Tarn-et-Garonne</SelectItem>
+                          <SelectItem value="Var">Var</SelectItem>
+                          <SelectItem value="Vaucluse">Vaucluse</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage className="text-left" />
                   </FormItem>

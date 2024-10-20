@@ -44,7 +44,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         compl, 
         cp, 
         ville, 
-        region,
+        depart,
         pays = "France",
         event_start_date, 
         event_end_date, 
@@ -61,7 +61,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             compl,
             cp,
             ville,
-            region,
+            depart,
             pays, 
             is_traiteur, 
             date: { from: new Date(event_start_date), to: new Date(event_end_date) }
@@ -93,7 +93,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     };
 
     // Remove address fields from formData for quoteData
-    const { voie, compl, cp, ville, region, pays, ...quoteDataWithoutAddress } = quoteData;
+    const { voie, compl, cp, ville, depart, pays, ...quoteDataWithoutAddress } = quoteData;
 
     const quoteItems = cart.map((item: any) => ({
       product_id: item.id,
@@ -144,7 +144,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
                 compl: formData.compl,
                 cp: formData.cp,
                 ville: formData.ville,
-                region: formData.region,
+                depart: formData.depart,
                 event_start_date: quoteData.event_start_date,
                 event_end_date: quoteData.event_end_date,
                 is_traiteur: quoteData.is_traiteur,
@@ -213,7 +213,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         `${userInfo.phone_number}`,
         `${formData.voie}${formData.compl ? `, ${formData.compl}` : ''}`,
         `${formData.cp} ${formData.ville}`,
-        `${formData.region}`
+        `${formData.depart}`
     ];
     clientInfo.forEach((line, index) => {
         doc.text(line, 10, 60 + (index *7)); // Adjusted vertical spacing to 10 for closer lines
@@ -251,11 +251,38 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       startY: 105,
     });
 
-  
-    doc.setFontSize(16);
-    doc.text(`TVA: ${tva}€`, 10, (doc as any).lastAutoTable.finalY + 20);
-    doc.text(`Prix HT: ${totalHT}€`, 10, (doc as any).lastAutoTable.finalY + 30);
-    doc.text(`Prix TTC: ${totalTTC}€`, 10, (doc as any).lastAutoTable.finalY + 40);
+    // Add payment terms and conditions on the left
+    doc.setFontSize(14);
+    doc.text("Termes et conditions", 10, (doc as any).lastAutoTable.finalY + 20);
+    doc.setFontSize(12);
+    doc.text("• Devis valable un mois", 15, (doc as any).lastAutoTable.finalY + 30);
+    doc.text("• Un acompte de 30% est requis", 15, (doc as any).lastAutoTable.finalY + 40);
+
+    // Add totals
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const rectWidth = 70;
+    const rectHeight = 8;
+    const startX = pageWidth - rectWidth - 10;
+    const startY = (doc as any).lastAutoTable.finalY + 20;
+    const lineSpacing = rectHeight + 2; // Consistent spacing between lines
+
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0); // Set text color to black for HT and TVA
+
+    // Total HT
+    doc.text(`Total HT: ${totalHT}€`, startX, startY);
+
+    // TVA
+    doc.text(`TVA 20%: ${tva}€`, startX, startY + lineSpacing);
+
+    // Total TTC with black background and white text
+    doc.setFillColor(50, 50, 50);
+    doc.rect(startX, startY + lineSpacing+5 , rectWidth, rectHeight, 'F');
+    doc.setTextColor(255, 255, 255); // Set text color to white for TTC
+    doc.text(`Total TTC: ${totalTTC}€`, startX + 2, startY + lineSpacing + 11);
+
+    // Reset text color to black for the rest of the document
+    doc.setTextColor(0, 0, 0);
 
     const pageCount = doc.internal.pages.length - 1;
     for (let i = 1; i <= pageCount; i++) {
@@ -308,23 +335,34 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       <div className="w-full h-full max-w-2xl mx-auto sm:mt-20">
         <h2 className="text-2xl font-bold mb-4">Récapitulatif de votre devis</h2>
         <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">Informations personnelles</h3>
+          <p className="text-xl font-semibold mb-2">Informations personnelles</p>
           <p>Nom: {formData?.last_name}</p>
           <p>Prénom: {formData?.first_name}</p>
           <p>Email: {formData?.email}</p>
           <p>Téléphone: {formData?.phone_number}</p>
         </div>
         <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">Produits</h3>
+          <p className="text-xl font-semibold mb-2">Produits</p>
           {cart.map((item: any) => (
             <div key={item.id} className="flex justify-between mb-2">
               <span>{item.name} x {item.quantity}</span>
               <span>{(item.price * item.quantity).toFixed(2)}€</span>
             </div>
           ))}
-          <div className="flex text-lg justify-between font-bold mt-6">
-            <span>Total:</span>
-            <span>{totalHT.toFixed(2)}€ HT</span>
+          <p className="text-xl font-semibold mb-2 mt-6">Total</p>
+          <div className="flex flex-col items-start text-lg font-medium">
+            <div className="flex justify-between w-full sm:w-1/2 md:w-1/3">
+              <span>Total HT:</span>
+              <span className='font-semibold'>{totalHT.toFixed(2)}€</span>
+            </div>
+            <div className="flex justify-between w-full sm:w-1/2 md:w-1/3">
+              <span>TVA 20%:</span>
+              <span className='font-semibold'>{tva.toFixed(2)}€</span>
+            </div>
+            <div className="flex justify-between w-full sm:w-1/2 md:w-1/3">
+              <span>Total TTC:</span>
+              <span className='font-semibold'>{totalTTC.toFixed(2)}€</span>
+            </div>
           </div>
         </div>
       </div>
