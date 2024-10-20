@@ -16,7 +16,7 @@ export async function POST(request: Request) {
         pass: process.env.MAILGUN_PASS,
       },
     });
-   
+   //evab.onbon37@gmail.com
     await transporter.sendMail({
       from: email,
       to: 'mgevenementiel31@gmail.com',
