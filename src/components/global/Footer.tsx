@@ -7,7 +7,8 @@ const Footer = () => {
     <div className='h-fit w-[85%] bg-transparent flex flex-col sm:flex-row justify-between'>
       <div className="space-y-2.5 h-fit">
         <p className='text-4xl lg:text-6xl text-white font-thin tracking-tighter'>+33 07 68 10 96 17</p>
-        <p className='text-1xl lg:text-3xl text-white font-thin'>mgevenementiel31@gmail.com</p>
+        <p className='text-xl lg:text-3xl text-white font-thin'>mgevenementiel31@gmail.com</p>
+        <p className='text-lg lg:text-2xl text-white font-thin'>3, Rue Guy de Maupassant 31240 Toulouse</p>
 
         <div className="w-full h-fit flex justify-start pt-5 lg:pt-10">
           <Link href="/contact" className="inline-flex items-center text-2xl text-white font-thin underline underline-offset-4" passHref>
