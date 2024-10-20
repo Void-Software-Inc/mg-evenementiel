@@ -44,7 +44,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         compl, 
         cp, 
         ville, 
-        region,
+        depart,
         pays = "France",
         event_start_date, 
         event_end_date, 
@@ -61,7 +61,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             compl,
             cp,
             ville,
-            region,
+            depart,
             pays, 
             is_traiteur, 
             date: { from: new Date(event_start_date), to: new Date(event_end_date) }
@@ -93,7 +93,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     };
 
     // Remove address fields from formData for quoteData
-    const { voie, compl, cp, ville, region, pays, ...quoteDataWithoutAddress } = quoteData;
+    const { voie, compl, cp, ville, depart, pays, ...quoteDataWithoutAddress } = quoteData;
 
     const quoteItems = cart.map((item: any) => ({
       product_id: item.id,
@@ -144,7 +144,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
                 compl: formData.compl,
                 cp: formData.cp,
                 ville: formData.ville,
-                region: formData.region,
+                depart: formData.depart,
                 event_start_date: quoteData.event_start_date,
                 event_end_date: quoteData.event_end_date,
                 is_traiteur: quoteData.is_traiteur,
@@ -213,7 +213,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         `${userInfo.phone_number}`,
         `${formData.voie}${formData.compl ? `, ${formData.compl}` : ''}`,
         `${formData.cp} ${formData.ville}`,
-        `${formData.region}`
+        `${formData.depart}`
     ];
     clientInfo.forEach((line, index) => {
         doc.text(line, 10, 60 + (index *7)); // Adjusted vertical spacing to 10 for closer lines
