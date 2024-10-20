@@ -6,7 +6,7 @@ import 'jspdf-autotable';
 // Handler for POST requests
 export async function POST(request: Request) {
   try {
-    const { first_name, last_name, email, phone_number, voie, compl, cp, ville, region, event_start_date, event_end_date, is_traiteur, description, pdfContent } = await request.json();
+    const { first_name, last_name, email, phone_number, voie, compl, cp, ville, depart, event_start_date, event_end_date, is_traiteur, description, pdfContent } = await request.json();
 
     // Check if pdfContent is valid
     if (!pdfContent) {
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
           <p><strong>Nom:</strong> ${first_name} ${last_name}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Téléphone:</strong> ${phone_number}</p>
-          <p><strong>Adresse:</strong> ${voie} ${compl ? `, ${compl}` : ''}, ${cp} ${ville} ${region}</p>
+          <p><strong>Adresse:</strong> ${voie} ${compl ? `, ${compl}` : ''}, ${cp} ${ville} ${depart}</p>
           <p><strong>Date de l'événement:</strong> ${new Date(event_start_date).toLocaleDateString('fr-FR')} au ${new Date(event_end_date).toLocaleDateString('fr-FR')}</p>
           <p><strong>Option traiteur:</strong> ${is_traiteur === "true" ? 'Oui' : 'Non'}</p>
           <p><strong>Description:</strong> ${description}</p>
@@ -85,7 +85,7 @@ const generatePDF = (pdfContent: any): Buffer => {
   doc.text(`Date de l'événement: ${eventFromDate} au ${eventToDate}`, 10, 60);
 
   // Add address information
-  doc.text(`Adresse: ${userInfo.voie ? userInfo.voie : ''} ${userInfo.compl ? `, ${userInfo.compl}` : ''}, ${userInfo.cp ? userInfo.cp : ''} ${userInfo.ville ? userInfo.ville : ''} ${userInfo.region ? userInfo.region : ''}`, 10, 70);
+  doc.text(`Adresse: ${userInfo.voie ? userInfo.voie : ''} ${userInfo.compl ? `, ${userInfo.compl}` : ''}, ${userInfo.cp ? userInfo.cp : ''} ${userInfo.ville ? userInfo.ville : ''} ${userInfo.depart ? userInfo.depart : ''}`, 10, 70);
 
   // Table headers
   const headers = [['Produit', 'Quantité', 'Prix']];
