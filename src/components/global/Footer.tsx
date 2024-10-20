@@ -33,9 +33,9 @@ const Footer = () => {
           <p className="text-2xl lg:text-4xl text-white font-extralight lg:pb-3">NAVIGATION</p>
           <div className="text-lg lg:text-xl text-white font-extralight">
             <Link href="/" passHref><p>MENU</p></Link>
-            <Link href="/" passHref><p>CATALOGUE</p></Link>
-            <Link href="/" passHref><p>RÉALISATIONS</p></Link>
-            <Link href="/" passHref><p>INFOS</p></Link>
+            <Link href="/catalogue" passHref><p>CATALOGUE</p></Link>
+            <Link href="/realisations" passHref><p>RÉALISATIONS</p></Link>
+            <Link href="/infos" passHref><p>INFOS</p></Link>
             <Link href="/contact" passHref><p>CONTACT</p></Link>
           </div>
       </div>
