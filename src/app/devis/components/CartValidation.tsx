@@ -342,6 +342,14 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           <p>Téléphone: {formData?.phone_number}</p>
         </div>
         <div className="mb-6">
+          <p className="text-xl font-semibold mb-2">Événement</p>
+          <p>Date(s): {formData?.event_end_date === formData?.event_start_date ? 
+          formatDateToParisTime(new Date(formData?.event_start_date)) : 
+          `Du ${formatDateToParisTime(new Date(formData?.event_start_date))} au ${formatDateToParisTime(new Date(formData?.event_end_date))}`
+          }</p>
+          <p>Option traiteur: {formData?.is_traiteur ? 'Oui' : 'Non'}</p>
+        </div>
+        <div className="mb-6">
           <p className="text-xl font-semibold mb-2">Produits</p>
           {cart.map((item: any) => (
             <div key={item.id} className="flex justify-between mb-2">
