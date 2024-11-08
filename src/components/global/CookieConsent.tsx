@@ -50,7 +50,7 @@ export default function CookieConsent() {
               </div>,
               {
                 id: TOAST_ID,
-                duration: 10000,
+                duration: 5000,
                 position: "bottom-left",
                 important: true,
                 onDismiss: () => {
