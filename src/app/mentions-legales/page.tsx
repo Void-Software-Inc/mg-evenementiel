@@ -224,7 +224,10 @@ export default function MentionsLegalesPage() {
             </div>
           </section>
 
-          <section className="mb-12">
+          <section 
+            id="cookies-policy" 
+            className="mb-12 scroll-mt-32"
+          >
             <h2 className="text-2xl font-light mb-6 text-zinc-800">Politique de gestion des cookies</h2>
             
             <div className="space-y-6">
