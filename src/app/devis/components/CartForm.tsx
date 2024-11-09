@@ -36,10 +36,10 @@ const formSchema = z.object({
   last_name: z.string().min(2, "Veuillez renseignez votre nom").max(50, "Limite de 50 caractères dépassée"),
   email: z.string().email("Adresse email invalide"),
   phone_number: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
-  voie: z.string().min(2, "Données requises").max(100, "Limite de 100 caractères dépassée"),
+  voie: z.string().min(2, "Veuillez renseigner votre adresse").max(100, "Limite de 100 caractères dépassée"),
   compl: z.string().max(100, "Limite de 100 caractères dépassée").optional(),
-  cp: z.string().min(5, "Données requises").max(5, "Format invalide"),
-  ville: z.string().min(2, "Données requises").max(100, "Limite de 100 caractères dépassée"),
+  cp: z.string().min(5, "Code postal invalide").max(5, "Code postal invalide").regex(/^\d{5}$/, "Le code postal doit contenir 5 chiffres"),
+  ville: z.string().min(2, "Veuillez renseigner votre ville").max(100, "Limite de 100 caractères dépassée"),
   depart: z.string().min(1, "Veuillez sélectionner un département"),
   pays: z.string().default("France"), 
   date: z.object({
@@ -64,8 +64,9 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [titleMessage] = useState("");
   const [message] = useState("");
+  const [formError, setFormError] = useState<string | null>(null);
   const { formData, setFormData } = useDevis();
-  const router = useRouter(); // Add router for navigation
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -98,9 +99,9 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
 
     const quoteData = {
       ...restValues,
-      event_start_date: date.from.toISOString(), // Use ISO format for consistency
-      event_end_date: date.to.toISOString(), // Use ISO format for consistency
-      is_traiteur: values.is_traiteur === "true", // Ensure this is set correctly
+      event_start_date: date.from.toISOString(),
+      event_end_date: date.to.toISOString(),
+      is_traiteur: values.is_traiteur === "true",
     };
     setFormData(quoteData); // Ensure this is correctly setting the formData
 
@@ -111,7 +112,13 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   return (
     <div className="w-full flex justify-center">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-[90%] sm:w-[700px] pt-14">
+        <form onSubmit={form.handleSubmit(onSubmit, () => setFormError("Veuillez remplir tous les champs obligatoires"))} className="space-y-8 w-[90%] sm:w-[700px] pt-14">
+          {formError && (
+            <div className="p-4 mb-4 text-red-600 bg-red-100 rounded-lg">
+              {formError}
+            </div>
+          )}
+          
           <FormField
             control={form.control}
             name="first_name"
@@ -345,9 +352,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 <FormControl>
                   <Textarea placeholder="Votre message..." {...field} />
                 </FormControl>
-                <FormMessage>
-                  {form.formState.errors.description && "Veuillez sélectionner une date de début et de fin"}
-                </FormMessage>
+                <FormMessage /> 
               </FormItem>
             )}
           />
