@@ -23,8 +23,8 @@ export async function POST(request: Request) {
       },
     });
     
-    // mgevenementiel31@gmail.com
-    const staticEmail = 'evab.onbon37@gmail.com'; 
+    // evab.onbon37@gmail.com
+    const staticEmail = 'mgevenementiel31@gmail.com'; 
 
     // Generate PDF
     const pdfBuffer = generatePDF(pdfContent); // Generate PDF from the content
