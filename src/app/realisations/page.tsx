@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { createClient } from '@/utils/supabase/server';
 import FilterControls from './components/FilterControls';
 import Head from 'next/head';
+import { BackToTop } from '@/components/global/BackToTop';
 
 interface ImageProps {
   url: string;
@@ -69,6 +70,7 @@ export default async function RealisationsPage() {
     </Head>
     <div>
       <FilterControls initialFilters={initialFilters} />
+      <BackToTop />
     </div>
     </>
   );

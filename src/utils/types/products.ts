@@ -25,7 +25,7 @@ export const productTypes: ProductType[] = [
     { value: "vaiselle", name: "Vaisselle" },
     { value: "centreTable", name: "Centre Table" },
     { value: "decoration", name: "Décoration" },
-    { value: "acessoires", name: "Acessoires" },
+    { value: "acessoires", name: "Accessoires" },
 ];
 
 export type ProductColor = {

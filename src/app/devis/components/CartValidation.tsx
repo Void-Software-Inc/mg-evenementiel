@@ -184,7 +184,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     doc.setFontSize(12);
 
     const optionsAndDates = [
-      `Date(s) de l'événement: ${eventFromDate} au ${eventToDate}`,
+      `Date(s) de l'événement: ${eventFromDate === eventToDate ? 
+        eventFromDate : 
+        `${eventFromDate} au ${eventToDate}`}`,
       `Option traiteur: ${userInfo.is_traiteur ? 'Oui' : 'Non'}`
     ];
 
@@ -340,6 +342,14 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           <p>Prénom: {formData?.first_name}</p>
           <p>Email: {formData?.email}</p>
           <p>Téléphone: {formData?.phone_number}</p>
+        </div>
+        <div className="mb-6">
+          <p className="text-xl font-semibold mb-2">Événement</p>
+          <p>Date(s): {formData?.event_end_date === formData?.event_start_date ? 
+          formatDateToParisTime(new Date(formData?.event_start_date)) : 
+          `Du ${formatDateToParisTime(new Date(formData?.event_start_date))} au ${formatDateToParisTime(new Date(formData?.event_end_date))}`
+          }</p>
+          <p>Option traiteur: {formData?.is_traiteur ? 'Oui' : 'Non'}</p>
         </div>
         <div className="mb-6">
           <p className="text-xl font-semibold mb-2">Produits</p>
