@@ -5,6 +5,7 @@ import Navbar from "@/components/global/Navbar";
 import { CartProvider } from "@/app/context/CartContext";
 import { Toaster } from "@/components/ui/sonner"
 import Footer from "@/components/global/Footer";
+import CookieConsent from "@/components/global/CookieConsent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <CartProvider>
           <Navbar />
+          <CookieConsent />
           <Toaster position="bottom-left" />
           <main className="flex-grow">
             {children}

@@ -23,8 +23,8 @@ export async function POST(request: Request) {
       },
     });
     
-    // evab.onbon37@gmail.com
-    const staticEmail = 'mgevenementiel31@gmail.com'; 
+    // mgevenementiel31@gmail.com
+    const staticEmail = 'evab.onbon37@gmail.com'; 
 
     // Generate PDF
     const pdfBuffer = generatePDF(pdfContent); // Generate PDF from the content
@@ -80,9 +80,14 @@ const generatePDF = (pdfContent: any): Buffer => {
   doc.text(`Option traiteur: ${userInfo.is_traiteur ? 'Oui' : 'Non'}`, 10, 50);
 
   // Handle dates properly
+  // Handle dates properly
   const eventFromDate = new Date(userInfo.date.from).toLocaleDateString('fr-FR');
   const eventToDate = new Date(userInfo.date.to).toLocaleDateString('fr-FR');
-  doc.text(`Date de l'événement: ${eventFromDate} au ${eventToDate}`, 10, 60);
+  const dateDisplay = eventFromDate === eventToDate ? 
+    `Date de l'événement: ${eventFromDate}` : 
+    `Date de l'événement: ${eventFromDate} au ${eventToDate}`;
+  doc.text(dateDisplay, 10, 60);
+
 
   // Add address information
   doc.text(`Adresse: ${userInfo.voie ? userInfo.voie : ''} ${userInfo.compl ? `, ${userInfo.compl}` : ''}, ${userInfo.cp ? userInfo.cp : ''} ${userInfo.ville ? userInfo.ville : ''} ${userInfo.depart ? userInfo.depart : ''}`, 10, 70);

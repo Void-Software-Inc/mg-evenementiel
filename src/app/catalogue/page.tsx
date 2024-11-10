@@ -1,5 +1,6 @@
 import CatalogDisplay from "./components/CatalogDisplay";
 import { ProductProvider } from '@/app/context/ProductContext';
+import { BackToTop } from "@/components/global/BackToTop";
 import Head from 'next/head';
 
 const CataloguePage: React.FC = () => {
@@ -31,6 +32,7 @@ const CataloguePage: React.FC = () => {
           <CatalogDisplay />
         </ProductProvider>
         <div className="h-12 w-full bg-white"></div>
+        <BackToTop />
       </>
   );
 };
