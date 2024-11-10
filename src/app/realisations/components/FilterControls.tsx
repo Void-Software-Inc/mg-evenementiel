@@ -191,13 +191,13 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
   return (
     <div className="h-full w-full flex flex-col items-center justify-center mt-28 mb-32">
       <div className="h-fit w-[85%]">
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-8">
+        <div className="container">
+          <div className="">
             <div className="h-fit w-[85%]">
               <div className="w-full h-fit flex justify-start space-x-2 lg:space-x-6">
                 <div className="relative pb-12">
                   <h1 className='text-xs sm:text-sm font-extralight sm:font-light text-zinc-700 ml-0 sm:ml-2'>RÉALISATIONS</h1>
-                  <p className="text-4xl sm:text-7xl md:text-9xl font-thin tracking-tighter text-nowrap uppercase">
+                  <p className="text-4xl sm:text-7xl md:text-8xl font-thin tracking-tighter text-nowrap uppercase">
                     {selectedType === "Tout" ? "Tout" : selectedType}
                   </p>
                 </div>
