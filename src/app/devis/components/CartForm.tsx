@@ -43,12 +43,12 @@ const formSchema = z.object({
   depart: z.string().min(1, "Veuillez sélectionner un département"),
   pays: z.string().default("France"), 
   date: z.object({
-    from: z.date(),
-    to: z.date(),
+    from: z.date({ required_error: "Veuillez sélectionner au moins une date" }),
+    to: z.date().optional(),
   }).refine(
-    (data) => data.from !== undefined && data.to !== undefined,
+    (data) => data.from !== undefined,
     {
-      message: "Veuillez sélectionner une date de début et de fin",
+      message: "Veuillez sélectionner au moins une date",
     }
   ),
   is_traiteur: z.enum(["true", "false"], { required_error: "Veuillez sélectionner une option" }),
@@ -96,16 +96,18 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { date, ...restValues } = values;
+    
+    // Ensure both dates are set to the from date if no end date is selected
+    const startDate = date.from;
+    const endDate = date.to || date.from;  // Use from date if to date is not selected
 
     const quoteData = {
       ...restValues,
-      event_start_date: date.from.toISOString(),
-      event_end_date: date.to.toISOString(),
+      event_start_date: startDate.toISOString(),
+      event_end_date: endDate.toISOString(),
       is_traiteur: values.is_traiteur === "true",
     };
-    setFormData(quoteData); // Ensure this is correctly setting the formData
-
-    // Proceed to the next step
+    setFormData(quoteData);
     onNext(quoteData);
   };
 
@@ -293,7 +295,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
             name="date"
             render={({ field }) => (
               <FormItem>
-                <Label className="text-lg font-medium leading-loose text-gray-700">Date de l'événement *</Label>
+                <Label className="text-lg font-medium leading-loose text-gray-700">Date(s) de l'événement *</Label>
                 <FormControl>
                   <DatePickerWithRange 
                     date={field.value as DateRange | undefined} 

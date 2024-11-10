@@ -184,7 +184,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     doc.setFontSize(12);
 
     const optionsAndDates = [
-      `Date(s) de l'événement: ${eventFromDate} au ${eventToDate}`,
+      `Date(s) de l'événement: ${eventFromDate === eventToDate ? 
+        eventFromDate : 
+        `${eventFromDate} au ${eventToDate}`}`,
       `Option traiteur: ${userInfo.is_traiteur ? 'Oui' : 'Non'}`
     ];
 
