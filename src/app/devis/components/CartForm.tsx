@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { formatInTimeZone } from 'date-fns-tz'
 
 const formSchema = z.object({
   first_name: z.string().min(2, "Veuillez renseignez votre prénom").max(50, "Limite de 50 caractères dépassée"),
@@ -97,14 +98,24 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { date, ...restValues } = values;
     
-    // Ensure both dates are set to the from date if no end date is selected
-    const startDate = date.from;
-    const endDate = date.to || date.from;  // Use from date if to date is not selected
+    // Create dates in French timezone
+    const parisTimeZone = 'Europe/Paris';
+    const startDate = date.from ? 
+      formatInTimeZone(date.from, parisTimeZone, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : 
+      undefined;
+    const endDate = date.to ? 
+      formatInTimeZone(date.to || date.from, parisTimeZone, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx") : 
+      startDate;  // Use start date if no end date
+
+    if (!startDate) {
+      setFormError("Veuillez sélectionner une date");
+      return;
+    }
 
     const quoteData = {
       ...restValues,
-      event_start_date: startDate.toISOString(),
-      event_end_date: endDate.toISOString(),
+      event_start_date: startDate,
+      event_end_date: endDate,
       is_traiteur: values.is_traiteur === "true",
     };
     setFormData(quoteData);
