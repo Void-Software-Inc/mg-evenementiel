@@ -376,46 +376,52 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         </div>
 
         {/* Products Table Card */}
-        <div className="mb-8 bg-gray-50 p-6 rounded-lg overflow-x-auto">
-          <p className="text-xl font-semibold mb-4 text-zinc-800 flex items-center">
+        <div className="mb-8 bg-gray-50 p-4 sm:p-6 rounded-lg">
+          <p className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
             Produits
           </p>
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="text-left py-3 px-4 font-semibold text-zinc-600">Produit</th>
-                <th className="text-center py-3 px-4 font-semibold text-zinc-600">Quantité</th>
-                <th className="text-right py-3 px-4 font-semibold text-zinc-600">Prix</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cart.map((item: any) => (
-                <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
-                  <td className="py-3 px-4">{item.name}</td>
-                  <td className="text-center py-3 px-4">{item.quantity}</td>
-                  <td className="text-right py-3 px-4 font-medium">{(item.price * item.quantity).toFixed(2)}€</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto -mx-4 sm:mx-0"> {/* Negative margin on mobile to allow full bleed */}
+            <div className="min-w-full inline-block align-middle">
+              <div className="overflow-hidden">
+                <table className="min-w-full">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="px-3 sm:px-4 py-3 text-left text-sm sm:text-base font-semibold text-gray-600">Produit</th>
+                      <th className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base font-semibold text-gray-600">Quantité</th>
+                      <th className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-semibold text-gray-600">Prix</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cart.map((item: any) => (
+                      <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{item.name}</td>
+                        <td className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base">{item.quantity}</td>
+                        <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{(item.price * item.quantity).toFixed(2)}€</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
 
           {/* Totals Section */}
           <div className="mt-6 border-t pt-4">
             <div className="flex flex-col items-end space-y-2">
-              <div className="flex justify-between w-full max-w-xs">
-                <span className="text-gray-600">Total HT:</span>
-                <span className="font-medium">{totalHT.toFixed(2)}€</span>
+              <div className="flex justify-between w-full max-w-[200px]">
+                <span className="text-gray-600 text-sm sm:text-base">Total HT:</span>
+                <span className="font-medium text-sm sm:text-base">{totalHT.toFixed(2)}€</span>
               </div>
-              <div className="flex justify-between w-full max-w-xs">
-                <span className="text-gray-600">TVA 20%:</span>
-                <span className="font-medium">{tva.toFixed(2)}€</span>
+              <div className="flex justify-between w-full max-w-[200px]">
+                <span className="text-gray-600 text-sm sm:text-base">TVA 20%:</span>
+                <span className="font-medium text-sm sm:text-base">{tva.toFixed(2)}€</span>
               </div>
-              <div className="flex justify-between w-full max-w-xs bg-zinc-800 text-white p-3 rounded-lg">
-                <span>Total TTC:</span>
-                <span className="font-bold">{totalTTC.toFixed(2)}€</span>
+              <div className="flex justify-between w-full max-w-[200px] bg-zinc-800 text-white p-3 rounded-lg">
+                <span className="text-sm sm:text-lg">Total TTC:</span>
+                <span className="font-bold text-sm sm:text-lg">{totalTTC.toFixed(2)}€</span>
               </div>
             </div>
           </div>
