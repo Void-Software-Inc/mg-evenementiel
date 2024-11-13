@@ -174,15 +174,25 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const doc = new jsPDF();
     const { userInfo, products, totalHT, tva, totalTTC } = pdfData;
 
-    // Add title
-    doc.setFontSize(24);
-    doc.text(`DEVIS`, 10, 20);
+    // Add logo with correct aspect ratio
+    const img = new Image();
+    img.src = '/quote-mg-events.png';
+    
+    // Calculate dimensions maintaining aspect ratio
+    const originalWidth = 788;
+    const originalHeight = 380;
+    const desiredWidth = 65; // Slightly increased for better visibility
+    const scaledHeight = (desiredWidth * originalHeight) / originalWidth;
+    
+    doc.addImage(img, 'PNG', 10, 10, desiredWidth, scaledHeight);
+
+    // Adjust subsequent content position based on logo height
+    const contentStartY = 5 + scaledHeight; // Reduced top padding
 
     // Add client options and event dates on the right
     const eventFromDate = formatDateToParisTime(userInfo.date.from);
     const eventToDate = formatDateToParisTime(userInfo.date.to);
     doc.setFontSize(12);
-
     const optionsAndDates = [
       `Date(s) de l'événement: ${eventFromDate === eventToDate ? 
         eventFromDate : 
@@ -191,26 +201,26 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     ];
 
     optionsAndDates.forEach((line, index) => {
-      const textWidth = doc.getTextWidth(line); // Get the width of the text
-      const pageWidth = doc.internal.pageSize.getWidth(); // Get the page width
-      const xPosition = pageWidth - textWidth - 10; // Calculate x position for right alignment
-      doc.text(line, xPosition, 30 + (index * 7)); // Adjusted vertical spacing to 10 for 
-    })
+      const textWidth = doc.getTextWidth(line);
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const xPosition = pageWidth - textWidth - 10;
+      doc.text(line, xPosition, contentStartY + 15 + (index * 7));
+    });
 
-    // Add quote creation date and number
+    // Quote date and number with matching line height
     const quoteDate = new Date().toLocaleDateString('fr-FR');
-//    const quoteNumber = "Quote #12345"; // Replace with actual quote number if available
     doc.setFontSize(12);
-    doc.text(`Date: ${quoteDate}`, 10, 30); // Adjusted position
- //   doc.text(quoteNumber, 10, 40); // Adjusted position
-
-    // Draw horizontal line
-    doc.setLineWidth(0.5);
-    doc.line(10, 50, 200, 50); // Adjust line position as needed
+    doc.text(`Date: ${quoteDate}`, 10, contentStartY + 15);
+    doc.text(`Numéro de devis: ...`, 10, contentStartY + 15 + 7); // Using same 7-point spacing
+    
+    // Adjust horizontal line position
+   // doc.setLineWidth(0.25);
+   // doc.line(10, contentStartY + 30, 200, contentStartY + 30
+   // );
 
     // Add client info on the left with adjusted spacing
     const clientInfo = [
-        `À l'attention de: ${userInfo.first_name} ${userInfo.last_name}`,
+        `Devis à l'attention de: ${userInfo.first_name} ${userInfo.last_name}`,
         `${userInfo.email}`,
         `${userInfo.phone_number}`,
         `${formData.voie}${formData.compl ? `, ${formData.compl}` : ''}`,
@@ -218,7 +228,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         `${formData.depart}`
     ];
     clientInfo.forEach((line, index) => {
-        doc.text(line, 10, 60 + (index *7)); // Adjusted vertical spacing to 10 for closer lines
+        doc.text(line, 10, contentStartY + 35 + (index *7)); // Adjusted vertical spacing to 10 for closer lines
     });
 
     // Add company info on the right with adjusted spacing
@@ -234,7 +244,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         const textWidth = doc.getTextWidth(line); // Get the width of the text
         const pageWidth = doc.internal.pageSize.getWidth(); // Get the page width
         const xPosition = pageWidth - textWidth - 10; // Calculate x position for right alignment
-        doc.text(line, xPosition, 60 + (index * 7)); // Adjusted vertical spacing to 10 for closer lines
+        doc.text(line, xPosition, contentStartY + 35 + (index * 7)); // Adjusted vertical spacing to 10 for closer lines
     });
 
     // Table headers
@@ -245,16 +255,16 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       `${item.totalPrice}€`
     ]);
 
-    // Generate table with the product details
+    // Generate table with the product details - adjust starting Y position
     (doc as any).autoTable({
       head: headers,
       headStyles: { fillColor: [50, 50, 50], textColor: [255, 255, 255] },
       body: data,
-      startY: 105,
+      startY: contentStartY + 90, // Adjust this value to position below client/company info
     });
 
     // Add payment terms and conditions on the left
-    doc.setFontSize(14);
+    doc.setFontSize(12);
     doc.text("Termes et conditions", 10, (doc as any).lastAutoTable.finalY + 20);
     doc.setFontSize(12);
     doc.text("• Devis valable un mois", 15, (doc as any).lastAutoTable.finalY + 30);
