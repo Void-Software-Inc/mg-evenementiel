@@ -29,7 +29,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const tva = totalHT * 0.20; // 20% TVA
   const totalTTC = totalHT + tva;
 
-  const generatePDFData = () => {
+  const generatePDFData = (quoteId?: number) => {
     if (!formData || !cart || cart.length === 0) {
         console.error("formData or cart is null or empty");
         return null;
@@ -52,6 +52,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     } = formData;
 
     const pdfContent = {
+        quoteId,
         userInfo: { 
             first_name, 
             last_name, 
@@ -85,7 +86,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
     const quoteData = {
       ...formData,
-      total_cost: totalTTC, // Use totalTTC instead of total
+      total_cost: totalTTC,
       status: "nouveau",
       is_paid: false,
       traiteur_price: 0,
@@ -102,8 +103,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
     try {
       const result = await createQuote(quoteDataWithoutAddress, quoteItems);
+      const quoteId = result.quoteId; // Get the quote ID from the response
 
-      const pdfContent = generatePDFData();
+      const pdfContent = generatePDFData(quoteId); // Pass quote ID to generatePDFData
       if (!pdfContent) {
         setSubmitResult('error');
         return;
@@ -172,7 +174,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     }
 
     const doc = new jsPDF();
-    const { userInfo, products, totalHT, tva, totalTTC } = pdfData;
+    const { userInfo, products, totalHT, tva, totalTTC, quoteId } = pdfData;
 
     // Add logo with correct aspect ratio
     const img = new Image();
@@ -211,7 +213,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const quoteDate = new Date().toLocaleDateString('fr-FR');
     doc.setFontSize(12);
     doc.text(`Date: ${quoteDate}`, 10, contentStartY + 15);
-    doc.text(`Numéro de devis: ...`, 10, contentStartY + 15 + 7); // Using same 7-point spacing
+    doc.text(`Numéro de devis: ${quoteId || '...'}`, 10, contentStartY + 15 + 7);
     
     // Adjust horizontal line position
    // doc.setLineWidth(0.25);
