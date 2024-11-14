@@ -29,7 +29,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const tva = totalHT * 0.20; // 20% TVA
   const totalTTC = totalHT + tva;
 
-  const generatePDFData = () => {
+  const generatePDFData = (quoteId?: number) => {
     if (!formData || !cart || cart.length === 0) {
         console.error("formData or cart is null or empty");
         return null;
@@ -52,6 +52,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     } = formData;
 
     const pdfContent = {
+        quoteId,
         userInfo: { 
             first_name, 
             last_name, 
@@ -85,7 +86,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
     const quoteData = {
       ...formData,
-      total_cost: totalTTC, // Use totalTTC instead of total
+      total_cost: totalTTC,
       status: "nouveau",
       is_paid: false,
       traiteur_price: 0,
@@ -102,8 +103,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
     try {
       const result = await createQuote(quoteDataWithoutAddress, quoteItems);
+      const quoteId = result.quoteId; // Get the quote ID from the response
 
-      const pdfContent = generatePDFData();
+      const pdfContent = generatePDFData(quoteId); // Pass quote ID to generatePDFData
       if (!pdfContent) {
         setSubmitResult('error');
         return;
@@ -172,17 +174,27 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     }
 
     const doc = new jsPDF();
-    const { userInfo, products, totalHT, tva, totalTTC } = pdfData;
+    const { userInfo, products, totalHT, tva, totalTTC, quoteId } = pdfData;
 
-    // Add title
-    doc.setFontSize(24);
-    doc.text(`DEVIS`, 10, 20);
+    // Add logo with correct aspect ratio
+    const img = new Image();
+    img.src = '/quote-mg-events.png';
+    
+    // Calculate dimensions maintaining aspect ratio
+    const originalWidth = 788;
+    const originalHeight = 380;
+    const desiredWidth = 65; // Slightly increased for better visibility
+    const scaledHeight = (desiredWidth * originalHeight) / originalWidth;
+    
+    doc.addImage(img, 'PNG', 10, 10, desiredWidth, scaledHeight);
+
+    // Adjust subsequent content position based on logo height
+    const contentStartY = 5 + scaledHeight; // Reduced top padding
 
     // Add client options and event dates on the right
     const eventFromDate = formatDateToParisTime(userInfo.date.from);
     const eventToDate = formatDateToParisTime(userInfo.date.to);
     doc.setFontSize(12);
-
     const optionsAndDates = [
       `Date(s) de l'événement: ${eventFromDate === eventToDate ? 
         eventFromDate : 
@@ -191,26 +203,26 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     ];
 
     optionsAndDates.forEach((line, index) => {
-      const textWidth = doc.getTextWidth(line); // Get the width of the text
-      const pageWidth = doc.internal.pageSize.getWidth(); // Get the page width
-      const xPosition = pageWidth - textWidth - 10; // Calculate x position for right alignment
-      doc.text(line, xPosition, 30 + (index * 7)); // Adjusted vertical spacing to 10 for 
-    })
+      const textWidth = doc.getTextWidth(line);
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const xPosition = pageWidth - textWidth - 10;
+      doc.text(line, xPosition, contentStartY + 15 + (index * 7));
+    });
 
-    // Add quote creation date and number
+    // Quote date and number with matching line height
     const quoteDate = new Date().toLocaleDateString('fr-FR');
-//    const quoteNumber = "Quote #12345"; // Replace with actual quote number if available
     doc.setFontSize(12);
-    doc.text(`Date: ${quoteDate}`, 10, 30); // Adjusted position
- //   doc.text(quoteNumber, 10, 40); // Adjusted position
-
-    // Draw horizontal line
-    doc.setLineWidth(0.5);
-    doc.line(10, 50, 200, 50); // Adjust line position as needed
+    doc.text(`Date: ${quoteDate}`, 10, contentStartY + 15);
+    doc.text(`Numéro de devis: ${quoteId || '...'}`, 10, contentStartY + 15 + 7);
+    
+    // Adjust horizontal line position
+   // doc.setLineWidth(0.25);
+   // doc.line(10, contentStartY + 30, 200, contentStartY + 30
+   // );
 
     // Add client info on the left with adjusted spacing
     const clientInfo = [
-        `À l'attention de: ${userInfo.first_name} ${userInfo.last_name}`,
+        `Devis à l'attention de: ${userInfo.first_name} ${userInfo.last_name}`,
         `${userInfo.email}`,
         `${userInfo.phone_number}`,
         `${formData.voie}${formData.compl ? `, ${formData.compl}` : ''}`,
@@ -218,7 +230,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         `${formData.depart}`
     ];
     clientInfo.forEach((line, index) => {
-        doc.text(line, 10, 60 + (index *7)); // Adjusted vertical spacing to 10 for closer lines
+        doc.text(line, 10, contentStartY + 35 + (index *7)); // Adjusted vertical spacing to 10 for closer lines
     });
 
     // Add company info on the right with adjusted spacing
@@ -234,7 +246,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         const textWidth = doc.getTextWidth(line); // Get the width of the text
         const pageWidth = doc.internal.pageSize.getWidth(); // Get the page width
         const xPosition = pageWidth - textWidth - 10; // Calculate x position for right alignment
-        doc.text(line, xPosition, 60 + (index * 7)); // Adjusted vertical spacing to 10 for closer lines
+        doc.text(line, xPosition, contentStartY + 35 + (index * 7)); // Adjusted vertical spacing to 10 for closer lines
     });
 
     // Table headers
@@ -245,16 +257,16 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       `${item.totalPrice}€`
     ]);
 
-    // Generate table with the product details
+    // Generate table with the product details - adjust starting Y position
     (doc as any).autoTable({
       head: headers,
       headStyles: { fillColor: [50, 50, 50], textColor: [255, 255, 255] },
       body: data,
-      startY: 105,
+      startY: contentStartY + 90, // Adjust this value to position below client/company info
     });
 
     // Add payment terms and conditions on the left
-    doc.setFontSize(14);
+    doc.setFontSize(12);
     doc.text("Termes et conditions", 10, (doc as any).lastAutoTable.finalY + 20);
     doc.setFontSize(12);
     doc.text("• Devis valable un mois", 15, (doc as any).lastAutoTable.finalY + 30);
@@ -334,67 +346,123 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
   return (
     <div>
-      <div className="w-full h-full max-w-2xl mx-auto sm:mt-20">
-        <h2 className="text-2xl font-bold mb-4">Récapitulatif de votre devis</h2>
-        <div className="mb-6">
-          <p className="text-xl font-semibold mb-2">Informations personnelles</p>
-          <p>Nom: {formData?.last_name}</p>
-          <p>Prénom: {formData?.first_name}</p>
-          <p>Email: {formData?.email}</p>
-          <p>Téléphone: {formData?.phone_number}</p>
+      <div className="w-full h-full max-w-4xl mx-auto sm:mt-20 p-6 bg-white rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold mb-8 text-zinc-800 border-b pb-4">Récapitulatif de votre devis</h2>
+        
+        {/* Personal Information Card */}
+        <div className="mb-8 bg-gray-50 p-6 rounded-lg">
+          <p className="text-xl font-semibold mb-4 text-zinc-800 flex items-center">
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            Informations personnelles
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p className="flex items-center"><span className="font-medium mr-2">Nom:</span> {formData?.last_name}</p>
+            <p className="flex items-center"><span className="font-medium mr-2">Prénom:</span> {formData?.first_name}</p>
+            <p className="flex items-center"><span className="font-medium mr-2">Email:</span> {formData?.email}</p>
+            <p className="flex items-center"><span className="font-medium mr-2">Téléphone:</span> {formData?.phone_number}</p>
+          </div>
         </div>
-        <div className="mb-6">
-          <p className="text-xl font-semibold mb-2">Événement</p>
-          <p>Date(s): {formData?.event_end_date === formData?.event_start_date ? 
-          formatDateToParisTime(new Date(formData?.event_start_date)) : 
-          `Du ${formatDateToParisTime(new Date(formData?.event_start_date))} au ${formatDateToParisTime(new Date(formData?.event_end_date))}`
-          }</p>
-          <p>Option traiteur: {formData?.is_traiteur ? 'Oui' : 'Non'}</p>
+
+        {/* Event Details Card */}
+        <div className="mb-8 bg-gray-50 p-6 rounded-lg">
+          <p className="text-xl font-semibold mb-4 text-zinc-800 flex items-center">
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Événement
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p className="flex items-center"><span className="font-medium mr-2">Date(s):</span> {formData?.event_end_date === formData?.event_start_date ? 
+              formatDateToParisTime(new Date(formData?.event_start_date)) : 
+              `Du ${formatDateToParisTime(new Date(formData?.event_start_date))} au ${formatDateToParisTime(new Date(formData?.event_end_date))}`}
+            </p>
+            <p className="flex items-center">
+              <span className="font-medium mr-2">Option traiteur:</span>
+              <span className={`px-3 py-1 rounded-full text-sm ${formData?.is_traiteur ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-zinc-800'}`}>
+                {formData?.is_traiteur ? 'Oui' : 'Non'}
+              </span>
+            </p>
+          </div>
         </div>
-        <div className="mb-6">
-          <p className="text-xl font-semibold mb-2">Produits</p>
-          {cart.map((item: any) => (
-            <div key={item.id} className="flex justify-between mb-2">
-              <span>{item.name} x {item.quantity}</span>
-              <span>{(item.price * item.quantity).toFixed(2)}€</span>
+
+        {/* Products Table Card */}
+        <div className="mb-8 bg-gray-50 p-4 sm:p-6 rounded-lg">
+          <p className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            Produits
+          </p>
+          <div className="overflow-x-auto -mx-4 sm:mx-0"> {/* Negative margin on mobile to allow full bleed */}
+            <div className="min-w-full inline-block align-middle">
+              <div className="overflow-hidden">
+                <table className="min-w-full">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="px-3 sm:px-4 py-3 text-left text-sm sm:text-base font-semibold text-gray-600">Produit</th>
+                      <th className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base font-semibold text-gray-600">Quantité</th>
+                      <th className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-semibold text-gray-600">Prix</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cart.map((item: any) => (
+                      <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{item.name}</td>
+                        <td className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base">{item.quantity}</td>
+                        <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{(item.price * item.quantity).toFixed(2)}€</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          ))}
-          <p className="text-xl font-semibold mb-2 mt-6">Total</p>
-          <div className="flex flex-col items-start text-lg font-medium">
-            <div className="flex justify-between w-full sm:w-1/2 md:w-1/3">
-              <span>Total HT:</span>
-              <span className='font-semibold'>{totalHT.toFixed(2)}€</span>
-            </div>
-            <div className="flex justify-between w-full sm:w-1/2 md:w-1/3">
-              <span>TVA 20%:</span>
-              <span className='font-semibold'>{tva.toFixed(2)}€</span>
-            </div>
-            <div className="flex justify-between w-full sm:w-1/2 md:w-1/3">
-              <span>Total TTC:</span>
-              <span className='font-semibold'>{totalTTC.toFixed(2)}€</span>
+          </div>
+
+          {/* Totals Section */}
+          <div className="mt-6 border-t pt-4">
+            <div className="flex flex-col items-end space-y-2">
+              <div className="flex justify-between w-full max-w-[200px]">
+                <span className="text-gray-600 text-sm sm:text-base">Total HT:</span>
+                <span className="font-medium text-sm sm:text-base">{totalHT.toFixed(2)}€</span>
+              </div>
+              <div className="flex justify-between w-full max-w-[200px]">
+                <span className="text-gray-600 text-sm sm:text-base">TVA 20%:</span>
+                <span className="font-medium text-sm sm:text-base">{tva.toFixed(2)}€</span>
+              </div>
+              <div className="flex justify-between w-full max-w-[200px] bg-zinc-800 text-white p-3 rounded-lg">
+                <span className="text-sm sm:text-lg">Total TTC:</span>
+                <span className="font-bold text-sm sm:text-lg">{totalTTC.toFixed(2)}€</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="w-full h-full flex flex-col sm:flex-row justify-end bottom-0 gap-4 mt-24">
+
+      {/* Navigation Buttons */}
+      <div className="w-full max-w-4xl mx-auto flex flex-col sm:flex-row justify-end gap-4 mt-8 mb-12">
         <Button
           onClick={() => {
             onPrevious();
             window.scrollTo(0, 0);
           }}
           variant="outline"
-          className="bg-zinc-200 text-gray-800 h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full border-none p-6 flex items-center space-x-4 transition-all duration-300 group"
+          className="bg-zinc-200 text-zinc-700 h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full border-none p-6 flex items-center space-x-4 transition-all duration-300 group"
           disabled={isSubmitting}
         >
-          <ChevronLeft className="min-w-6 min-h-6 text-gray-800 transition-transform duration-300 group-hover:-translate-x-2" />
-          <span className="font-semibold text-gray-800 text-xl">Précédent</span>
+          <ChevronLeft className="min-w-6 min-h-6 text-zinc-800 transition-transform duration-300 space-x-4 group-hover:-translate-x-2" />
+          <span className="font-semibold text-zinc-800 text-xl">Précédent</span>
         </Button>
+
         <Button
-          onClick={handleSubmit} // Send email on button click
+          onClick={handleSubmit}
           className="h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full p-6 flex items-center space-x-4 transition-all duration-300 group"
           disabled={isSubmitting}
         >
-          <span className="font-semibold text-xl">Envoyer</span>
+          <span className="font-semibold text-xl">
+            {isSubmitting ? 'Envoi...' : 'Envoyer'}
+          </span>
           <ChevronRight className="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-x-2" />
         </Button>
       </div>

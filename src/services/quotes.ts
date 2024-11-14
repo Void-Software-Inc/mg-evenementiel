@@ -4,7 +4,7 @@ const API_URL = '/api';
 
 /***************************** Quotes *****************************/
 
-export async function createQuote(quoteData: Partial<Quote>, quoteItems?: QuoteItem[]): Promise<{ quote: Quote; quoteItems?: QuoteItem[] }> {
+export async function createQuote(quoteData: Partial<Quote>, quoteItems?: QuoteItem[]): Promise<{ quoteId: number }> {
     try {
       const url = `${API_URL}/quotes/create`;
       const cleanedQuoteItems = quoteItems?.map(({ id, quote_id, ...item }) => item);
@@ -21,7 +21,7 @@ export async function createQuote(quoteData: Partial<Quote>, quoteItems?: QuoteI
       }
   
       const result = await response.json();
-      return result;
+      return { quoteId: result.quoteId };
     } catch (error) {
       console.error('Error creating quote:', error);
       throw error;
