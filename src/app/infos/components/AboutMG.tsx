@@ -9,8 +9,9 @@ export const AboutMG = () => {
   return (
     <div className="h-full w-full flex flex-col justify-center items-center">
       <div className="w-[80%] flex flex-col justify-start mb-12">
-        <h1 className="text-zinc-800 mb-8 sm:mb-20 text-6xl sm:text-7xl md:text-8xl font-thin tracking-tight block">
-          INFORMATIONS  
+        <h1 className="text-zinc-800 mb-6 sm:mb-20 text-5xl sm:text-7xl md:text-8xl font-thin tracking-tight block">
+          <span className="hidden max-[410px]:inline">INFORMA<br />TIONS</span>
+          <span className="max-[410px]:hidden">INFORMATIONS</span>
         </h1>
         <p className="text-zinc-800 text-2xl sm:text-3xl font-extralight">
           Connaître MG Événements
