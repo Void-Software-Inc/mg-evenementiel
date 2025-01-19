@@ -6,7 +6,7 @@ const Footer = () => {
   <div className="h-fit w-full bg-zinc-950 flex flex-col justify-center items-center pt-12 lg:pt-28">
     <div className='h-fit w-[85%] bg-transparent flex flex-col sm:flex-row justify-between'>
       <div className="space-y-2.5 h-fit">
-        <p className='text-4xl lg:text-6xl text-white font-thin tracking-tighter'>+33 07 68 10 96 17</p>
+        <p className='text-4xl lg:text-6xl text-white font-thin tracking-tighter'>07 68 10 96 17</p>
         <p className='text-xl lg:text-3xl text-white font-thin'>mgevenementiel31@gmail.com</p>
         <p className='text-lg lg:text-2xl text-white font-thin'>3, Rue Guy de Maupassant 31240 Toulouse</p>
 
