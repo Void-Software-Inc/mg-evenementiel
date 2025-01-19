@@ -75,7 +75,7 @@ const TextParallaxContent = () => {
   };
   
   const PhoneCard = () => {
-    const phoneNumber = "+33 07 68 10 96 17";
+    const phoneNumber = "07 68 10 96 17";
     const email = "mgevenementiel31@gmail.com";
 
     return (
