@@ -20,6 +20,23 @@ export default function Faq() {
             answer: "Oui, nous offrons non seulement la location de notre matériel, mais nous pouvons également vous accompagner dans votre projet en fournissant des services tels que l'installation, la mise en place, le dressage des tables, la décoration intérieure, et la livraison."
         },
         {
+            question: "Puis-je venir récupérer le matériel moi-même ?",
+            answer: (
+                <>
+                    Si vous ne souhaitez pas faire appel à notre service de livraison, vous pouvez directement récupérer le matériel à notre entrepôt, situé&nbsp;
+                    <a 
+                        href="https://maps.google.com/?q=Chemin+des+droits+de+l'homme+et+du+citoyen,+31450+Ayguevives" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="font-normal underline hover:text-gray-600 transition-colors"
+                    >
+                        Chemin des droits de l'homme et du citoyen, 31450 Ayguevives
+                    </a>
+                    . De la même manière, vous pouvez nous le ramener à cette même adresse une fois votre événement terminé.
+                </>
+            )
+        },
+        {
             question: "Comment fonctionne le processus de location ?",
             answer: "Après avoir choisi vos prestations, nous vous enverrons un devis détaillé avec le montant total et les options de paiement disponibles pour le règlement de l’acompte. La réservation est confirmée une fois le devis signé et l’acompte versé. Ensuite, nous convenons ensemble de la date et du lieu de livraison du matériel. Un rappel sera fait 24 heures avant l’événement pour confirmer notre intervention."
         },
@@ -41,7 +58,7 @@ export default function Faq() {
         },
         {
             question: "Quelle est la durée de location des meubles et décorations ?",
-            answer: "Nos tarifs sont valables pour une période allant du jeudi au lundi."
+            answer: "Nos tarifs sont valables pour une période allant du jeudi au lundi. Le tarif comprend une location d'une durée de 4 jours."
         },
         {
             question: "Que se passe-t-il en cas de dommage sur un meuble ou une décoration pendant l’événement ?",
@@ -50,7 +67,7 @@ export default function Faq() {
     ];
 
     const getBackgroundColor = (index: number) => {
-        const colors = ['bg-zinc-50', 'bg-zinc-100', 'bg-zinc150', 'bg-zinc150', 'bg-zinc-200', 'bg-zinc-200', 'bg-zinc-300', 'bg-zinc-300', 'bg-zinc-400'];
+        const colors = ['bg-zinc0','bg-zinc1', 'bg-zinc2', 'bg-zinc3', 'bg-zinc4', 'bg-zinc5', 'bg-zinc6', 'bg-zinc7', 'bg-zinc8', 'bg-zinc9'];
         return colors[index % colors.length];
     };
 
@@ -68,15 +85,15 @@ export default function Faq() {
                         className="flex justify-between items-center w-full p-4 text-left"
                         onClick={() => toggleFaq(index)}
                     >
-                        <h2 className="text-xl font-light text-gray-900">{item.question}</h2>
+                        <h2 className="text-lg sm:text-xl font-light text-gray-900">{item.question}</h2>
                         <span className="ml-6 flex-shrink-0 relative w-6 h-6 flex justify-center items-center">
                             <Plus 
-                                className={`h-6 w-6 text-gray-500 absolute top-0 left-0 transition-all duration-500 ${
+                                className={`h-5 w-5 sm:h-6 sm:w-6 text-gray-500 absolute top-0 left-0 transition-all duration-500 ${
                                     openIndex === index ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'
                                 }`}
                             />
                             <Minus 
-                                className={`h-6 w-6 text-gray-500 absolute top-0 left-0 transition-all duration-500 ${
+                                className={`h-5 w-5 sm:h-6 sm:w-6 text-gray-500 absolute top-0 left-0 transition-all duration-500 ${
                                     openIndex === index ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'
                                 }`}
                             />
@@ -87,7 +104,11 @@ export default function Faq() {
                             openIndex === index ? 'max-h-96' : 'max-h-0'
                         }`}
                     >
-                        <p className="p-4 text-gray-700 text-base font-light">{item.answer}</p>
+                        <p className={`text-base font-light px-8 pt-4 pb-10 ${
+                            index >= 4 ? 'text-gray-900' : 'text-gray-700'
+                        }`}>
+                            {item.answer}
+                        </p>
                     </div>
                 </div>
             ))}
