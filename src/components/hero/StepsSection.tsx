@@ -51,7 +51,7 @@ const steps = [
   { icon: <PackagePlus size={40} className='text-zinc-700'/>, text: "CHOISISSEZ", paragraph:"Sélectionnez des articles parmi notre catalogue et ajoutez les à votre devis." },
   { icon: <Send size={40} className='text-zinc-700'/>, text: "ENVOYEZ", paragraph:"Une fois satisfait, transmettez-nous vos coordonnées ainsi que votre devis !" },
   { icon: <Handshake size={40} className='text-zinc-700'/>, text: "VALIDEZ", paragraph:"Nous prenons contact avec vous afin de valider les préparatifs de votre événement." },
-  { icon: <PartyPopper size={40} className='text-zinc-700'/>, text: "PROFITEZ !", paragraph:"Notre équipe s’occupe de vous livrer le matériel, de l’installer et de le récupérer à la fin de votre événement." },
+  { icon: <PartyPopper size={40} className='text-zinc-700'/>, text: "PROFITEZ !", paragraph:"Récupérez votre matériel ou notre équipe vous le livre ! Nous pouvons aussi vous l’installer et le récupérer à la fin de votre événement." },
 ];
 
 const styles: { [key: string]: React.CSSProperties } = {
