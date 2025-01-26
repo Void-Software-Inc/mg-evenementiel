@@ -8,7 +8,13 @@ const Footer = () => {
       <div className="space-y-2.5 h-fit">
         <p className='text-4xl lg:text-6xl text-white font-thin tracking-tighter'>07 68 10 96 17</p>
         <p className='text-xl lg:text-3xl text-white font-thin'>mgevenementiel31@gmail.com</p>
-        <p className='text-lg lg:text-2xl text-white font-thin'>3, Rue Guy de Maupassant 31240 Toulouse</p>
+        <div className='flex flex-col'>
+          <p className='text-lg/5 lg:text-2xl/7 text-white font-thin pt-5'>
+            <span className='whitespace-normal sm:whitespace-normal [@media(min-width:630px)]:block'>Chemin des droits de l'homme et du citoyen,</span>
+            {' '}
+            <span className='whitespace-normal sm:whitespace-normal [@media(min-width:630px)]:block'>31450 Ayguevives</span>
+          </p>
+        </div>
 
         <div className="w-full h-fit flex justify-start pt-5 lg:pt-10">
           <Link href="/contact" className="inline-flex items-center text-2xl text-white font-thin underline underline-offset-4" passHref>
