@@ -159,7 +159,9 @@ const CatalogDisplay: React.FC = () => {
           <div className="w-full h-fit flex justify-start space-x-2 lg:space-x-6">
             <div className="relative pb-12">
               <h1 className='text-xs sm:text-sm font-extralight sm:font-light text-zinc-700 ml-0 sm:ml-2'>CATALOGUE</h1>
-              <p className="text-zinc-800 text-4xl sm:text-7xl md:text-8xl font-thin tracking-tighter text-nowrap uppercase">
+              <p className={`text-zinc-800 text-4xl sm:text-7xl md:text-8xl font-thin tracking-tighter uppercase ${
+                selectedType === 'vaiselleHG' ? '' : 'text-nowrap'
+              }`}>
                 {productTypes.find(t => t.value === selectedType)?.name || 'Tout'}
               </p>
               <div className='h-fit w-full absolute -mt-3 sm:mt-2 text-end'>
@@ -183,49 +185,55 @@ const CatalogDisplay: React.FC = () => {
                 className="w-full px-4 py-2 border border-zinc-800 rounded-full focus:outline-none focus:ring-2 focus:ring-zinc-500"
               />
             </div>
-            <div className="h-fit w-full flex justify-start space-x-1 lg:space-x-2 lg:ml-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="flex items-center justify-between bg-transparent transition duration-200 ease-in-out hover:bg-zinc-100 text-zinc-800 border border-zinc-800 rounded-full px-4 py-2">
-                    {productTypes.find(t => t.value === selectedType)?.name || "Type"}
-                    <ChevronDownIcon className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-44 max-h-60 overflow-y-auto">
-                  {productTypes.map((type: ProductType) => (
-                    <DropdownMenuCheckboxItem
-                      key={type.value}
-                      checked={selectedType === type.value}
-                      onCheckedChange={() => handleTypeChange(type.value)}
-                    >
-                      {type.name}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+            <div className={`h-fit w-full flex ${
+              selectedType === 'vaiselleHG' ? 'flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-0' : 'flex-row items-center'
+            } justify-start space-x-0 sm:space-x-1 lg:space-x-2 lg:ml-2`}>
+              <div className="w-fit">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="flex items-center justify-between bg-transparent transition duration-200 ease-in-out hover:bg-zinc-100 text-zinc-800 border border-zinc-800 rounded-full px-4 py-2">
+                      {productTypes.find(t => t.value === selectedType)?.name || "Type"}
+                      <ChevronDownIcon className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-44 max-h-60 overflow-y-auto">
+                    {productTypes.map((type: ProductType) => (
+                      <DropdownMenuCheckboxItem
+                        key={type.value}
+                        checked={selectedType === type.value}
+                        onCheckedChange={() => handleTypeChange(type.value)}
+                      >
+                        {type.name}
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="flex items-center justify-between bg-transparent transition duration-200 ease-in-out hover:bg-zinc-100 text-zinc-800 border border-zinc-800 rounded-full px-4 py-2">
-                    {selectedColors.length > 0 ? `${selectedColors.length} sélectionné(s)` : "Couleur"}
-                    <ChevronDownIcon className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-26 max-h-60 overflow-y-auto">
-                  {productColors.map((color: ProductColor) => (
-                    <DropdownMenuCheckboxItem
-                      key={color.value}
-                      checked={selectedColors.includes(color.value)}
-                      onCheckedChange={() => handleColorChange(color.value)}
-                    >
-                      <div className="flex items-center">
-                        {renderColorSwatch(color)}
-                        {color.name}
-                      </div>
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="w-fit">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="flex items-center justify-between bg-transparent transition duration-200 ease-in-out hover:bg-zinc-100 text-zinc-800 border border-zinc-800 rounded-full px-4 py-2">
+                      {selectedColors.length > 0 ? `${selectedColors.length} sélectionné(s)` : "Couleur"}
+                      <ChevronDownIcon className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-26 max-h-60 overflow-y-auto">
+                    {productColors.map((color: ProductColor) => (
+                      <DropdownMenuCheckboxItem
+                        key={color.value}
+                        checked={selectedColors.includes(color.value)}
+                        onCheckedChange={() => handleColorChange(color.value)}
+                      >
+                        <div className="flex items-center">
+                          {renderColorSwatch(color)}
+                          {color.name}
+                        </div>
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
 
             <div className="mt-1 lg:mt-0 ml-0 lg:ml-2">

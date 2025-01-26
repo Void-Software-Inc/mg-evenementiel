@@ -23,6 +23,7 @@ export const productTypes: ProductType[] = [
     { value: "housses", name: "Housses" },
     { value: "chapiteau", name: "Chapiteau" },
     { value: "vaiselle", name: "Vaisselle" },
+    { value: "vaiselleHG", name: "Vaiselle Haut de Gamme" },
     { value: "centreTable", name: "Centre Table" },
     { value: "decoration", name: "Décoration" },
     { value: "acessoires", name: "Accessoires" },
