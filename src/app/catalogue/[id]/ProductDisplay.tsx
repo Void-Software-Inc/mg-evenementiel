@@ -198,9 +198,9 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-[80%] pt-40 lg:mb-24">
+    <div className="flex flex-col md:flex-row w-[80%] pt-40 lg:mb-24 mx-auto">
       <div className="absolute top-16 left-0 right-0 w-full h-fit bg-transparent z-10">
-        <div className="container mx-auto">
+        <div className="container mx-auto px-[10%]">
           <Button
             onClick={handleGoBack}
             variant="outline"
