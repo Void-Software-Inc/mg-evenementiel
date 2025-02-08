@@ -198,9 +198,9 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-[80%] pt-40 lg:mb-24">
+    <div className="flex flex-col md:flex-row w-[80%] pt-40 lg:mb-24 mx-auto">
       <div className="absolute top-16 left-0 right-0 w-full h-fit bg-transparent z-10">
-        <div className="container mx-auto">
+        <div className="container mx-auto px-[10%]">
           <Button
             onClick={handleGoBack}
             variant="outline"
@@ -256,9 +256,9 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
 
       <div className="md:w-1/2 md:pl-8 mt-4 md:mt-0 space-y-4 md:space-y-10">
         
-          <h1 className="text-2xl md:text-5xl font-light">{product.name}</h1>
+          <p className="text-2xl md:text-5xl font-light ">{product.name}</p>
           <div>
-          <p className="text-xl md:text-4xl font-bold py-3 md:py-5">{product.price} €<span className='text-sm font-medium text-zinc-500 pl-1'>TTC</span></p>
+          <p className="text-xl md:text-4xl font-bold py-3 md:py-5">{product.price} €<span className='text-sm font-medium text-zinc-500 pl-1'>HT</span></p>
         
         <div className="w-fit flex flex-col">
           <div className="flex items-center justify-start space-x-6 pb-16">
@@ -311,7 +311,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
         </div>
 
         <div className="space-y-2 min-h-[220px]">
-          <Accordion type="single" collapsible>
+          <Accordion type="single" collapsible defaultValue='item-1'>
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-xl font-semibold">Description</AccordionTrigger>
               <AccordionContent>

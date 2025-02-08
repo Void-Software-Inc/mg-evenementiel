@@ -23,14 +23,14 @@ interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> 
 export function DatePickerWithRange({
   className,
   date,
-  setDate
+  setDate 
 }: DatePickerWithRangeProps) {
 
   React.useEffect(() => {
     if (date) {
-      console.log("Selected Date:", date.from, date.to);
+ //     console.log("Selected Date:", date.from, date.to);
     } else {
-      console.log("No selected date");
+//      console.log("No selected date");
     }
   }, [date]);
 

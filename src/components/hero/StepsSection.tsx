@@ -6,14 +6,14 @@ import Link from 'next/link';
 
 const StepsSection = () => {
   return (
-    <div className='w-full h-fit flex flex-col justify-center items-center'>
+    <div className='w-full h-fit flex flex-col justify-center items-center mb-20'>
       <div className="w-full max-w-4xl px-4 mb-12 flex flex-col items-center justify-center">
         <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
-          EN QUELQUES CLICKS
+          LES ÉTAPES
         </h2>
-        <p className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
-          Simplifiez votre expérience événementielle en quatre étapes faciles
-        </p>
+        <h3 className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
+          Organisez votre événement en quelques clics, tout simplement !
+        </h3>
       </div>
   
     <div className="h-full w-full mb-12 flex flex-col lg:flex-row items-center justify-center gap-6 p-0">
@@ -51,7 +51,7 @@ const steps = [
   { icon: <PackagePlus size={40} className='text-zinc-700'/>, text: "CHOISISSEZ", paragraph:"Sélectionnez des articles parmi notre catalogue et ajoutez les à votre devis." },
   { icon: <Send size={40} className='text-zinc-700'/>, text: "ENVOYEZ", paragraph:"Une fois satisfait, transmettez-nous vos coordonnées ainsi que votre devis !" },
   { icon: <Handshake size={40} className='text-zinc-700'/>, text: "VALIDEZ", paragraph:"Nous prenons contact avec vous afin de valider les préparatifs de votre événement." },
-  { icon: <PartyPopper size={40} className='text-zinc-700'/>, text: "PROFITEZ !", paragraph:"Notre équipe s’occupe de vous livrer le matériel, de l’installer et de le récupérer à la fin de votre événement." },
+  { icon: <PartyPopper size={40} className='text-zinc-700'/>, text: "PROFITEZ !", paragraph:"Récupérez votre matériel ou notre équipe vous le livre ! Nous pouvons aussi vous l’installer et le récupérer à la fin de votre événement." },
 ];
 
 const styles: { [key: string]: React.CSSProperties } = {

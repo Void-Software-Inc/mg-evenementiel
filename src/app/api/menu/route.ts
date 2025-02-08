@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   const supabase = createClient();
 
-  const productIds = [19, 32, 30, 29, 28, 31, 27];
+  const productIds = [19, 63, 91, 65, 13, 6, 62, 63];
 
   const { data: products, error } = await supabase
     .from('products')

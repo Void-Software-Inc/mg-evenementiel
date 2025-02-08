@@ -19,8 +19,7 @@ interface FilterControlsProps {
 interface ImageData {
   src: string;
   alt: string;
-  isPortrait: boolean;
-  type: string;
+  types: string[];
 }
 
 const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
@@ -31,32 +30,52 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
 
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const types = ["Tout", "Mariage", "Baptême", "Anniversaire", "Traiteur", "Professionnel", "Autre"];
+  const types = ["Tout", "Mariage", "Baptême", "Anniversaire", "Traiteur", "Autre"];
 
   const staticImages: ImageData[] = [
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/felix-manuel-almonte-ulloa-idJeiwIdZTo-unsplash_1_.webp", alt: "Portrait 1", isPortrait: true, type: "Mariage" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/engin-akyurt-i3rFV6ULk-o-unsplash_1_.webp", alt: "Landscape 1", isPortrait: false, type: "Mariage" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/mitchell-lawler-tbaoryUol_E-unsplash-1.webp", alt: "Landscape 2", isPortrait: false, type: "Professionnel" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/d-l-samuels-ZIRlju8VBXg-unsplash.webp", alt: "Portrait 2", isPortrait: true, type: "Baptême" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/jeremy-wong-weddings-K8KiCHh4WU4-unsplash(1).webp", alt: "Portrait 3", isPortrait: true, type: "Mariage" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/wedding-dreamz-pqkn1uIS6jY-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Mariage" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/saile-ilyas-SiwrpBnxDww-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Traiteur" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/katrien-sterckx-fn0xXL9szcU-unsplash_1__1_.webp", alt: "Landscape 3", isPortrait: true, type: "Traiteur" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/kelly-neil-eZX1D12IS9w-unsplash.webp", alt: "Landscape 3", isPortrait: true, type: "Anniversaire" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/sirio-hm3efUMoReg-unsplash_2_.webp", alt: "Landscape 3", isPortrait: false, type: "Anniversaire" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/paysage/photos-by-lanty-dcb2pog89fQ-unsplash_1_.webp", alt: "Landscape 3", isPortrait: false, type: "Autre" },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/realisations/portrait/silas-van-overeem-GNM6W-7gkGI-unsplash.webp", alt: "Landscape 3", isPortrait: true, type: "Anniversaire" },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r17.webp", alt: "Table Anniversaire Rose", types: ["Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r1.webp", alt: "Table Anniversaire Rose",  types: ["Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r42.webp", alt: "Table Anniversaire Rose", types: ["Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r13.webp", alt: "Table Mariage Vert",  types: ["Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r25.webp", alt: "Table Mariage Vert",  types: ["Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r14.webp", alt: "Table Mariage Vert",  types: ["Mariage"] },
+    
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r54.webp", alt: "Table Mariage Vert",  types: ["Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r55.webp", alt: "Table Mariage Vert", types: ["Mariage"] },
+  
+    
+    
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r8.webp", alt: "Gâteau Anniversaire Framboises",  types: ["Anniversaire", "Traiteur"] },
+
+    
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r83.webp", alt: "Table Mariage Or",  types: ["Mariage"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r26.webp", alt: "Chapiteau 5m",  types: ["Mariage", "Autre", "Baptême", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r27.webp", alt: "Chapiteau 4m",  types: ["Mariage", "Autre", "Baptême", "Anniversaire"] },
+     
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r84.webp", alt: "Table bleu et or",  types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r87.webp", alt: "Table bleu et or",  types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r18.webp", alt: "Table bleu et or",  types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r4.webp", alt: "Table Noël",  types: ["Autre"] },
+      
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r6.webp", alt: "Amuse-bouche", types: ["Traiteur", "Mariage", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r7.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Anniversaire"] },
+    
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r12.webp", alt: "Paella",  types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r16.webp", alt: "Paella assiettes", types: ["Traiteur"] },
+    
   ];
 
   useEffect(() => {
-    console.log("Static Images:", staticImages);
+ //   console.log("Static Images:", staticImages);
   }, []);
 
   useEffect(() => {
     const filtered = staticImages.filter(image => 
-      selectedType === "Tout" || image.type === selectedType
+      selectedType === "Tout" || image.types.includes(selectedType) // Check if selectedType is in image.types
     );
-    console.log("Filtered Images:", filtered);
+ //   console.log("Filtered Images:", filtered);
     setFilteredImages(filtered);
   }, [selectedType]);
 
@@ -112,13 +131,13 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
   return (
     <div className="h-full w-full flex flex-col items-center justify-center mt-28 mb-32">
       <div className="h-fit w-[85%]">
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-8">
+        <div className="container">
+          <div className="">
             <div className="h-fit w-[85%]">
               <div className="w-full h-fit flex justify-start space-x-2 lg:space-x-6">
                 <div className="relative pb-12">
                   <h1 className='text-xs sm:text-sm font-extralight sm:font-light text-zinc-700 ml-0 sm:ml-2'>RÉALISATIONS</h1>
-                  <p className="text-4xl sm:text-7xl md:text-9xl font-thin tracking-tighter text-nowrap uppercase">
+                  <p className="text-4xl sm:text-7xl md:text-8xl font-thin tracking-tighter text-nowrap uppercase">
                     {selectedType === "Tout" ? "Tout" : selectedType}
                   </p>
                 </div>
@@ -177,7 +196,8 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     style={{ objectFit: 'cover' }}
-                    priority
+                    
+                    loading="lazy"
                   />
                 </div>
               ))}

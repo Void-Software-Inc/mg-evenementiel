@@ -5,12 +5,13 @@ import Navbar from "@/components/global/Navbar";
 import { CartProvider } from "@/app/context/CartContext";
 import { Toaster } from "@/components/ui/sonner"
 import Footer from "@/components/global/Footer";
+import CookieConsent from "@/components/global/CookieConsent";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MG Événements",
-  description: "Location de matériel pour événements",
+  title: "MG Événementiel - Location de Matériel et Mobilier pour Événements dans le Sud de la France",
+  description: "Découvrez MG Événementiel, experts en location de mobilier et matériel pour réceptions dans le Sud de la France. Service rapide et fiable, basé à Toulouse, dans le 31.",
   icons: [
     { rel: 'icon', url: '/favicon_io/favicon.ico' },
     { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon_io/apple-touch-icon.png' },
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <CartProvider>
           <Navbar />
+          <CookieConsent />
           <Toaster position="bottom-left" />
           <main className="flex-grow">
             {children}
