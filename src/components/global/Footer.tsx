@@ -10,8 +10,11 @@ const Footer = () => {
         <p className='text-xl lg:text-3xl text-white font-thin'>mgevenementiel31@gmail.com</p>
         <div className='flex flex-col'>
           <p className='text-lg/5 lg:text-2xl/7 text-white font-thin pt-5'>
+            <span className='whitespace-normal text-sm sm:whitespace-normal [@media(min-width:630px)]:block text-zinc-300'>Lieu de récupération :</span>
+            <br className='block md:hidden' />
             <span className='whitespace-normal sm:whitespace-normal [@media(min-width:630px)]:block'>Chemin des droits de l'homme et du citoyen,</span>
             {' '}
+
             <span className='whitespace-normal sm:whitespace-normal [@media(min-width:630px)]:block'>31450 Ayguevives</span>
           </p>
         </div>
