@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "react-responsive";
@@ -14,6 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { CopyIcon, CheckCircledIcon } from "@radix-ui/react-icons";
 
 const TextParallaxContent = () => {
   const targetRef = useRef(null);
@@ -29,6 +30,10 @@ const TextParallaxContent = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 768 });
   const isPortrait = useMediaQuery({ minHeight: 500, maxHeight: 650 });
   const isPortraitSmall = useMediaQuery({ maxHeight: 500 });
+  const [copied, setCopied] = useState<{ phone: boolean; email: boolean }>({
+    phone: false,
+    email: false,
+  });
 
   const pathname = usePathname(); // Add this line to get the current path
   const isActive = (path: string) => pathname === path; // Add this function to check active path
@@ -62,14 +67,57 @@ const TextParallaxContent = () => {
     is2xlScreen ? "31%" : isXLargeScreen ? "32%" : isLargeScreen ? "45%" : isMdScreen ? "50%" : "100%"
   ]);
   const buttonLeftPosition = useTransform(scrollYProgress, [0, 0.9, 1], ["0%", "0%", "88%"]);
+  
+  const handleCopy = (text: string, type: 'phone' | 'email') => {
+    navigator.clipboard.writeText(text);
+    setCopied((prev) => ({ ...prev, [type]: true }));
+    setTimeout(() => setCopied((prev) => ({ ...prev, [type]: false })), 2000);
+  };
+  
+  const PhoneCard = () => {
+    const phoneNumber = "07 68 10 96 17";
+    const email = "mgevenementiel31@gmail.com";
 
-  const PhoneCard = () => (
-    <div className="w-fit space-y-1">
-      <h4 className="text-base lg:text-xl font-semibold">+33 07 68 10 96 17</h4>
-      <p className="text-base lg:text-lg font-semibold">mgevenementiel31@gmail.com</p>
-      <p className="text-sm italic lg:pt-4">Du lundi au samedi de 9h à 19h</p>
-  </div>
-  );
+    return (
+      <div className="w-full space-y-1">
+        <div className="flex justify-start items-center space-x-3">
+          <h4 className="text-base lg:text-xl font-semibold">{phoneNumber}</h4>
+          {/* Copy button for phone number */}
+          <button
+            className="focus:outline-none text-gray-800 transition-all duration-300"
+            onClick={() => handleCopy(phoneNumber, "phone")}
+            title="Copier le numéro de téléphone"
+          >
+            {/* Toggle between copy icon and check circled icon with transition */}
+            {copied.phone ? (
+              <CheckCircledIcon className="h-5 w-5 text-green-500" />
+            ) : (
+              <CopyIcon className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <p className="text-base lg:text-lg font-semibold">{email}</p>
+          {/* Copy button for email address */}
+          <button
+            className="focus:outline-none text-gray-800 transition-all duration-300"
+            onClick={() => handleCopy(email, "email")}
+            title="Copier l'addresse email"
+          >
+            {/* Toggle between copy icon and check circled icon with transition */}
+            {copied.email ? (
+              <CheckCircledIcon className="h-5 w-5 text-green-500" />
+            ) : (
+              <CopyIcon className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+
+        <p className="text-sm italic lg:pt-4">Du lundi au samedi de 8h à 20h</p>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -126,7 +174,7 @@ const TextParallaxContent = () => {
           >
             <div className="relative w-full h-full">
               <Image
-                src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/photo-1525441273400-056e9c7517b3-1.avif"
+                src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/heroHeaderImage.webp"
                 alt="Background"
                 fill
                 sizes="100vw"
@@ -153,7 +201,7 @@ const TextParallaxContent = () => {
               <div className="h-[100vh] flex items-center justify-center">
                 <div className="max-w-md px-8 text-center">
                   <p className="text-sm uppercase tracking-wider mb-4">Dans le sud de la france</p>
-                  <h1 className="text-4xl font-bold mb-6">ORGANISEZ LE PARFAIT ÉVÉNEMENT</h1>
+                  <p className="text-4xl font-bold mb-6">ORGANISEZ LE PARFAIT ÉVÉNEMENT</p>
                   <p className="text-lg mb-8">Location de décoration et de mobilier pour vos événements</p>
                   <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
                     <Link href="/catalogue">
@@ -238,17 +286,20 @@ const TextParallaxContent = () => {
                     className="absolute bottom-8 2xl:bottom-22"
                     style={{ left: buttonLeftPosition }}
                   >
-                    <Button 
-                      className="hover:bg-black rounded-full w-28 h-28 2xl:w-32 2xl:h-32 4xl:w-44 4xl:h-44 p-0 flex items-center justify-center text-sm 2xl:text-lg font-medium group"
-                      variant="default" 
-                      size="default"
-                    >
-                      <div className="flex flex-col items-center justify-center w-full h-full">
-                        <span>DÉCOUVRIR</span>
-                        <span className="text-xl transform transition-transform duration-700 group-hover:rotate-[360deg]">→</span>
-                      </div>
-                    </Button>
-                  </motion.div>
+                    <Link href="/catalogue" passHref>
+                      <Button 
+                        className="hover:bg-black rounded-full w-28 h-28 2xl:w-32 2xl:h-32 4xl:w-44 4xl:h-44 p-0 flex items-center justify-center text-sm 2xl:text-lg font-medium group"
+                        variant="default" 
+                        size="default"
+                      >
+                        <div className="flex flex-col items-center justify-center w-full h-full">
+                          <span>DÉCOUVRIR</span>
+                          <span className="text-xl transform transition-transform duration-700 group-hover:rotate-[360deg]">→</span>
+                        </div>
+                      </Button>
+                    </Link>
+</motion.div>
+
                 </div>
               )}
             </motion.div>

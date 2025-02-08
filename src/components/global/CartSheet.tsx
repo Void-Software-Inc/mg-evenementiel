@@ -192,7 +192,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
           <div className="w-full">
             <div className="flex justify-between mb-4">
               <span className="font-medium">Total:</span>
-              <span className="font-bold">{total.toFixed(2)}€</span>
+              <span className="font-bold">{total.toFixed(2)}€ HT</span>
             </div>
             <Link 
               href="/devis" 

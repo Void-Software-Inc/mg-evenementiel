@@ -6,8 +6,18 @@ const Footer = () => {
   <div className="h-fit w-full bg-zinc-950 flex flex-col justify-center items-center pt-12 lg:pt-28">
     <div className='h-fit w-[85%] bg-transparent flex flex-col sm:flex-row justify-between'>
       <div className="space-y-2.5 h-fit">
-        <p className='text-4xl lg:text-6xl text-white font-thin tracking-tighter'>+33 07 68 10 96 17</p>
-        <p className='text-1xl lg:text-3xl text-white font-thin'>mgevenementiel31@gmail.com</p>
+        <p className='text-4xl lg:text-6xl text-white font-thin tracking-tighter'>07 68 10 96 17</p>
+        <p className='text-xl lg:text-3xl text-white font-thin'>mgevenementiel31@gmail.com</p>
+        <div className='flex flex-col'>
+          <p className='text-lg/5 lg:text-2xl/7 text-white font-thin pt-5'>
+            <span className='whitespace-normal text-sm sm:whitespace-normal [@media(min-width:630px)]:block text-zinc-300'>Lieu de récupération :</span>
+            <br className='block md:hidden' />
+            <span className='whitespace-normal sm:whitespace-normal [@media(min-width:630px)]:block'>Chemin des droits de l'homme et du citoyen,</span>
+            {' '}
+
+            <span className='whitespace-normal sm:whitespace-normal [@media(min-width:630px)]:block'>31450 Ayguevives</span>
+          </p>
+        </div>
 
         <div className="w-full h-fit flex justify-start pt-5 lg:pt-10">
           <Link href="/contact" className="inline-flex items-center text-2xl text-white font-thin underline underline-offset-4" passHref>
@@ -32,10 +42,11 @@ const Footer = () => {
           <p className="text-2xl lg:text-4xl text-white font-extralight lg:pb-3">NAVIGATION</p>
           <div className="text-lg lg:text-xl text-white font-extralight">
             <Link href="/" passHref><p>MENU</p></Link>
-            <Link href="/" passHref><p>CATALOGUE</p></Link>
-            <Link href="/" passHref><p>RÉALISATIONS</p></Link>
-            <Link href="/" passHref><p>INFOS</p></Link>
+            <Link href="/catalogue" passHref><p>CATALOGUE</p></Link>
+            <Link href="/realisations" passHref><p>RÉALISATIONS</p></Link>
+            <Link href="/infos" passHref><p>INFOS</p></Link>
             <Link href="/contact" passHref><p>CONTACT</p></Link>
+            <Link href="/mentions-legales" passHref><p>MENTIONS LÉGALES</p></Link>
           </div>
       </div>
     </div>
