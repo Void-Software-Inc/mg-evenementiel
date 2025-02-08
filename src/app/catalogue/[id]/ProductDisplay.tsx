@@ -311,7 +311,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
         </div>
 
         <div className="space-y-2 min-h-[220px]">
-          <Accordion type="single" collapsible>
+          <Accordion type="single" collapsible defaultValue='item-1'>
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-xl font-semibold">Description</AccordionTrigger>
               <AccordionContent>
