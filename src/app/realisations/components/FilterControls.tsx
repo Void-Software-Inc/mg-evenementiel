@@ -45,86 +45,26 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
   
     
     
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r19.webp", alt: "Buffet",  types: ["Anniversaire", "Traiteur"] },  
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r8.webp", alt: "Gâteau Anniversaire Framboises",  types: ["Anniversaire", "Traiteur"] },
 
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r52.webp", alt: "Buffet",  types: ["Anniversaire", "Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r58.webp", alt: "Buffet", types: ["Anniversaire", "Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r53.webp", alt: "Gâteau Anniversaire 20", types: ["Anniversaire", "Traiteur"] },
     
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r23.webp", alt: "Gâteau Anniversaire 2",  types: ["Anniversaire", "Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r28.webp", alt: "Gâteau Anniversaire 0",  types: ["Anniversaire", "Traiteur"] },
 
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r83.webp", alt: "Table Mariage Or",  types: ["Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r3.webp", alt: "Table Mariage Or",  types: ["Mariage"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r26.webp", alt: "Chapiteau 5m",  types: ["Mariage", "Autre", "Baptême", "Anniversaire"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r27.webp", alt: "Chapiteau 4m",  types: ["Mariage", "Autre", "Baptême", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r21.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r29.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Mariage"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r11.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Mariage", "Anniversaire" ] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r91.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Mariage", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r90.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r97.webp", alt: "Table blanche mariage",  types: ["Mariage"] },
      
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r84.webp", alt: "Table bleu et or",  types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r87.webp", alt: "Table bleu et or",  types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r18.webp", alt: "Table bleu et or",  types: ["Mariage", "Baptême", "Autre", "Anniversaire"] },
 
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r4.webp", alt: "Table Noël",  types: ["Autre"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r20.webp", alt: "Table Mariage rouge", types: ["Mariage","Autre", "Anniversaire","Baptême"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r5.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r76.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r47.webp", alt: "Cocktail fraise",  types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r48.webp", alt: "Cocktail Maracuja",  types: ["Traiteur"] },
       
-
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r81.webp", alt: "Cocktail Menthe", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r82.webp", alt: "Cocktail Ananas", types: ["Traiteur"] },
-
-
-
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r6.webp", alt: "Amuse-bouche", types: ["Traiteur", "Mariage", "Anniversaire"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r7.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r39.webp", alt: "Amuse-bouche", types: ["Traiteur", "Anniversaire"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r86.webp", alt: "Amuse-bouche",  types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r88.webp", alt: "Amuse-bouche",  types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r89.webp", alt: "Amuse-bouche",  types: ["Traiteur"] },
-
-
-
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r2.webp", alt: "Table Mariage Automne",  types: ["Mariage"] },
-     
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r15.webp", alt: "Plateau Charcuteries",types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r45.webp", alt: "Plateau Fromages", types: ["Traiteur"] },
-
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r10.webp", alt: "Citrons",  types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r94.webp", alt: "Poulet",  types: ["Traiteur"] },
- 
- 
-       { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r9.webp", alt: "Crevettes",  types: ["Traiteur"] },
-       { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r92.webp", alt: "Poivrons",  types: ["Traiteur"] },
-       { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r99.webp", alt: "Moules",  types: ["Traiteur"] },
-
     
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r12.webp", alt: "Paella",  types: ["Traiteur"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r16.webp", alt: "Paella assiettes", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r46.webp", alt: "Paella assiettes",  types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r93.webp", alt: "Frites", types: ["Traiteur"] },
     
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r30.webp", alt: "Plateau fromage", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r37.webp", alt: "Plateau charcuterie", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r32.webp", alt: "Verrines avec fleur", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r33.webp", alt: "Verrines taboulé", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r34.webp", alt: "Bagels saumon", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r35.webp", alt: "Crevettes frites", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r36.webp", alt: "Bagels", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r38.webp", alt: "Boîte de verrines", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r40.webp", alt: "Verrines salade", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r41.webp", alt: "Wraps", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r31.webp", alt: "Boîte MG traiteur", types: ["Traiteur"] },
-    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r51.webp", alt: "Mur à cocktails", types: ["Traiteur"] },
-
-
   ];
 
   useEffect(() => {
