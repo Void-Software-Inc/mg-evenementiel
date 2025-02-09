@@ -176,6 +176,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const doc = new jsPDF();
     const { userInfo, products, totalHT, tva, totalTTC, quoteId } = pdfData;
     const pageWidth = doc.internal.pageSize.getWidth();
+    const rightMargin = 15;
+    const lineSpacing = 7;
 
     // Add logo with correct aspect ratio
     const img = new Image();
@@ -284,6 +286,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       `${item.totalPrice}€`
     ]);
 
+    // Update the autoTable configuration to handle pagination
     (doc as any).autoTable({
       head: headers,
       headStyles: { fillColor: [50, 50, 50], textColor: [255, 255, 255] },
@@ -291,21 +294,94 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       startY: lastClientInfoY + 30,
       styles: {
         fontSize: 9
+      },
+      // Add margin settings to ensure content doesn't overflow
+      margin: { bottom: 60 },
+      // Add a didDrawPage hook to handle footers on each page
+      didDrawPage: function(data: any) {
+        const pageHeight = doc.internal.pageSize.getHeight();
+        
+        // Add page numbers
+        const pageNumber = doc.internal.pages.length - 1;
+        const totalPages = doc.internal.pages.length - 1;
+        doc.setFontSize(8);
+        const text = `Page ${pageNumber} sur ${totalPages}`;
+        const textWidth = doc.getTextWidth(text);
+        doc.text(
+          text,
+          doc.internal.pageSize.getWidth() - 15 - textWidth,
+          pageHeight - 10
+        );
+
+        // Add footer content
+        const footerY = pageHeight - 45; // Start footer 45 units from bottom
+
+        // Add horizontal line
+        doc.setDrawColor(168, 168, 168);
+        doc.setLineWidth(0.5);
+        doc.line(15, footerY, pageWidth - 15, footerY);
+
+        // Add the three sections below the line
+        doc.setFontSize(9);
+        
+        // Company section
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(89, 89, 89);
+        doc.text("Entreprise", 15, footerY + 10);
+        doc.setFont('helvetica', 'normal');
+        doc.text("MG Événements\nChemin des droits de l'homme\net du citoyen, 31450 Ayguevives", 15, footerY + 15);
+
+        // Contact section
+        const contactX = pageWidth / 3 + 10;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Coordonnées", contactX, footerY + 10);
+        doc.setFont('helvetica', 'normal');
+        doc.text("Mani Grimaudo\n07 68 10 96 17\nmgevenementiel31@gmail.com\nwww.mgevenements.fr", contactX, footerY + 15);
+
+        // Bank details section
+        const bankX = (2 * pageWidth) / 3;
+        doc.setFont('helvetica', 'bold');
+        doc.text("Coordonnées bancaires", bankX, footerY + 10);
+        doc.setFont('helvetica', 'normal');
+        doc.text("IBAN FR76 2823 3000 0113 2935 6527 041\nCode BIC/SWIFT REVOFRP2", bankX, footerY + 15);
       }
     });
 
-    // Add totals
-    const rectWidth = 70;
-    const rectHeight = 8;
-    const startX = pageWidth - rectWidth - 10;
-    const startY = (doc as any).lastAutoTable.finalY + 7;
-    const lineSpacing = 7; // Increased from 5 to 7 for slightly taller spacing
+    // Get the final Y position after the table
+    const finalY = (doc as any).lastAutoTable.finalY + 7;
+    
+    // Check if there's enough space for totals and signature
+    const requiredSpace = 120; // Approximate space needed for totals, signature box, and company info
+    const pageHeight = doc.internal.pageSize.getHeight();
+    
+    // If there isn't enough space, add a new page
+    if (finalY + requiredSpace > pageHeight - 20) {
+      doc.addPage();
+      // Reset finalY to top of new page with some margin
+      const newFinalY = 20;
+      addTotalsAndSignature(doc, newFinalY, pageWidth, totalHT, tva, totalTTC, rightMargin, lineSpacing);
+    } else {
+      addTotalsAndSignature(doc, finalY, pageWidth, totalHT, tva, totalTTC, rightMargin, lineSpacing);
+    }
 
+    doc.save(`Devis_${userInfo.first_name}_${new Date().toLocaleDateString('fr-FR')}.pdf`);
+  };
+  
+  // Helper function to add totals and signature section
+  const addTotalsAndSignature = (
+    doc: any,
+    startY: number,
+    pageWidth: number,
+    totalHT: number,
+    tva: number,
+    totalTTC: number,
+    rightMargin: number,
+    lineSpacing: number
+  ) => {
+    // Add totals
     doc.setFontSize(9);
     doc.setTextColor(0, 0, 0);
     doc.setFont('helvetica', 'bold');
-
-    const rightMargin = 15;
 
     // Total HT
     const totalHTText = `Total HT:  ${Number(totalHT).toFixed(2)}€`;
@@ -322,9 +398,6 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const totalTTCWidth = doc.getTextWidth(totalTTCText);
     doc.text(totalTTCText, pageWidth - rightMargin - totalTTCWidth, startY + (lineSpacing * 2));
 
-    // Reset font to normal for the rest of the document
-    doc.setFont('helvetica', 'normal');
-
     // Add signature box
     const signatureText = "Signature du client (précédée de la mention « Bon pour accord »)";
     const signatureBoxWidth = totalHTWidth + 80;
@@ -332,6 +405,21 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const signatureBoxX = pageWidth - rightMargin - signatureBoxWidth;
     const signatureBoxY = startY + (lineSpacing * 3);
 
+    // Draw signature box and add company information
+    addSignatureAndCompanyInfo(doc, signatureBoxX, signatureBoxY, signatureBoxWidth, 
+      signatureBoxHeight, signatureText, pageWidth);
+  };
+
+  // Helper function to add signature box and company information
+  const addSignatureAndCompanyInfo = (
+    doc: any,
+    signatureBoxX: number,
+    signatureBoxY: number,
+    signatureBoxWidth: number,
+    signatureBoxHeight: number,
+    signatureText: string,
+    pageWidth: number
+  ) => {
     // Draw gray rectangle
     doc.setFillColor(240, 240, 240);
     doc.rect(signatureBoxX, signatureBoxY, signatureBoxWidth, signatureBoxHeight, 'F');
@@ -345,81 +433,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         signatureBoxY + 7
     );
     
-    // Add horizontal line under signature box
-    doc.setDrawColor(168, 168, 168);
-    doc.setLineWidth(0.5);
-    doc.line(
-        15,
-        signatureBoxY + signatureBoxHeight + 10,
-        pageWidth - 15,
-        signatureBoxY + signatureBoxHeight + 10
-    );
-
-    // Add company information under the line
-    const lineY = signatureBoxY + signatureBoxHeight + 10;
-
-    // Company header and details
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(89, 89, 89); // #595959
-    doc.text("Entreprise", 15, lineY + 10);
-
-    doc.setFont('helvetica', 'normal');
-    const companyDetails = [
-        "MG Événements",
-        "Chemin des droits de l'homme",
-        "et du citoyen, 31450 Ayguevives",
-        "N° Siren ou Siret",
-        "N° TVA Intra"
-    ];
-
-    companyDetails.forEach((line, index) => {
-        doc.text(line, 15, lineY + 15 + (index * 5));
-    });
-
-    // Add contact information section with consistent spacing
-    const contactX = pageWidth / 3 + 10; // Reduced from +20 to +10
-    doc.setFont('helvetica', 'bold');
-    doc.text("Coordonnées", contactX, lineY + 10);
-
-    doc.setFont('helvetica', 'normal');
-    const contactDetails = [
-        "Mani Grimaudo",
-        "07 68 10 96 17",
-        "mgevenementiel31@gmail.com"
-    ];
-
-    contactDetails.forEach((line, index) => {
-        doc.text(line, contactX, lineY + 15 + (index * 5));
-    });
-
-    // Add bank details section with consistent spacing
-    const bankX = (2 * pageWidth) / 3; // Removed the +20 adjustment
-    doc.setFont('helvetica', 'bold');
-    doc.text("Coordonnées bancaires", bankX, lineY + 10);
-
-    doc.setFont('helvetica', 'normal');
-    const bankDetails = [
-        "IBAN FR76 2823 3000 0113 2935 6527 041",
-        "Code BIC/SWIFT REVOFRP2"
-    ];
-
-    bankDetails.forEach((line, index) => {
-        doc.text(line, bankX, lineY + 15 + (index * 5));
-    });
-
     // Reset colors for the rest of the document
     doc.setTextColor(0, 0, 0);
-
-    const pageCount = doc.internal.pages.length - 1;
-    for (let i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      doc.setFontSize(8);
-      doc.text(`Page ${i} sur ${pageCount}`, doc.internal.pageSize.getWidth() - 40, doc.internal.pageSize.getHeight() - 10);
-    }
-
-    doc.save(`Devis_${userInfo.first_name}_${new Date().toLocaleDateString('fr-FR')}.pdf`); // Save the PDF
   };
-  
 
   // Update the button to download the PDF
   if (submitResult === 'success') {
