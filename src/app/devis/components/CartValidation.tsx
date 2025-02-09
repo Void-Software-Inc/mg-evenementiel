@@ -175,6 +175,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
     const doc = new jsPDF();
     const { userInfo, products, totalHT, tva, totalTTC, quoteId } = pdfData;
+    const pageWidth = doc.internal.pageSize.getWidth();
 
     // Add logo with correct aspect ratio
     const img = new Image();
@@ -186,70 +187,96 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const desiredWidth = 65; // Slightly increased for better visibility
     const scaledHeight = (desiredWidth * originalHeight) / originalWidth;
     
-    doc.addImage(img, 'PNG', 10, 10, desiredWidth, scaledHeight);
+    doc.setFontSize(50);
+    doc.setTextColor(51); // Single value for grayscale (51 = #333333)
+    doc.text(`Devis`, 15, 30);
+    doc.setTextColor(0); // Reset to black
+
+    doc.addImage(img, 'PNG', 133, 5, desiredWidth, scaledHeight);
 
     // Adjust subsequent content position based on logo height
     const contentStartY = 5 + scaledHeight; // Reduced top padding
 
-    // Add client options and event dates on the right
+    // Quote date and number at the top right
+    const quoteDate = new Date().toLocaleDateString('fr-FR');
+    const quoteValue = (quoteId || '...').toString();
+
+    // Date and quote info on the left
+    doc.setFontSize(9);
+
+    // Date
+    doc.setFont('helvetica', 'bold');
+    doc.text("Date:", 15, contentStartY + 15);
+    doc.setFont('helvetica', 'normal');
+    doc.text(quoteDate, 15 + doc.getTextWidth("Date:   "), contentStartY + 15);
+
+    // Quote number
+    doc.setFont('helvetica', 'bold');
+    doc.text("Numéro devis: ", 15, contentStartY + 21);
+    doc.setFont('helvetica', 'normal');
+    doc.text(quoteValue, 15 + doc.getTextWidth("Numéro devis:   "), contentStartY + 21);
+
+    // Event dates
     const eventFromDate = formatDateToParisTime(userInfo.date.from);
     const eventToDate = formatDateToParisTime(userInfo.date.to);
-    doc.setFontSize(12);
-    const optionsAndDates = [
-      `Date(s) de l'événement: ${eventFromDate === eventToDate ? 
-        eventFromDate : 
-        `${eventFromDate} au ${eventToDate}`}`,
-      `Option traiteur: ${userInfo.is_traiteur ? 'Oui' : 'Non'}`
-    ];
+    const eventDateValue = eventFromDate === eventToDate ? eventFromDate : `du ${eventFromDate} au ${eventToDate}`;
+    doc.setFont('helvetica', 'bold');
+    doc.text("Date(s) de l'événement:", 15, contentStartY + 27);
+    doc.setFont('helvetica', 'normal');
+    doc.text(eventDateValue, 15, contentStartY + 33);
 
-    optionsAndDates.forEach((line, index) => {
-      const textWidth = doc.getTextWidth(line);
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const xPosition = pageWidth - textWidth - 10;
-      doc.text(line, xPosition, contentStartY + 15 + (index * 7));
-    });
+    // Traiteur option
+    const traiteurValue = userInfo.is_traiteur ? 'Oui' : 'Non';
+    doc.setFont('helvetica', 'bold');
+    doc.text("Option traiteur:", 15, contentStartY + 39);
+    doc.setFont('helvetica', 'normal');
+    doc.text(traiteurValue, 15 + doc.getTextWidth("Option traiteur:    "), contentStartY + 39);
 
-    // Quote date and number with matching line height
-    const quoteDate = new Date().toLocaleDateString('fr-FR');
-    doc.setFontSize(12);
-    doc.text(`Date: ${quoteDate}`, 10, contentStartY + 15);
-    doc.text(`Numéro de devis: ${quoteId || '...'}`, 10, contentStartY + 15 + 7);
-    
-    // Adjust horizontal line position
-   // doc.setLineWidth(0.25);
-   // doc.line(10, contentStartY + 30, 200, contentStartY + 30
-   // );
+    // Add client info aligned to the right
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text("Client", pageWidth - 15 - doc.getTextWidth("Client"), contentStartY + 15);
+    doc.setFont('helvetica', 'normal');
 
-    // Add client info on the left with adjusted spacing
     const clientInfo = [
-        `Devis à l'attention de: ${userInfo.first_name} ${userInfo.last_name}`,
+        `${userInfo.first_name} ${userInfo.last_name}`,
         `${userInfo.email}`,
         `${userInfo.phone_number}`,
         `${formData.voie}${formData.compl ? `, ${formData.compl}` : ''}`,
         `${formData.cp} ${formData.ville}`,
         `${formData.depart}`
     ];
+
+    doc.setFont('helvetica', 'normal');
+
     clientInfo.forEach((line, index) => {
-        doc.text(line, 10, contentStartY + 35 + (index *7)); // Adjusted vertical spacing to 10 for closer lines
+        const lineWidth = doc.getTextWidth(line);
+        doc.text(line, pageWidth - 15 - lineWidth, contentStartY + 21 + (index * 6));
     });
 
-    // Add company info on the right with adjusted spacing
-    const companyInfo = [
-      "MG Événements",
-      "07 68 10 96 17",
-      "mgevenementiel31@gmail.com",
-      "3 Rue Guy de Maupassant",
-      "31240 Toulouse"
-  ];
+    // Calculate Y position after last client info line
+    const lastClientInfoY = contentStartY + 21 + ((clientInfo.length - 1) * 6);
 
-    companyInfo.forEach((line, index) => {
-        const textWidth = doc.getTextWidth(line); // Get the width of the text
-        const pageWidth = doc.internal.pageSize.getWidth(); // Get the page width
-        const xPosition = pageWidth - textWidth - 10; // Calculate x position for right alignment
-        doc.text(line, xPosition, contentStartY + 35 + (index * 7)); // Adjusted vertical spacing to 10 for closer lines
-    });
+    // Add payment terms and conditions on the left
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text("Termes et conditions", 15, lastClientInfoY + 10);
+    doc.setFont('helvetica', 'normal');
+    doc.text("Devis valable un mois", 15, lastClientInfoY + 15);
+    doc.text("Un acompte de 30% est requis", 15, lastClientInfoY + 20);
 
-    // Table headers
+    // Add address section on the right
+    doc.setFont('helvetica', 'bold');
+    const addressTitle = "Adresse de récupération du matériel";
+    const addressTitleWidth = doc.getTextWidth(addressTitle);
+    doc.text(addressTitle, pageWidth - 15 - addressTitleWidth, lastClientInfoY + 10);
+    
+    doc.setFont('helvetica', 'normal');
+    const addressText = "Chemin des droits de l'homme et du citoyen, 31450 Ayguevives";
+    const addressWidth = doc.getTextWidth(addressText);
+    doc.text(addressText, pageWidth - 15 - addressWidth, lastClientInfoY + 15);
+
+    // Generate table with the product details
     const headers = [['Produit', 'Quantité', 'Prix']];
     const data = products.map((item: { name: string; quantity: number; totalPrice: string }) => [
       item.name,
@@ -257,51 +284,136 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       `${item.totalPrice}€`
     ]);
 
-    // Generate table with the product details - adjust starting Y position
     (doc as any).autoTable({
       head: headers,
       headStyles: { fillColor: [50, 50, 50], textColor: [255, 255, 255] },
       body: data,
-      startY: contentStartY + 90, // Adjust this value to position below client/company info
+      startY: lastClientInfoY + 30,
+      styles: {
+        fontSize: 9
+      }
     });
 
-    // Add payment terms and conditions on the left
-    doc.setFontSize(12);
-    doc.text("Termes et conditions", 10, (doc as any).lastAutoTable.finalY + 20);
-    doc.setFontSize(12);
-    doc.text("• Devis valable un mois", 15, (doc as any).lastAutoTable.finalY + 30);
-    doc.text("• Un acompte de 30% est requis", 15, (doc as any).lastAutoTable.finalY + 40);
-
     // Add totals
-    const pageWidth = doc.internal.pageSize.getWidth();
     const rectWidth = 70;
     const rectHeight = 8;
     const startX = pageWidth - rectWidth - 10;
-    const startY = (doc as any).lastAutoTable.finalY + 20;
-    const lineSpacing = rectHeight + 2; // Consistent spacing between lines
+    const startY = (doc as any).lastAutoTable.finalY + 7;
+    const lineSpacing = 7; // Increased from 5 to 7 for slightly taller spacing
 
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0); // Set text color to black for HT and TVA
+    doc.setFontSize(9);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'bold');
+
+    const rightMargin = 15;
 
     // Total HT
-    doc.text(`Total HT: ${totalHT}€`, startX, startY);
+    const totalHTText = `Total HT:  ${Number(totalHT).toFixed(2)}€`;
+    const totalHTWidth = doc.getTextWidth(totalHTText);
+    doc.text(totalHTText, pageWidth - rightMargin - totalHTWidth, startY);
 
     // TVA
-    doc.text(`TVA 20%: ${tva}€`, startX, startY + lineSpacing);
+    const tvaText = `TVA 20%:  ${Number(tva).toFixed(2)}€`;
+    const tvaWidth = doc.getTextWidth(tvaText);
+    doc.text(tvaText, pageWidth - rightMargin - tvaWidth, startY + lineSpacing);
 
-    // Total TTC with black background and white text
-    doc.setFillColor(50, 50, 50);
-    doc.rect(startX, startY + lineSpacing+5 , rectWidth, rectHeight, 'F');
-    doc.setTextColor(255, 255, 255); // Set text color to white for TTC
-    doc.text(`Total TTC: ${totalTTC}€`, startX + 2, startY + lineSpacing + 11);
+    // Total TTC
+    const totalTTCText = `Total TTC:  ${Number(totalTTC).toFixed(2)}€`;
+    const totalTTCWidth = doc.getTextWidth(totalTTCText);
+    doc.text(totalTTCText, pageWidth - rightMargin - totalTTCWidth, startY + (lineSpacing * 2));
 
-    // Reset text color to black for the rest of the document
+    // Reset font to normal for the rest of the document
+    doc.setFont('helvetica', 'normal');
+
+    // Add signature box
+    const signatureText = "Signature du client (précédée de la mention « Bon pour accord »)";
+    const signatureBoxWidth = totalHTWidth + 80;
+    const signatureBoxHeight = 30;
+    const signatureBoxX = pageWidth - rightMargin - signatureBoxWidth;
+    const signatureBoxY = startY + (lineSpacing * 3);
+
+    // Draw gray rectangle
+    doc.setFillColor(240, 240, 240);
+    doc.rect(signatureBoxX, signatureBoxY, signatureBoxWidth, signatureBoxHeight, 'F');
+
+    // Add signature text with gray color (#858584)
+    doc.setFontSize(9);
+    doc.setTextColor(133, 133, 132);
+    const signatureTextWidth = doc.getTextWidth(signatureText);
+    doc.text(signatureText, 
+        signatureBoxX + (signatureBoxWidth - signatureTextWidth) / 2, 
+        signatureBoxY + 7
+    );
+    
+    // Add horizontal line under signature box
+    doc.setDrawColor(168, 168, 168);
+    doc.setLineWidth(0.5);
+    doc.line(
+        15,
+        signatureBoxY + signatureBoxHeight + 10,
+        pageWidth - 15,
+        signatureBoxY + signatureBoxHeight + 10
+    );
+
+    // Add company information under the line
+    const lineY = signatureBoxY + signatureBoxHeight + 10;
+
+    // Company header and details
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(89, 89, 89); // #595959
+    doc.text("Entreprise", 15, lineY + 10);
+
+    doc.setFont('helvetica', 'normal');
+    const companyDetails = [
+        "MG Événements",
+        "Chemin des droits de l'homme",
+        "et du citoyen, 31450 Ayguevives",
+        "N° Siren ou Siret",
+        "N° TVA Intra"
+    ];
+
+    companyDetails.forEach((line, index) => {
+        doc.text(line, 15, lineY + 15 + (index * 5));
+    });
+
+    // Add contact information section with consistent spacing
+    const contactX = pageWidth / 3 + 10; // Reduced from +20 to +10
+    doc.setFont('helvetica', 'bold');
+    doc.text("Coordonnées", contactX, lineY + 10);
+
+    doc.setFont('helvetica', 'normal');
+    const contactDetails = [
+        "Mani Grimaudo",
+        "07 68 10 96 17",
+        "mgevenementiel31@gmail.com"
+    ];
+
+    contactDetails.forEach((line, index) => {
+        doc.text(line, contactX, lineY + 15 + (index * 5));
+    });
+
+    // Add bank details section with consistent spacing
+    const bankX = (2 * pageWidth) / 3; // Removed the +20 adjustment
+    doc.setFont('helvetica', 'bold');
+    doc.text("Coordonnées bancaires", bankX, lineY + 10);
+
+    doc.setFont('helvetica', 'normal');
+    const bankDetails = [
+        "IBAN FR76 2823 3000 0113 2935 6527 041",
+        "Code BIC/SWIFT REVOFRP2"
+    ];
+
+    bankDetails.forEach((line, index) => {
+        doc.text(line, bankX, lineY + 15 + (index * 5));
+    });
+
+    // Reset colors for the rest of the document
     doc.setTextColor(0, 0, 0);
 
     const pageCount = doc.internal.pages.length - 1;
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
-      doc.setFontSize(12);
+      doc.setFontSize(8);
       doc.text(`Page ${i} sur ${pageCount}`, doc.internal.pageSize.getWidth() - 40, doc.internal.pageSize.getHeight() - 10);
     }
 
