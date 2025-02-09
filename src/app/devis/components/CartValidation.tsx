@@ -343,7 +343,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         doc.setFont('helvetica', 'bold');
         doc.text("Coordonnées bancaires", bankX, footerY + 10);
         doc.setFont('helvetica', 'normal');
-        doc.text("IBAN FR76 2823 3000 0113 2935 6527 041\nCode BIC/SWIFT REVOFRP2", bankX, footerY + 15);
+        doc.text("IBAN FR76 2823 3000 0113 2935 6527 041\nCode BIC / SWIFT REVOFRP2\nPaypal: mani.grimaudo@icloud.com", bankX, footerY + 15);
       }
     });
 
