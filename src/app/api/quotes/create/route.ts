@@ -16,7 +16,8 @@ export async function POST(request: NextRequest) {
         ...quoteData,
         status: 'nouveau',
         created_at: parisDate,
-        last_update: parisDate
+        last_update: parisDate,
+        address: quoteData.address
     };
 
     // Create the quote
