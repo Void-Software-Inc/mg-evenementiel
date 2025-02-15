@@ -84,17 +84,24 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     if (isSubmitting) return; 
     setIsSubmitting(true);
 
+    const { voie, compl, cp, ville, depart, pays = "France", ...restFormData } = formData;
+    
     const quoteData = {
-      ...formData,
+      ...restFormData,
       total_cost: totalTTC,
       status: "nouveau",
       is_paid: false,
       traiteur_price: 0,
       other_expenses: 0,
+      address: {
+        voie,
+        compl,
+        cp,
+        ville,
+        depart,
+        pays
+      }
     };
-
-    // Remove address fields from formData for quoteData
-    const { voie, compl, cp, ville, depart, pays, ...quoteDataWithoutAddress } = quoteData;
 
     const quoteItems = cart.map((item: any) => ({
       product_id: item.id,
@@ -102,7 +109,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     }));
 
     try {
-      const result = await createQuote(quoteDataWithoutAddress, quoteItems);
+      const result = await createQuote(quoteData, quoteItems);
       const quoteId = result.quoteId; // Get the quote ID from the response
 
       const pdfContent = generatePDFData(quoteId); // Pass quote ID to generatePDFData
