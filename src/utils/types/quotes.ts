@@ -15,6 +15,14 @@ export type Quote = {
     created_at: string;
     last_update: string;
     description: string;
+    address: {
+      voie: string;
+      compl?: string;
+      cp: string;
+      ville: string;
+      depart: string;
+      pays: string;
+    };
   };
 
   export type QuoteItem = {
