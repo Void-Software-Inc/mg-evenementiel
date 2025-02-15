@@ -1,23 +1,45 @@
 import React from 'react';
-import Head from 'next/head';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BackToTop } from '@/components/global/BackToTop';
 import { LinkedInLogoIcon } from '@radix-ui/react-icons';
 
+export const metadata: Metadata = {
+  title: 'Mentions Légales - MG Événements',
+  description: 'Mentions légales de MG Événements, location de mobilier et matériel pour événements dans le Sud de la France. Basé à Toulouse, dans le 31.',
+  openGraph: {
+    title: 'Mentions Légales - MG Événements',
+    description: 'Mentions légales de MG Événements, location de mobilier et matériel pour événements dans le Sud de la France. Basé à Toulouse, dans le 31.',
+    url: 'https://www.mgevenements.fr/mentions-legales',
+    siteName: 'MG Événements',
+    images: [
+      {
+        url: 'https://www.mgevenements.fr/favicon_io/favicon.ico',
+      },
+    ],
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://www.mgevenements.fr/mentions-legales',
+  },
+}
+
+export const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Mentions Légales - MG Événements",
+  "url": "https://www.mgevenements.fr/mentions-legales",
+  "description": "Mentions légales de MG Événements, location de mobilier et matériel pour événements dans le Sud de la France. Basé à Toulouse, dans le 31."
+};
+
 export default function MentionsLegalesPage() {
   return (
     <>
-      <Head>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "Mentions Légales - MG Événements",
-            "url": "https://www.mgevenements.fr/mentions-legales",
-            "description": "Mentions légales de MG Événements, location de mobilier et matériel pour événements dans le Sud de la France. Basé à Toulouse, dans le 31."
-          })}
-        </script>
-      </Head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="min-h-screen w-full py-32 bg-gradient-to-b from-white to-zinc-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-zinc-800 mb-8 sm:mb-20 text-6xl  sm:text-7xl md:text-8xl font-thin tracking-tight text-center">

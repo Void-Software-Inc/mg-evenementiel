@@ -91,7 +91,7 @@ export default function ScrollableProducts() {
           <div 
             className="w-[80%] flex space-x-4 min-w-max pr-4"
             style={{
-              '&::-webkit-scrollbar': {
+              '&::WebkitScrollbar': {
                 display: 'none',
               },
             } as React.CSSProperties}
