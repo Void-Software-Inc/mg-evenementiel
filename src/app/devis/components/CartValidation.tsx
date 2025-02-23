@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { createQuote } from "@/services/quotes";
 import { Button } from '@/components/ui/button';
-import { useDevis } from '@/app/context/DevisContext';
 import { useCart } from '@/app/context/CartContext';
 import { useRouter } from 'next/navigation';
 import { ChevronRight, ChevronLeft } from "lucide-react";
@@ -14,7 +13,6 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<'success' | 'error' | null>(null);
   const [pdfData, setPdfData] = useState<any>(null);
-  const { clearFormData } = useDevis();
   const { clearCart } = useCart();
   const router = useRouter();
 
@@ -117,8 +115,6 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         setSubmitResult('error');
         return;
       }
-
-      await sendEmail(quoteData, pdfContent);
       setPdfData(pdfContent);
 
       clearCart();
@@ -137,42 +133,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     // Format the date to 'dd/mm/yyyy' format
     return new Date(date).toLocaleDateString('fr-FR', { timeZone: parisTimeZone });
   };
-  const sendEmail = async (quoteData: any, pdfContent: any) => {
-    try {
-        const response = await fetch('/api/quotes/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                first_name: quoteData.first_name,
-                last_name: quoteData.last_name,
-                phone_number: quoteData.phone_number,
-                email: quoteData.email,
-                voie: formData.voie,
-                compl: formData.compl,
-                cp: formData.cp,
-                ville: formData.ville,
-                depart: formData.depart,
-                event_start_date: quoteData.event_start_date,
-                event_end_date: quoteData.event_end_date,
-                is_traiteur: quoteData.is_traiteur,
-                description: quoteData.description,
-                pdfContent: pdfContent, // Include PDF content
-            }),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Email sending failed:', errorData);
-            throw new Error(`Failed to send email: ${errorData.message}`);
-        }
-    } catch (error) {
-        console.error('Error sending email:', error);
-        throw error; // Rethrow to handle in the main try-catch
-    }
-  };
-
+  
   const downloadPDF = () => {
     if (!pdfData) {
       console.error('PDF data is not ready');
