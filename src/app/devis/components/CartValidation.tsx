@@ -23,6 +23,12 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     }
   }, [formData]);
 
+  useEffect(() => {
+    if (submitResult === 'success') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [submitResult]);
+
   const totalHT = cart.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
   const tva = totalHT * 0.20; // 20% TVA
   const totalTTC = totalHT + tva;
@@ -108,9 +114,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
     try {
       const result = await createQuote(quoteData, quoteItems);
-      const quoteId = result.quoteId; // Get the quote ID from the response
+      const quoteId = result.quoteId;
 
-      const pdfContent = generatePDFData(quoteId); // Pass quote ID to generatePDFData
+      const pdfContent = generatePDFData(quoteId);
       if (!pdfContent) {
         setSubmitResult('error');
         return;

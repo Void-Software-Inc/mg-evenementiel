@@ -35,7 +35,7 @@ const StepsSection = () => {
       ))}
       
     </div>
-    <div className="w-[95%] h-full flex justify-end mb-20">
+    <div className="w-[95%] h-full flex justify-center lg:justify-end mb-20">
                 <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
                     <Link href="/infos">
                         <span className="text-sm font-medium">EN SAVOIR PLUS</span>
