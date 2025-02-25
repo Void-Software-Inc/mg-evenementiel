@@ -67,8 +67,8 @@ export default function MentionsLegalesPage() {
                 Informations sur l'entreprise
               </h2>
               <p className="mb-1">MG Événements</p>
-              <p className="mb-1">3 Rue Guy de Maupassant</p>
-              <p className="mb-1">31240 Toulouse</p>
+              <p className="mb-1">Chemin des droits de l'homme et du citoyen</p>
+              <p className="mb-1">31450 Ayguevives</p>
               <p className="mb-1">Responsable : Mani GRIMAUDO</p>
               <p className="mb-1">Contact : 07 68 10 96 17 | <a 
                 href="mailto:mgevenementiel31@gmail.com"
@@ -98,10 +98,10 @@ export default function MentionsLegalesPage() {
                     </a>
                     <span className="mx-2">|</span>
                     <a 
-                      href="mailto:samueltomar@hotmail.com"
+                      href="mailto:samuel.coelho@voidsoftware.pro"
                       className="text-blue-600 hover:underline"
                     >
-                      samueltomar@hotmail.com
+                      samuel.coelho@voidsoftware.pro
                     </a>
                   </div>
 
@@ -117,10 +117,10 @@ export default function MentionsLegalesPage() {
                     </a>
                     <span className="mx-2">|</span>
                     <a 
-                      href="mailto:evaw.bardeau@gmail.com"
+                      href="mailto:eva.bardeau@voidsoftware.pro"
                       className="text-blue-600 hover:underline"
                     >
-                      evaw.bardeau@gmail.com
+                      eva.bardeau@voidsoftware.pro
                     </a>
                   </div>
                 </div>

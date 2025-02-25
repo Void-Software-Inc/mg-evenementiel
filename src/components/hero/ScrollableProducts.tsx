@@ -150,7 +150,7 @@ export default function ScrollableProducts() {
           </Button>
         )}
       </div>
-      <div className="w-[95%] h-fit flex justify-end">
+      <div className="w-[95%] h-fit flex justify-center lg:justify-end">
         <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
           <Link href="/catalogue">
             <span className="text-sm font-medium">CATALOGUE</span>
