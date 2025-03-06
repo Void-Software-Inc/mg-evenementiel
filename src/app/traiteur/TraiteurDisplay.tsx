@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const CatalogDisplay: React.FC = () => {
+const TraiteurDisplay: React.FC = () => {
   const [selectedType, setSelectedType] = useState<string>("");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -29,12 +29,12 @@ const CatalogDisplay: React.FC = () => {
     setIsLoading(true);
     try {
       const fetchedProducts = await getProducts();
-      // Filter only decoration products
-      const decorationProducts = fetchedProducts.filter(product => product.category === "decoration");
-      setProducts(decorationProducts);
-      setFilteredProducts(decorationProducts);
+      // Filter only traiteur products
+      const traiteurProducts = fetchedProducts.filter(product => product.category === "traiteur");
+      setProducts(traiteurProducts);
+      setFilteredProducts(traiteurProducts);
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('cachedProducts', JSON.stringify(decorationProducts));
+        sessionStorage.setItem('cachedTraiteurProducts', JSON.stringify(traiteurProducts));
       }
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -49,7 +49,7 @@ const CatalogDisplay: React.FC = () => {
       fetchProducts();
     } else {
       if (typeof window !== 'undefined') {
-        const cachedProducts = sessionStorage.getItem('cachedProducts');
+        const cachedProducts = sessionStorage.getItem('cachedTraiteurProducts');
         if (cachedProducts) {
           const parsedProducts = JSON.parse(cachedProducts);
           setProducts(parsedProducts);
@@ -159,7 +159,7 @@ const CatalogDisplay: React.FC = () => {
         <div className="h-fit w-[85%]">
           <div className="w-full h-fit flex justify-start space-x-2 lg:space-x-6">
             <div className="relative pb-12">
-              <h1 className='text-xs sm:text-sm font-extralight sm:font-light text-zinc-700 ml-0 sm:ml-2'>CATALOGUE</h1>
+              <h1 className='text-xs sm:text-sm font-extralight sm:font-light text-zinc-700 ml-0 sm:ml-2'>TRAITEUR</h1>
               <p className={`text-zinc-800 text-4xl sm:text-7xl md:text-8xl font-thin tracking-tighter uppercase ${
                 selectedType === 'vaiselleHG' ? '' : 'text-nowrap'
               }`}>
@@ -267,4 +267,4 @@ const CatalogDisplay: React.FC = () => {
   );
 };
 
-export default CatalogDisplay;
+export default TraiteurDisplay;
