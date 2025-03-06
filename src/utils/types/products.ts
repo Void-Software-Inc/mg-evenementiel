@@ -7,6 +7,7 @@ export type Product = {
     price: number,
     description: string,
     image_url: string,
+    category: string,
     created_at: string,
     last_update: string,
 }
@@ -61,3 +62,13 @@ export type ProductImage = {
     product_id: number;
     url: string;
 }
+
+export type ProductCategory = {
+    value: string;
+    name: string;
+};
+
+export const productCategories: ProductCategory[] = [
+    { value: "decoration", name: "Décoration" },
+    { value: "traiteur", name: "Traiteur" },
+];

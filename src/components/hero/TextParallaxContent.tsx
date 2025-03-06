@@ -131,6 +131,7 @@ const TextParallaxContent = () => {
               <nav className="flex w-full justify-center items-center space-x-10 text-sm 2xl:text-lg font-medium">
                 {[
                   { href: '/catalogue', label: 'CATALOGUE' },
+                  { href: '/traiteur', label: 'TRAITEUR' },
                   { href: '/realisations', label: 'RÉALISATIONS' },
                   { href: '/infos', label: 'INFOS' },
                   { href: '/contact', label: 'CONTACT' },
