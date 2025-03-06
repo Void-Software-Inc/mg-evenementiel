@@ -152,7 +152,11 @@ const CatalogDisplay: React.FC = () => {
     if (colorNames.length === 2) return colorNames.join(', ');
     return `${colorNames[0]}, ${colorNames[1]}...`;
   };
- 
+
+  const decorationProductTypes = useMemo(() => {
+    return productTypes.filter(type => type.category === "decoration");
+  }, []);
+
   return (
     <div>
       <div className="h-full w-full flex flex-col items-center justify-center mt-28">
@@ -198,7 +202,7 @@ const CatalogDisplay: React.FC = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-44 max-h-60 overflow-y-auto">
-                    {productTypes.map((type: ProductType) => (
+                    {decorationProductTypes.map((type: ProductType) => (
                       <DropdownMenuCheckboxItem
                         key={type.value}
                         checked={selectedType === type.value}
