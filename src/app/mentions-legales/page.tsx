@@ -76,6 +76,10 @@ export default function MentionsLegalesPage() {
               >
                 mgevenementiel31@gmail.com
               </a></p>
+              <p className="mb-1">Forme juridique : EI</p>
+              <p className="mb-1">Numéro SIREN/SIRET : 918 638 008</p>
+              <p className="mb-1">Numéro de TVA : FR88918638008</p>
+              <p className="mb-1">Code APE : 5320Z</p>
             </section>
 
             <section className="bg-white rounded-2xl shadow-sm p-8 mb-8">
