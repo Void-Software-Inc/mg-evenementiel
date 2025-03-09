@@ -76,13 +76,17 @@ export default function MentionsLegalesPage() {
               >
                 mgevenementiel31@gmail.com
               </a></p>
+              <p className="mb-1">Forme juridique : EI</p>
+              <p className="mb-1">Numéro SIREN/SIRET : 918 638 008</p>
+              <p className="mb-1">Numéro de TVA : FR88918638008</p>
+              <p className="mb-1">Code APE : 5320Z</p>
             </section>
 
             <section className="bg-white rounded-2xl shadow-sm p-8 mb-8">
               <h2 className="text-3xl font-light mb-6 text-zinc-800 border-b border-zinc-100 pb-4">
                 Éditeur du site
               </h2>
-              <p className="mb-1">Le site a été développé par Void Software Inc. (entreprise en cours de création)</p>
+              <p className="mb-1">Le site a été développé par Void Software Inc.</p>
               
               <div className="space-y-2">
                 <div className="flex flex-col space-y-2">
