@@ -47,7 +47,7 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
     
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r8.webp", alt: "Gâteau Anniversaire Framboises",  types: ["Anniversaire", "Traiteur"] },
 
-    
+
 
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r83.webp", alt: "Table Mariage Or",  types: ["Mariage"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r26.webp", alt: "Chapiteau 5m",  types: ["Mariage", "Autre", "Baptême", "Anniversaire"] },
@@ -62,9 +62,28 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r6.webp", alt: "Amuse-bouche", types: ["Traiteur", "Mariage", "Anniversaire"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r7.webp", alt: "Amuse-bouche",  types: ["Traiteur", "Anniversaire"] },
     
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r31.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r32.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r33.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r34.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r11.webp", alt: "Muffins", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r15.webp", alt: "Club saumon", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r20.webp", alt: "Buffet", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r21.webp", alt: "Buffet", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r23.webp", alt: "Buffet", types: ["Traiteur"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r30.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r12.webp", alt: "Paella",  types: ["Traiteur"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r16.webp", alt: "Paella assiettes", types: ["Traiteur"] },
     
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r10.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r28.webp", alt: "Buffet verrines", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r29.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+
+
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r35.webp", alt: "Gâteau personnalisé", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r19.webp", alt: "Fraisier", types: ["Traiteur", "Anniversaire"] },
   ];
 
   useEffect(() => {

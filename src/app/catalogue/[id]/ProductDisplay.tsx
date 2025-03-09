@@ -319,7 +319,9 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
                   {descriptionItems.map((item, index) => (
                     <li key={index}>{item}</li>
                   ))}
-                  <li><p className="">Couleur: {getColorName(product.color)}</p></li>
+                  {product.category === "decoration" && (
+                    <li><p className="">Couleur: {getColorName(product.color)}</p></li>
+                  )}
                 </ul>
               </AccordionContent>
             </AccordionItem>
