@@ -29,7 +29,14 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     }
   }, [submitResult]);
 
-  const totalHT = cart.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
+  // Separate cart items by category
+  const decorationItems = cart.filter((item: any) => item.category === "decoration");
+  const traiteurItems = cart.filter((item: any) => item.category === "traiteur");
+  
+  // Calculate totals
+  const decorationTotal = decorationItems.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
+  const traiteurTotal = traiteurItems.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
+  const totalHT = decorationTotal + traiteurTotal;
   const tva = totalHT * 0.20; // 20% TVA
   const totalTTC = totalHT + tva;
 
@@ -499,30 +506,84 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             </svg>
             Produits
           </p>
-          <div className="overflow-x-auto -mx-4 sm:mx-0"> {/* Negative margin on mobile to allow full bleed */}
-            <div className="min-w-full inline-block align-middle">
-              <div className="overflow-hidden">
-                <table className="min-w-full">
-                  <thead>
-                    <tr className="bg-gray-100">
-                      <th className="px-3 sm:px-4 py-3 text-left text-sm sm:text-base font-semibold text-gray-600">Produit</th>
-                      <th className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base font-semibold text-gray-600">Quantité</th>
-                      <th className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-semibold text-gray-600">Prix</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cart.map((item: any) => (
-                      <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
-                        <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{item.name}</td>
-                        <td className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base">{item.quantity}</td>
-                        <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{(item.price * item.quantity).toFixed(2)}€</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          
+          {/* Matériel et Décoration Section */}
+          {decorationItems.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center mb-3 pb-1 border-b">
+                <span className="inline-block w-1.5 h-5 bg-blue-500 rounded-full mr-1.5"></span>
+                <h3 className="font-medium text-base text-gray-800">Matériel et Décoration</h3>
+              </div>
+              
+              <div className="overflow-x-auto -mx-4 sm:mx-0">
+                <div className="min-w-full inline-block align-middle">
+                  <div className="overflow-hidden">
+                    <table className="min-w-full">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="px-3 sm:px-4 py-3 text-left text-sm sm:text-base font-semibold text-gray-600">Produit</th>
+                          <th className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base font-semibold text-gray-600">Quantité</th>
+                          <th className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-semibold text-gray-600">Prix</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {decorationItems.map((item: any) => (
+                          <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
+                            <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{item.name}</td>
+                            <td className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base">{item.quantity}</td>
+                            <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{(item.price * item.quantity).toFixed(2)}€</td>
+                          </tr>
+                        ))}
+                        <tr className="bg-gray-50">
+                          <td colSpan={2} className="px-3 sm:px-4 py-2 text-left text-sm font-medium text-gray-600">Sous-total Matériel et Décoration:</td>
+                          <td className="px-3 sm:px-4 py-2 text-right text-sm font-semibold">{decorationTotal.toFixed(2)}€ HT</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+          
+          {/* Traiteur Section */}
+          {traiteurItems.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center mb-3 pb-1 border-b">
+                <span className="inline-block w-1.5 h-5 bg-amber-500 rounded-full mr-1.5"></span>
+                <h3 className="font-medium text-base text-gray-800">Traiteur</h3>
+              </div>
+              
+              <div className="overflow-x-auto -mx-4 sm:mx-0">
+                <div className="min-w-full inline-block align-middle">
+                  <div className="overflow-hidden">
+                    <table className="min-w-full">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="px-3 sm:px-4 py-3 text-left text-sm sm:text-base font-semibold text-gray-600">Produit</th>
+                          <th className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base font-semibold text-gray-600">Quantité</th>
+                          <th className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-semibold text-gray-600">Prix</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {traiteurItems.map((item: any) => (
+                          <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
+                            <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{item.name}</td>
+                            <td className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base">{item.quantity}</td>
+                            <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{(item.price * item.quantity).toFixed(2)}€</td>
+                          </tr>
+                        ))}
+                        <tr className="bg-gray-50">
+                          <td colSpan={2} className="px-3 sm:px-4 py-2 text-left text-sm font-medium text-gray-600">Sous-total Traiteur:</td>
+                          <td className="px-3 sm:px-4 py-2 text-right text-sm font-semibold">{traiteurTotal.toFixed(2)}€ HT</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Totals Section */}
           <div className="mt-6 border-t pt-4">
