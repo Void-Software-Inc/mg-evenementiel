@@ -250,18 +250,24 @@ const CatalogDisplay: React.FC = () => {
           </div>
           </div>
           
-          <div className="w-[90%] mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={`w-[90%] mt-8 ${filteredProducts.length === 0 ? 'min-h-[20vh] lg:min-h-[40vh] relative' : ''} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6`}>
             {isLoading
               ? Array.from({ length: 8 }).map((_, index) => (
                   <SkeletonProductCard key={index} />
                 ))
-              : filteredProducts.map((product, index) => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
-                    priority={index < 8}
-                  />
-                ))
+              : filteredProducts.length > 0 
+                ? filteredProducts.map((product, index) => (
+                    <ProductCard 
+                      key={product.id} 
+                      product={product} 
+                      priority={index < 8}
+                    />
+                  ))
+                : (
+                    <div className="absolute inset-0 flex items-center justify-center col-span-full">
+                      <p className="text-2xl text-zinc-500 font-light">Pas de résultat.</p>
+                    </div>
+                  )
             }
           </div>
 
