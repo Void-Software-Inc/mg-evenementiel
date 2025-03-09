@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const CatalogDisplay: React.FC = () => {
+const TraiteurDisplay: React.FC = () => {
   const [selectedType, setSelectedType] = useState<string>("");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -29,12 +29,12 @@ const CatalogDisplay: React.FC = () => {
     setIsLoading(true);
     try {
       const fetchedProducts = await getProducts();
-      // Filter only decoration products
-      const decorationProducts = fetchedProducts.filter(product => product.category === "decoration");
-      setProducts(decorationProducts);
-      setFilteredProducts(decorationProducts);
+      // Filter only traiteur products
+      const traiteurProducts = fetchedProducts.filter(product => product.category === "traiteur");
+      setProducts(traiteurProducts);
+      setFilteredProducts(traiteurProducts);
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('cachedProducts', JSON.stringify(decorationProducts));
+        sessionStorage.setItem('cachedTraiteurProducts', JSON.stringify(traiteurProducts));
       }
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -49,7 +49,7 @@ const CatalogDisplay: React.FC = () => {
       fetchProducts();
     } else {
       if (typeof window !== 'undefined') {
-        const cachedProducts = sessionStorage.getItem('cachedProducts');
+        const cachedProducts = sessionStorage.getItem('cachedTraiteurProducts');
         if (cachedProducts) {
           const parsedProducts = JSON.parse(cachedProducts);
           setProducts(parsedProducts);
@@ -64,26 +64,23 @@ const CatalogDisplay: React.FC = () => {
 
   const memoizedProducts = useMemo(() => products, [products]);
 
+  const traiteurProductTypes = useMemo(() => {
+    return productTypes.filter(type => type.category === "traiteur");
+  }, []);
+
   useEffect(() => {
     if (isMounted) {
       const newFilteredProducts = memoizedProducts.filter(product => {
         const typeMatch = selectedType === "" || product.type === selectedType;
-        const colorMatch = selectedColors.length === 0 || selectedColors.includes(product.color);
         const searchMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-        return typeMatch && colorMatch && searchMatch;
+        return typeMatch && searchMatch;
       });
       setFilteredProducts(newFilteredProducts);
     }
-  }, [selectedType, selectedColors, searchQuery, memoizedProducts, isMounted]);
+  }, [selectedType, searchQuery, memoizedProducts, isMounted]);
 
   const handleTypeChange = (type: string) => {
     setSelectedType(prev => prev === type ? "" : type);
-  };
-
-  const handleColorChange = (color: string) => {
-    setSelectedColors(prev => 
-      prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]
-    );
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +89,6 @@ const CatalogDisplay: React.FC = () => {
 
   const handleResetFilters = () => {
     setSelectedType("");
-    setSelectedColors([]);
     setSearchQuery("");
   };
 
@@ -152,18 +148,14 @@ const CatalogDisplay: React.FC = () => {
     if (colorNames.length === 2) return colorNames.join(', ');
     return `${colorNames[0]}, ${colorNames[1]}...`;
   };
-
-  const decorationProductTypes = useMemo(() => {
-    return productTypes.filter(type => type.category === "decoration");
-  }, []);
-
+ 
   return (
     <div>
       <div className="h-full w-full flex flex-col items-center justify-center mt-28">
         <div className="h-fit w-[85%]">
           <div className="w-full h-fit flex justify-start space-x-2 lg:space-x-6">
             <div className="relative pb-12">
-              <h1 className='text-xs sm:text-sm font-extralight sm:font-light text-zinc-700 ml-0 sm:ml-2'>CATALOGUE</h1>
+              <h1 className='text-xs sm:text-sm font-extralight sm:font-light text-zinc-700 ml-0 sm:ml-2'>TRAITEUR</h1>
               <p className={`text-zinc-800 text-4xl sm:text-7xl md:text-8xl font-thin tracking-tighter uppercase ${
                 selectedType === 'vaiselleHG' ? '' : 'text-nowrap'
               }`}>
@@ -197,43 +189,18 @@ const CatalogDisplay: React.FC = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button className="flex items-center justify-between bg-transparent transition duration-200 ease-in-out hover:bg-zinc-100 text-zinc-800 border border-zinc-800 rounded-full px-4 py-2">
-                      {productTypes.find(t => t.value === selectedType)?.name || "Type"}
+                      {traiteurProductTypes.find(t => t.value === selectedType)?.name || "Type"}
                       <ChevronDownIcon className="ml-2 h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-44 max-h-60 overflow-y-auto">
-                    {decorationProductTypes.map((type: ProductType) => (
+                    {traiteurProductTypes.map((type: ProductType) => (
                       <DropdownMenuCheckboxItem
                         key={type.value}
                         checked={selectedType === type.value}
                         onCheckedChange={() => handleTypeChange(type.value)}
                       >
                         {type.name}
-                      </DropdownMenuCheckboxItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-
-              <div className="w-fit">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button className="flex items-center justify-between bg-transparent transition duration-200 ease-in-out hover:bg-zinc-100 text-zinc-800 border border-zinc-800 rounded-full px-4 py-2">
-                      {selectedColors.length > 0 ? `${selectedColors.length} sélectionné(s)` : "Couleur"}
-                      <ChevronDownIcon className="ml-2 h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-36 max-h-60 overflow-y-auto">
-                    {productColors.map((color: ProductColor) => (
-                      <DropdownMenuCheckboxItem
-                        key={color.value}
-                        checked={selectedColors.includes(color.value)}
-                        onCheckedChange={() => handleColorChange(color.value)}
-                      >
-                        <div className="flex items-center">
-                          {renderColorSwatch(color)}
-                          {color.name}
-                        </div>
                       </DropdownMenuCheckboxItem>
                     ))}
                   </DropdownMenuContent>
@@ -277,4 +244,4 @@ const CatalogDisplay: React.FC = () => {
   );
 };
 
-export default CatalogDisplay;
+export default TraiteurDisplay;

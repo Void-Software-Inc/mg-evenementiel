@@ -147,6 +147,7 @@ export default function Navbar() {
               </div>
               <nav className="flex flex-col space-y-6 mt-8">
                 <NavLink href="/catalogue" label="CATALOGUE" />
+                <NavLink href="/traiteur" label="TRAITEUR" />
                 <NavLink href="/realisations" label="RÉALISATIONS" />
                 <NavLink href="/infos" label="INFOS" />
                 <NavLink href="/contact" label="CONTACT" />
@@ -188,6 +189,7 @@ export default function Navbar() {
         <nav className="flex w-full justify-center items-center space-x-10 text-sm 2xl:text-lg font-medium">
           {[
             { href: '/catalogue', label: 'CATALOGUE' },
+            { href: '/traiteur', label: 'TRAITEUR' },
             { href: '/realisations', label: 'RÉALISATIONS' },
             { href: '/infos', label: 'INFOS' },
             { href: '/contact', label: 'CONTACT' },
