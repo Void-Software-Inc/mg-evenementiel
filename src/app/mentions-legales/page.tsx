@@ -82,7 +82,7 @@ export default function MentionsLegalesPage() {
               <h2 className="text-3xl font-light mb-6 text-zinc-800 border-b border-zinc-100 pb-4">
                 Éditeur du site
               </h2>
-              <p className="mb-1">Le site a été développé par Void Software Inc. (entreprise en cours de création)</p>
+              <p className="mb-1">Le site a été développé par Void Software Inc.</p>
               
               <div className="space-y-2">
                 <div className="flex flex-col space-y-2">
