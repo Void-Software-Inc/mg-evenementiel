@@ -223,7 +223,7 @@ const CatalogDisplay: React.FC = () => {
                       <ChevronDownIcon className="ml-2 h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-26 max-h-60 overflow-y-auto">
+                  <DropdownMenuContent className="w-36 max-h-60 overflow-y-auto">
                     {productColors.map((color: ProductColor) => (
                       <DropdownMenuCheckboxItem
                         key={color.value}
