@@ -30,8 +30,15 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
     setLocalQuantities(initialQuantities);
   }, [cart]);
 
+  // Separate cart items by category
+  const decorationItems = cart.filter(item => item.category === "decoration");
+  const traiteurItems = cart.filter(item => item.category === "traiteur");
+  
+  // Calculate totals
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const itemCount = cart.length;
+  const decorationCount = decorationItems.length;
+  const traiteurCount = traiteurItems.length;
 
   const handleProductClick = (productId: number) => {
     closeRef.current?.click();
@@ -115,76 +122,174 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
           {cart.length === 0 ? (
             <p className="text-center py-6">Votre devis est vide</p>
           ) : (
-            <div className="flex flex-col space-y-4 mt-4 pr-4">
-              {cart.map((item) => (
-                <div key={item.id} className="flex items-center space-x-4 border-b pb-4">
-                  <div className="relative w-16 h-16 flex-shrink-0">
-                    <Image 
-                      src={item.image_url} 
-                      alt={item.name} 
-                      layout="fill" 
-                      objectFit="cover"
-                      className="rounded-md"
-                      sizes="100vw"
-                      quality={30}
-                    />
-                  </div>
-                  <div className="flex-grow min-w-0 truncate">
-                    <Link 
-                      href={`/catalogue/${item.id}`}
-                      onClick={() => handleProductClick(item.id)}
-                      className="font-medium hover:underline"
-                    >
-                      {item.name}
-                    </Link>
-                    <p className="text-sm text-gray-500 truncate">{item.price}€</p>
-                  </div>
-                  <div className="flex items-center space-x-1 flex-shrink-0">
-                    <Button 
-                      variant="outline" 
-                      size="icon"
-                      className="h-6 w-6"
-                      onClick={() => handleQuantityChange(item.id, (localQuantities[item.id] as number) - 1)}
-                      disabled={(localQuantities[item.id] as number) <= 1}
-                    >
-                      <Minus className="h-4 w-4" />
-                    </Button>
-                    <Input
-                      type="number"
-                      value={localQuantities[item.id]}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(item.id, e)}
-                      onFocus={handleInputFocus}
-                      onBlur={() => handleInputBlur(item.id)}
-                      min={1}
-                      max={item.stock}
-                      isModifiedCn
-                      className="w-16 text-center rounded-md h-8 text-base max-w-16"
-                      ref={(el: HTMLInputElement | null) => {
-                        if (el) {
-                          inputRefs.current[item.id] = el;
-                        }
-                      }}
-                    />
-                    <Button 
-                      variant="outline" 
-                      size="icon"
-                      className="h-6 w-6"
-                      onClick={() => handleQuantityChange(item.id, (localQuantities[item.id] as number) + 1)}
-                      disabled={(localQuantities[item.id] as number) >= item.stock}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon"
-                      className="h-8 w-8 flex-shrink-0"
-                      onClick={() => removeFromCart(item.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
+            <div className="flex flex-col space-y-6 mt-4 pr-4">
+              {/* Matériel et Décoration Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-medium text-lg">Matériel et Décoration</h3>
+                  <span className="text-sm text-gray-500">{decorationCount} article{decorationCount !== 1 ? 's' : ''}</span>
                 </div>
-              ))}
+                
+                {decorationItems.length === 0 ? (
+                  <p className="text-sm text-gray-500 italic mb-4">Aucun article de décoration</p>
+                ) : (
+                  <div className="flex flex-col space-y-4 mb-4">
+                    {decorationItems.map((item) => (
+                      <div key={item.id} className="flex items-center space-x-4 border-b pb-4">
+                        <div className="relative w-16 h-16 flex-shrink-0">
+                          <Image 
+                            src={item.image_url} 
+                            alt={item.name} 
+                            layout="fill" 
+                            objectFit="cover"
+                            className="rounded-md"
+                            sizes="100vw"
+                            quality={30}
+                          />
+                        </div>
+                        <div className="flex-grow min-w-0 truncate">
+                          <Link 
+                            href={`/catalogue/${item.id}`}
+                            onClick={() => handleProductClick(item.id)}
+                            className="font-medium hover:underline"
+                          >
+                            {item.name}
+                          </Link>
+                          <p className="text-sm text-gray-500 truncate">{item.price}€</p>
+                        </div>
+                        <div className="flex items-center space-x-1 flex-shrink-0">
+                          <Button 
+                            variant="outline" 
+                            size="icon"
+                            className="h-6 w-6"
+                            onClick={() => handleQuantityChange(item.id, (localQuantities[item.id] as number) - 1)}
+                            disabled={(localQuantities[item.id] as number) <= 1}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <Input
+                            type="number"
+                            value={localQuantities[item.id]}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(item.id, e)}
+                            onFocus={handleInputFocus}
+                            onBlur={() => handleInputBlur(item.id)}
+                            min={1}
+                            max={item.stock}
+                            isModifiedCn
+                            className="w-16 text-center rounded-md h-8 text-base max-w-16"
+                            ref={(el: HTMLInputElement | null) => {
+                              if (el) {
+                                inputRefs.current[item.id] = el;
+                              }
+                            }}
+                          />
+                          <Button 
+                            variant="outline" 
+                            size="icon"
+                            className="h-6 w-6"
+                            onClick={() => handleQuantityChange(item.id, (localQuantities[item.id] as number) + 1)}
+                            disabled={(localQuantities[item.id] as number) >= item.stock}
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            className="h-8 w-8 flex-shrink-0"
+                            onClick={() => removeFromCart(item.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              {/* Traiteur Section */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-medium text-lg">Traiteur</h3>
+                  <span className="text-sm text-gray-500">{traiteurCount} article{traiteurCount !== 1 ? 's' : ''}</span>
+                </div>
+                
+                {traiteurItems.length === 0 ? (
+                  <p className="text-sm text-gray-500 italic mb-4">Aucun article de traiteur</p>
+                ) : (
+                  <div className="flex flex-col space-y-4 mb-4">
+                    {traiteurItems.map((item) => (
+                      <div key={item.id} className="flex items-center space-x-4 border-b pb-4">
+                        <div className="relative w-16 h-16 flex-shrink-0">
+                          <Image 
+                            src={item.image_url} 
+                            alt={item.name} 
+                            layout="fill" 
+                            objectFit="cover"
+                            className="rounded-md"
+                            sizes="100vw"
+                            quality={30}
+                          />
+                        </div>
+                        <div className="flex-grow min-w-0 truncate">
+                          <Link 
+                            href={`/catalogue/${item.id}`}
+                            onClick={() => handleProductClick(item.id)}
+                            className="font-medium hover:underline"
+                          >
+                            {item.name}
+                          </Link>
+                          <p className="text-sm text-gray-500 truncate">{item.price}€</p>
+                        </div>
+                        <div className="flex items-center space-x-1 flex-shrink-0">
+                          <Button 
+                            variant="outline" 
+                            size="icon"
+                            className="h-6 w-6"
+                            onClick={() => handleQuantityChange(item.id, (localQuantities[item.id] as number) - 1)}
+                            disabled={(localQuantities[item.id] as number) <= 1}
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <Input
+                            type="number"
+                            value={localQuantities[item.id]}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(item.id, e)}
+                            onFocus={handleInputFocus}
+                            onBlur={() => handleInputBlur(item.id)}
+                            min={1}
+                            max={item.stock}
+                            isModifiedCn
+                            className="w-16 text-center rounded-md h-8 text-base max-w-16"
+                            ref={(el: HTMLInputElement | null) => {
+                              if (el) {
+                                inputRefs.current[item.id] = el;
+                              }
+                            }}
+                          />
+                          <Button 
+                            variant="outline" 
+                            size="icon"
+                            className="h-6 w-6"
+                            onClick={() => handleQuantityChange(item.id, (localQuantities[item.id] as number) + 1)}
+                            disabled={(localQuantities[item.id] as number) >= item.stock}
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            className="h-8 w-8 flex-shrink-0"
+                            onClick={() => removeFromCart(item.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>
