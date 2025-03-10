@@ -78,10 +78,11 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             is_traiteur, 
             date: { from: new Date(event_start_date), to: new Date(event_end_date) }
         },
-        products: cart.map((item: { name: string; quantity: number; price: number }) => ({
+        products: cart.map((item: { name: string; quantity: number; price: number; category: string }) => ({
             name: item.name,
             quantity: item.quantity,
             totalPrice: (item.price * item.quantity).toFixed(2),
+            category: item.category // Make sure to include the category
         })),
         totalHT: totalHT.toFixed(2),
         tva: tva.toFixed(2),
@@ -160,6 +161,130 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const pageHeight = doc.internal.pageSize.getHeight();
     const rightMargin = 15;
     const lineSpacing = 7;
+
+    // Create a reusable footer function that will be applied to all pages
+    const addFooter = (doc: any, pageHeight: number, pageNumber: number, totalPages: number) => {
+      const footerY = pageHeight - 35;
+      
+      // Add horizontal line
+      doc.setDrawColor(168, 168, 168);
+      doc.setLineWidth(0.5);
+      doc.line(15, footerY, pageWidth - 15, footerY);
+      
+      // Add the three sections below the line
+      doc.setFontSize(8);
+      
+      // Company section
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(89, 89, 89);
+      doc.text("Entreprise", 15, footerY + 7);
+      doc.setFont('helvetica', 'normal');
+      doc.text("MG Événements EI\nChemin des droits de l'homme\net du citoyen, 31450 Ayguevives\nSIREN : 918 638 008\nCode APE : 5320Z\nNuméro de TVA : FR88918638008", 15, footerY + 10);
+      
+      // Contact section
+      const contactX = pageWidth / 3 + 10;
+      doc.setFont('helvetica', 'bold');
+      doc.text("Coordonnées", contactX, footerY + 7);
+      doc.setFont('helvetica', 'normal');
+      doc.text("Mani Grimaudo\n07 68 10 96 17\nmgevenementiel31@gmail.com\nwww.mgevenements.fr", contactX, footerY + 10);
+      
+      // Bank details section
+      const bankX = (2 * pageWidth) / 3;
+      doc.setFont('helvetica', 'bold');
+      doc.text("Coordonnées bancaires", bankX, footerY + 7);
+      doc.setFont('helvetica', 'normal');
+      doc.text("IBAN FR76 2823 3000 0113 2935 6527 041\nCode BIC / SWIFT REVOFRP2\nPaypal: mani.grimaudo@icloud.com", bankX, footerY + 10);
+      
+      // Add page numbers with correct total
+      doc.setFontSize(8);
+      const text = `Page ${pageNumber} sur ${totalPages}`;
+      const textWidth = doc.getTextWidth(text);
+      doc.text(
+        text,
+        doc.internal.pageSize.getWidth() - 15 - textWidth,
+        pageHeight - 5
+      );
+    };
+
+    // Helper function to add totals and signature section
+    const addTotalsAndSignature = (
+      doc: any,
+      startY: number,
+      pageWidth: number,
+      totalHT: number,
+      tva: number,
+      totalTTC: number,
+      rightMargin: number,
+      lineSpacing: number
+    ) => {
+      // Add totals section
+      doc.setFontSize(10);
+      doc.setTextColor(0);
+      
+      // Draw a light gray background for the totals section
+      doc.setFillColor(245, 245, 245);
+      doc.rect(pageWidth - 97, startY, 85, lineSpacing * 4, 'F');
+      
+      // Total HT
+      doc.setFont('helvetica', 'bold');
+      doc.text("Total HT:", pageWidth - 95, startY + lineSpacing);
+      doc.setFont('helvetica', 'normal');
+      const totalHTText = `${Number(totalHT).toFixed(2)}€`;
+      const totalHTWidth = doc.getTextWidth(totalHTText);
+      doc.text(totalHTText, pageWidth - rightMargin - totalHTWidth, startY + lineSpacing);
+      
+      // TVA
+      doc.setFont('helvetica', 'bold');
+      doc.text("TVA 20%:", pageWidth - 95, startY + (lineSpacing * 2));
+      doc.setFont('helvetica', 'normal');
+      const tvaText = `${Number(tva).toFixed(2)}€`;
+      const tvaWidth = doc.getTextWidth(tvaText);
+      doc.text(tvaText, pageWidth - rightMargin - tvaWidth, startY + (lineSpacing * 2));
+      
+      // Total TTC
+      doc.setFont('helvetica', 'bold');
+      doc.text("Total TTC:", pageWidth - 95, startY + (lineSpacing * 3));
+      doc.setFont('helvetica', 'normal');
+      const totalTTCText = `${Number(totalTTC).toFixed(2)}€`;
+      const totalTTCWidth = doc.getTextWidth(totalTTCText);
+      doc.text(totalTTCText, pageWidth - rightMargin - totalTTCWidth, startY + (lineSpacing * 3));
+      
+      // Add signature box
+      const signatureY = startY + (lineSpacing * 3);
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      doc.text("Signature du client", 15, signatureY);
+      doc.setFont('helvetica', 'normal');
+      doc.text("(précédée de la mention « Bon pour accord »)", 15, signatureY + 5);
+      
+      // Draw signature box
+      doc.setDrawColor(200, 200, 200);
+      doc.setLineWidth(0.5);
+      doc.rect(15, signatureY + 10, 60, 30);
+    };
+
+    // Separate products by category
+    const decorationProducts = products.filter((product: any) => 
+      product.category === 'decoration' || 
+      cart.find((item: any) => item.name === product.name && item.category === 'decoration')
+    );
+    
+    const traiteurProducts = products.filter((product: any) => 
+      product.category === 'traiteur' || 
+      cart.find((item: any) => item.name === product.name && item.category === 'traiteur')
+    );
+
+    // Calculate total pages needed
+    const rowsPerPage = 20; // Approximate rows per page
+    const totalRows = decorationProducts.length + (decorationProducts.length > 0 ? 1 : 0) + 
+                      traiteurProducts.length + (traiteurProducts.length > 0 ? 1 : 0);
+    const dataPages = Math.ceil(totalRows / rowsPerPage);
+    
+    // Check if we'll need an extra page for totals
+    const estimatedTableHeight = totalRows * 10 + 40; // rough estimate: 10 units per row + header
+    const availableHeight = pageHeight - 150 - 60; // available space minus margins
+    const needsExtraPage = estimatedTableHeight > availableHeight;
+    const totalPages = needsExtraPage ? dataPages + 1 : dataPages;
 
     // Add logo with correct aspect ratio
     const img = new Image();
@@ -260,164 +385,282 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const addressWidth = doc.getTextWidth(addressText);
     doc.text(addressText, pageWidth - 15 - addressWidth, lastClientInfoY + 20);
 
-    // Generate table with the product details
-    const headers = [['Produit', 'Quantité', 'Prix unitaire HT', 'Sous-Total HT']];
-    const data = products.map((item: { name: string; quantity: number; totalPrice: string }) => [
-        item.name,
-        item.quantity,
-        `${(Number(item.totalPrice) / item.quantity).toFixed(2)}€`,
-        `${item.totalPrice}€`
-    ]);
+    // Add footer to the first page
+    addFooter(doc, pageHeight, 1, totalPages);
 
-    // First calculate total pages - we need to account for the data rows plus the possible extra page for totals
-    const rowsPerPage = 20; // Approximate rows per page
-    const dataPages = Math.ceil(data.length / rowsPerPage);
-    // Check if we'll need an extra page for totals
-    const estimatedTableHeight = data.length * 10 + 40; // rough estimate: 10 units per row + header
-    const availableHeight = pageHeight - (lastClientInfoY + 30) - 60; // available space minus margins
-    const needsExtraPage = estimatedTableHeight > availableHeight;
-    const totalPages = needsExtraPage ? dataPages + 1 : dataPages;
+    let finalY = lastClientInfoY + 30;
+    let currentPage = 1;
 
-    // Create a reusable footer function
-    const addFooter = (doc: any, pageHeight: number, pageNumber: number) => {
-      const footerY = pageHeight - 35;
-      
-      // Add horizontal line
-      doc.setDrawColor(168, 168, 168);
-      doc.setLineWidth(0.5);
-      doc.line(15, footerY, pageWidth - 15, footerY);
-      
-      // Add the three sections below the line
-      doc.setFontSize(8);
-      
-      // Company section
+    // Add decoration products table if there are any
+    if (decorationProducts.length > 0) {
+      // Add a title for the decoration table
+      doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
-      doc.setTextColor(89, 89, 89);
-      doc.text("Entreprise", 15, footerY + 7);
-      doc.setFont('helvetica', 'normal');
-      doc.text("MG Événements EI\nChemin des droits de l'homme\net du citoyen, 31450 Ayguevives\nSIREN : 918 638 008\nCode APE : 5320Z\nNuméro de TVA : FR88918638008", 15, footerY + 10);
+      doc.text("Matériel et Décoration", 15, finalY + 7);
+      finalY += 10;
       
-      // Contact section
-      const contactX = pageWidth / 3 + 10;
+      // Create table with styling to match autoTable
+      const tableStartY = finalY;
+      const tableWidth = pageWidth - 30; // 15px margin on each side
+      const colWidths = [tableWidth - 110, 30, 40, 40]; // Match the columnStyles from autoTable
+      const rowHeight = 10;
+      
+      // Draw table header (match headStyles from autoTable)
+      doc.setFillColor(50, 50, 50);
+      doc.rect(15, tableStartY, tableWidth, rowHeight, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(9);
       doc.setFont('helvetica', 'bold');
-      doc.text("Coordonnées", contactX, footerY + 7);
-      doc.setFont('helvetica', 'normal');
-      doc.text("Mani Grimaudo\n07 68 10 96 17\nmgevenementiel31@gmail.com\nwww.mgevenements.fr", contactX, footerY + 10);
       
-      // Bank details section
-      const bankX = (2 * pageWidth) / 3;
-      doc.setFont('helvetica', 'bold');
-      doc.text("Coordonnées bancaires", bankX, footerY + 7);
-      doc.setFont('helvetica', 'normal');
-      doc.text("IBAN FR76 2823 3000 0113 2935 6527 041\nCode BIC / SWIFT REVOFRP2\nPaypal: mani.grimaudo@icloud.com", bankX, footerY + 10);
+      // Header text alignment to match autoTable
+      doc.text("Produit", 17, tableStartY + 7); // Left align with small padding
+      doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 7); // Center align
+      doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 7); // Center align
+      doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 7); // Center align
       
-      // Add page numbers with correct total
-      doc.setFontSize(8);
-      const text = `Page ${pageNumber} sur ${totalPages}`;
-      const textWidth = doc.getTextWidth(text);
-      doc.text(
-        text,
-        doc.internal.pageSize.getWidth() - 15 - textWidth,
-        pageHeight - 5
-      );
-    };
-
-    // Update the autoTable configuration
-    (doc as any).autoTable({
-      head: headers,
-      headStyles: { fillColor: [50, 50, 50], textColor: [255, 255, 255] },
-      body: data,
-      startY: lastClientInfoY + 30,
-      styles: {
-        fontSize: 9
-      },
-      columnStyles: {
-        0: { cellWidth: 'auto' },
-        1: { cellWidth: 30 },
-        2: { cellWidth: 40 },
-        3: { cellWidth: 40 },
-      },
-      margin: { bottom: 60 },
-      didDrawPage: function(data: any) {
-        addFooter(doc, pageHeight, data.pageNumber);
+      // Draw table rows
+      doc.setTextColor(0, 0, 0);
+      doc.setFont('helvetica', 'normal');
+      let currentY = tableStartY + rowHeight;
+      
+      decorationProducts.forEach((item: any, index: number) => {
+        // Check if we need to add a new page
+        if (currentY + rowHeight > pageHeight - 60) {
+          doc.addPage();
+          currentPage++;
+          addFooter(doc, pageHeight, currentPage, totalPages);
+          currentY = 20;
+          
+          // Redraw header on new page
+          doc.setFillColor(50, 50, 50);
+          doc.rect(15, currentY, tableWidth, rowHeight, 'F');
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(9);
+          doc.setFont('helvetica', 'bold');
+          doc.text("Produit", 17, currentY + 7);
+          doc.text("Quantité", 15 + colWidths[0] + 5, currentY + 7);
+          doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, currentY + 7);
+          doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 7);
+          doc.setTextColor(0, 0, 0);
+          doc.setFont('helvetica', 'normal');
+          currentY += rowHeight;
+        }
+        
+        // Draw row background (alternating colors like autoTable)
+        doc.setFillColor(index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245);
+        doc.rect(15, currentY, tableWidth, rowHeight, 'F');
+        
+        // Draw cell borders (light gray)
+        doc.setDrawColor(210, 210, 210);
+        doc.setLineWidth(0.1);
+        
+        // Vertical lines
+        doc.line(15 + colWidths[0], currentY, 15 + colWidths[0], currentY + rowHeight);
+        doc.line(15 + colWidths[0] + colWidths[1], currentY, 15 + colWidths[0] + colWidths[1], currentY + rowHeight);
+        doc.line(15 + colWidths[0] + colWidths[1] + colWidths[2], currentY, 15 + colWidths[0] + colWidths[1] + colWidths[2], currentY + rowHeight);
+        
+        // Horizontal line at bottom of row
+        doc.line(15, currentY + rowHeight, 15 + tableWidth, currentY + rowHeight);
+        
+        // Draw cell content with proper alignment
+        doc.setFontSize(9);
+        
+        // Product name (left aligned with ellipsis if too long)
+        const name = item.name.length > 40 ? item.name.substring(0, 37) + "..." : item.name;
+        doc.text(name, 17, currentY + 7);
+        
+        // Quantity (center aligned)
+        const qtyText = item.quantity.toString();
+        const qtyWidth = doc.getTextWidth(qtyText);
+        doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 7);
+        
+        // Unit price (right aligned)
+        const unitPrice = `${(Number(item.totalPrice) / item.quantity).toFixed(2)}€`;
+        const unitPriceWidth = doc.getTextWidth(unitPrice);
+        doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 7);
+        
+        // Total price (right aligned)
+        const totalPrice = `${item.totalPrice}€`;
+        const totalPriceWidth = doc.getTextWidth(totalPrice);
+        doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 7);
+        
+        currentY += rowHeight;
+      });
+      
+      // Add decoration subtotal row
+      const decorationTotal = decorationProducts.reduce(
+        (sum: number, item: any) => sum + Number(item.totalPrice), 
+        0
+      ).toFixed(2);
+      
+      // Check if we need to add a new page
+      if (currentY + rowHeight > pageHeight - 60) {
+        doc.addPage();
+        currentPage++;
+        addFooter(doc, pageHeight, currentPage, totalPages);
+        currentY = 20;
       }
-    });
-
-    // Get the final Y position after the table
-    const finalY = (doc as any).lastAutoTable.finalY + 10;
+      
+      // Draw subtotal row with styling to match autoTable
+      doc.setFillColor(240, 240, 240);
+      doc.rect(15, currentY, tableWidth, rowHeight, 'F');
+      doc.setFont('helvetica', 'bold');
+      
+      // Subtotal text (right aligned in the third column)
+      const subtotalText = "Sous-total Décoration:";
+      const subtotalTextWidth = doc.getTextWidth(subtotalText);
+      doc.text(subtotalText, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - subtotalTextWidth, currentY + 7);
+      
+      // Subtotal amount (right aligned in the fourth column)
+      const subtotalAmount = `${decorationTotal}€`;
+      const subtotalAmountWidth = doc.getTextWidth(subtotalAmount);
+      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 7);
+      
+      finalY = currentY + rowHeight + 15; // Add more space between tables
+    }
     
+    // Add traiteur products table if there are any
+    if (traiteurProducts.length > 0) {
+      // Add a title for the traiteur table
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.text("Traiteur", 15, finalY + 7);
+      finalY += 10;
+      
+      // Create table with styling to match autoTable
+      const tableStartY = finalY;
+      const tableWidth = pageWidth - 30; // 15px margin on each side
+      const colWidths = [tableWidth - 110, 30, 40, 40]; // Match the columnStyles from autoTable
+      const rowHeight = 10;
+      
+      // Draw table header (match headStyles from autoTable)
+      doc.setFillColor(50, 50, 50);
+      doc.rect(15, tableStartY, tableWidth, rowHeight, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      
+      // Header text alignment to match autoTable
+      doc.text("Produit", 17, tableStartY + 7); // Left align with small padding
+      doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 7); // Center align
+      doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 7); // Center align
+      doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 7); // Center align
+      
+      // Draw table rows
+      doc.setTextColor(0, 0, 0);
+      doc.setFont('helvetica', 'normal');
+      let currentY = tableStartY + rowHeight;
+      
+      traiteurProducts.forEach((item: any, index: number) => {
+        // Check if we need to add a new page
+        if (currentY + rowHeight > pageHeight - 60) {
+          doc.addPage();
+          currentPage++;
+          addFooter(doc, pageHeight, currentPage, totalPages);
+          currentY = 20;
+          
+          // Redraw header on new page
+          doc.setFillColor(50, 50, 50);
+          doc.rect(15, currentY, tableWidth, rowHeight, 'F');
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(9);
+          doc.setFont('helvetica', 'bold');
+          doc.text("Produit", 17, currentY + 7);
+          doc.text("Quantité", 15 + colWidths[0] + 5, currentY + 7);
+          doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, currentY + 7);
+          doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 7);
+          doc.setTextColor(0, 0, 0);
+          doc.setFont('helvetica', 'normal');
+          currentY += rowHeight;
+        }
+        
+        // Draw row background (alternating colors like autoTable)
+        doc.setFillColor(index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245);
+        doc.rect(15, currentY, tableWidth, rowHeight, 'F');
+        
+        // Draw cell borders (light gray)
+        doc.setDrawColor(210, 210, 210);
+        doc.setLineWidth(0.1);
+        
+        // Vertical lines
+        doc.line(15 + colWidths[0], currentY, 15 + colWidths[0], currentY + rowHeight);
+        doc.line(15 + colWidths[0] + colWidths[1], currentY, 15 + colWidths[0] + colWidths[1], currentY + rowHeight);
+        doc.line(15 + colWidths[0] + colWidths[1] + colWidths[2], currentY, 15 + colWidths[0] + colWidths[1] + colWidths[2], currentY + rowHeight);
+        
+        // Horizontal line at bottom of row
+        doc.line(15, currentY + rowHeight, 15 + tableWidth, currentY + rowHeight);
+        
+        // Draw cell content with proper alignment
+        doc.setFontSize(9);
+        
+        // Product name (left aligned with ellipsis if too long)
+        const name = item.name.length > 40 ? item.name.substring(0, 37) + "..." : item.name;
+        doc.text(name, 17, currentY + 7);
+        
+        // Quantity (center aligned)
+        const qtyText = item.quantity.toString();
+        const qtyWidth = doc.getTextWidth(qtyText);
+        doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 7);
+        
+        // Unit price (right aligned)
+        const unitPrice = `${(Number(item.totalPrice) / item.quantity).toFixed(2)}€`;
+        const unitPriceWidth = doc.getTextWidth(unitPrice);
+        doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 7);
+        
+        // Total price (right aligned)
+        const totalPrice = `${item.totalPrice}€`;
+        const totalPriceWidth = doc.getTextWidth(totalPrice);
+        doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 7);
+        
+        currentY += rowHeight;
+      });
+      
+      // Add traiteur subtotal row
+      const traiteurTotal = traiteurProducts.reduce(
+        (sum: number, item: any) => sum + Number(item.totalPrice), 
+        0
+      ).toFixed(2);
+      
+      // Check if we need to add a new page
+      if (currentY + rowHeight > pageHeight - 60) {
+        doc.addPage();
+        currentPage++;
+        addFooter(doc, pageHeight, currentPage, totalPages);
+        currentY = 20;
+      }
+      
+      // Draw subtotal row with styling to match autoTable
+      doc.setFillColor(240, 240, 240);
+      doc.rect(15, currentY, tableWidth, rowHeight, 'F');
+      doc.setFont('helvetica', 'bold');
+      
+      // Subtotal text (right aligned in the third column)
+      const subtotalText = "Sous-total Traiteur:";
+      const subtotalTextWidth = doc.getTextWidth(subtotalText);
+      doc.text(subtotalText, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - subtotalTextWidth, currentY + 7);
+      
+      // Subtotal amount (right aligned in the fourth column)
+      const subtotalAmount = `${traiteurTotal}€`;
+      const subtotalAmountWidth = doc.getTextWidth(subtotalAmount);
+      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 7);
+      
+      finalY = currentY + rowHeight + 10;
+    }
+
     // Check if there's enough space for totals and signature
     const requiredSpace = 100; // Approximate space needed for totals, signature box, and company info
     
     // If there isn't enough space, add a new page
     if (finalY + requiredSpace > pageHeight) {
-        doc.addPage();
-        // Add footer to the new page
-        addFooter(doc, pageHeight, totalPages);
-        // Add totals and signature to the new page
-        addTotalsAndSignature(doc, 20, pageWidth, totalHT, tva, totalTTC, rightMargin, lineSpacing);
+      doc.addPage();
+      currentPage++;
+      addFooter(doc, pageHeight, currentPage, totalPages);
+      addTotalsAndSignature(doc, 20, pageWidth, totalHT, tva, totalTTC, rightMargin, lineSpacing);
     } else {
-        addTotalsAndSignature(doc, finalY, pageWidth, totalHT, tva, totalTTC, rightMargin, lineSpacing);
+      addTotalsAndSignature(doc, finalY, pageWidth, totalHT, tva, totalTTC, rightMargin, lineSpacing);
     }
 
     doc.save(`Devis_${userInfo.first_name}_${new Date().toLocaleDateString('fr-FR')}.pdf`);
-  };
-  
-  // Helper function to add totals and signature section
-  const addTotalsAndSignature = (
-    doc: any,
-    startY: number,
-    pageWidth: number,
-    totalHT: number,
-    tva: number,
-    totalTTC: number,
-    rightMargin: number,
-    lineSpacing: number
-  ) => {
-    // Add totals section
-    doc.setFontSize(10);
-    doc.setTextColor(0);
-    
-    // Draw a light gray background for the totals section
-    doc.setFillColor(245, 245, 245);
-    doc.rect(pageWidth - 97, startY, 85, lineSpacing * 4, 'F');
-    
-    // Total HT
-    doc.setFont('helvetica', 'bold');
-    doc.text("Total HT:", pageWidth - 95, startY + lineSpacing);
-    doc.setFont('helvetica', 'normal');
-    const totalHTText = `${Number(totalHT).toFixed(2)}€`;
-    const totalHTWidth = doc.getTextWidth(totalHTText);
-    doc.text(totalHTText, pageWidth - rightMargin - totalHTWidth, startY + lineSpacing);
-    
-    // TVA
-    doc.setFont('helvetica', 'bold');
-    doc.text("TVA 20%:", pageWidth - 95, startY + (lineSpacing * 2));
-    doc.setFont('helvetica', 'normal');
-    const tvaText = `${Number(tva).toFixed(2)}€`;
-    const tvaWidth = doc.getTextWidth(tvaText);
-    doc.text(tvaText, pageWidth - rightMargin - tvaWidth, startY + (lineSpacing * 2));
-    
-    // Total TTC
-    doc.setFont('helvetica', 'bold');
-    doc.text("Total TTC:", pageWidth - 95, startY + (lineSpacing * 3));
-    doc.setFont('helvetica', 'normal');
-    const totalTTCText = `${Number(totalTTC).toFixed(2)}€`;
-    const totalTTCWidth = doc.getTextWidth(totalTTCText);
-    doc.text(totalTTCText, pageWidth - rightMargin - totalTTCWidth, startY + (lineSpacing * 3));
-    
-    // Add signature box
-    const signatureY = startY + (lineSpacing * 3);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.text("Signature du client", 15, signatureY);
-    doc.setFont('helvetica', 'normal');
-    doc.text("(précédée de la mention « Bon pour accord »)", 15, signatureY + 5);
-    
-    // Draw signature box
-    doc.setDrawColor(200, 200, 200);
-    doc.setLineWidth(0.5);
-    doc.rect(15, signatureY + 10, 60, 30);
   };
 
   // Update the button to download the PDF
