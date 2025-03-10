@@ -403,20 +403,20 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       const tableStartY = finalY;
       const tableWidth = pageWidth - 30; // 15px margin on each side
       const colWidths = [tableWidth - 110, 30, 40, 40]; // Match the columnStyles from autoTable
-      const rowHeight = 10;
+      const rowHeight = 8; // Reduced row height
       
       // Draw table header (match headStyles from autoTable)
       doc.setFillColor(50, 50, 50);
       doc.rect(15, tableStartY, tableWidth, rowHeight, 'F');
       doc.setTextColor(255, 255, 255);
-      doc.setFontSize(9);
+      doc.setFontSize(8); // Smaller font size
       doc.setFont('helvetica', 'bold');
       
       // Header text alignment to match autoTable
-      doc.text("Produit", 17, tableStartY + 7); // Left align with small padding
-      doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 7); // Center align
-      doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 7); // Center align
-      doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 7); // Center align
+      doc.text("Produit", 17, tableStartY + 6); // Adjusted for smaller row height
+      doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 6);
+      doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 6);
+      doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 6);
       
       // Draw table rows
       doc.setTextColor(0, 0, 0);
@@ -435,12 +435,12 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           doc.setFillColor(50, 50, 50);
           doc.rect(15, currentY, tableWidth, rowHeight, 'F');
           doc.setTextColor(255, 255, 255);
-          doc.setFontSize(9);
+          doc.setFontSize(8);
           doc.setFont('helvetica', 'bold');
-          doc.text("Produit", 17, currentY + 7);
-          doc.text("Quantité", 15 + colWidths[0] + 5, currentY + 7);
-          doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, currentY + 7);
-          doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 7);
+          doc.text("Produit", 17, currentY + 6);
+          doc.text("Quantité", 15 + colWidths[0] + 5, currentY + 6);
+          doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, currentY + 6);
+          doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 6);
           doc.setTextColor(0, 0, 0);
           doc.setFont('helvetica', 'normal');
           currentY += rowHeight;
@@ -450,39 +450,27 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         doc.setFillColor(index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245);
         doc.rect(15, currentY, tableWidth, rowHeight, 'F');
         
-        // Draw cell borders (light gray)
-        doc.setDrawColor(210, 210, 210);
-        doc.setLineWidth(0.1);
-        
-        // Vertical lines
-        doc.line(15 + colWidths[0], currentY, 15 + colWidths[0], currentY + rowHeight);
-        doc.line(15 + colWidths[0] + colWidths[1], currentY, 15 + colWidths[0] + colWidths[1], currentY + rowHeight);
-        doc.line(15 + colWidths[0] + colWidths[1] + colWidths[2], currentY, 15 + colWidths[0] + colWidths[1] + colWidths[2], currentY + rowHeight);
-        
-        // Horizontal line at bottom of row
-        doc.line(15, currentY + rowHeight, 15 + tableWidth, currentY + rowHeight);
-        
         // Draw cell content with proper alignment
-        doc.setFontSize(9);
+        doc.setFontSize(8);
         
         // Product name (left aligned with ellipsis if too long)
         const name = item.name.length > 40 ? item.name.substring(0, 37) + "..." : item.name;
-        doc.text(name, 17, currentY + 7);
+        doc.text(name, 17, currentY + 6);
         
         // Quantity (center aligned)
         const qtyText = item.quantity.toString();
         const qtyWidth = doc.getTextWidth(qtyText);
-        doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 7);
+        doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 6);
         
         // Unit price (right aligned)
         const unitPrice = `${(Number(item.totalPrice) / item.quantity).toFixed(2)}€`;
         const unitPriceWidth = doc.getTextWidth(unitPrice);
-        doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 7);
+        doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 6);
         
         // Total price (right aligned)
         const totalPrice = `${item.totalPrice}€`;
         const totalPriceWidth = doc.getTextWidth(totalPrice);
-        doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 7);
+        doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 6);
         
         currentY += rowHeight;
       });
@@ -509,16 +497,30 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       // Subtotal text (right aligned in the third column)
       const subtotalText = "Sous-total Décoration:";
       const subtotalTextWidth = doc.getTextWidth(subtotalText);
-      doc.text(subtotalText, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - subtotalTextWidth, currentY + 7);
+      doc.text(subtotalText, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - subtotalTextWidth, currentY + 6);
       
       // Subtotal amount (right aligned in the fourth column)
       const subtotalAmount = `${decorationTotal}€`;
       const subtotalAmountWidth = doc.getTextWidth(subtotalAmount);
-      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 7);
+      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 6);
       
       finalY = currentY + rowHeight + 15; // Add more space between tables
     }
     
+    // Check if there's enough space for the traiteur table
+    // Calculate how much space the traiteur table will need
+    const traiteurTableHeight = traiteurProducts.length > 0 
+      ? (traiteurProducts.length + 2) * 8 + 20 // rows + header + subtotal + padding
+      : 0;
+
+    // If there's not enough space, add a new page before the traiteur table
+    if (traiteurProducts.length > 0 && finalY + traiteurTableHeight > pageHeight - 60) {
+      doc.addPage();
+      currentPage++;
+      addFooter(doc, pageHeight, currentPage, totalPages);
+      finalY = 20;
+    }
+
     // Add traiteur products table if there are any
     if (traiteurProducts.length > 0) {
       // Add a title for the traiteur table
@@ -531,20 +533,20 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       const tableStartY = finalY;
       const tableWidth = pageWidth - 30; // 15px margin on each side
       const colWidths = [tableWidth - 110, 30, 40, 40]; // Match the columnStyles from autoTable
-      const rowHeight = 10;
+      const rowHeight = 8; // Reduced row height
       
       // Draw table header (match headStyles from autoTable)
       doc.setFillColor(50, 50, 50);
       doc.rect(15, tableStartY, tableWidth, rowHeight, 'F');
       doc.setTextColor(255, 255, 255);
-      doc.setFontSize(9);
+      doc.setFontSize(8); // Smaller font size
       doc.setFont('helvetica', 'bold');
       
       // Header text alignment to match autoTable
-      doc.text("Produit", 17, tableStartY + 7); // Left align with small padding
-      doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 7); // Center align
-      doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 7); // Center align
-      doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 7); // Center align
+      doc.text("Produit", 17, tableStartY + 6); // Adjusted for smaller row height
+      doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 6);
+      doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 6);
+      doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 6);
       
       // Draw table rows
       doc.setTextColor(0, 0, 0);
@@ -563,12 +565,12 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           doc.setFillColor(50, 50, 50);
           doc.rect(15, currentY, tableWidth, rowHeight, 'F');
           doc.setTextColor(255, 255, 255);
-          doc.setFontSize(9);
+          doc.setFontSize(8);
           doc.setFont('helvetica', 'bold');
-          doc.text("Produit", 17, currentY + 7);
-          doc.text("Quantité", 15 + colWidths[0] + 5, currentY + 7);
-          doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, currentY + 7);
-          doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 7);
+          doc.text("Produit", 17, currentY + 6);
+          doc.text("Quantité", 15 + colWidths[0] + 5, currentY + 6);
+          doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, currentY + 6);
+          doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 6);
           doc.setTextColor(0, 0, 0);
           doc.setFont('helvetica', 'normal');
           currentY += rowHeight;
@@ -578,39 +580,27 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         doc.setFillColor(index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245);
         doc.rect(15, currentY, tableWidth, rowHeight, 'F');
         
-        // Draw cell borders (light gray)
-        doc.setDrawColor(210, 210, 210);
-        doc.setLineWidth(0.1);
-        
-        // Vertical lines
-        doc.line(15 + colWidths[0], currentY, 15 + colWidths[0], currentY + rowHeight);
-        doc.line(15 + colWidths[0] + colWidths[1], currentY, 15 + colWidths[0] + colWidths[1], currentY + rowHeight);
-        doc.line(15 + colWidths[0] + colWidths[1] + colWidths[2], currentY, 15 + colWidths[0] + colWidths[1] + colWidths[2], currentY + rowHeight);
-        
-        // Horizontal line at bottom of row
-        doc.line(15, currentY + rowHeight, 15 + tableWidth, currentY + rowHeight);
-        
         // Draw cell content with proper alignment
-        doc.setFontSize(9);
+        doc.setFontSize(8);
         
         // Product name (left aligned with ellipsis if too long)
         const name = item.name.length > 40 ? item.name.substring(0, 37) + "..." : item.name;
-        doc.text(name, 17, currentY + 7);
+        doc.text(name, 17, currentY + 6);
         
         // Quantity (center aligned)
         const qtyText = item.quantity.toString();
         const qtyWidth = doc.getTextWidth(qtyText);
-        doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 7);
+        doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 6);
         
         // Unit price (right aligned)
         const unitPrice = `${(Number(item.totalPrice) / item.quantity).toFixed(2)}€`;
         const unitPriceWidth = doc.getTextWidth(unitPrice);
-        doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 7);
+        doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 6);
         
         // Total price (right aligned)
         const totalPrice = `${item.totalPrice}€`;
         const totalPriceWidth = doc.getTextWidth(totalPrice);
-        doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 7);
+        doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 6);
         
         currentY += rowHeight;
       });
@@ -637,12 +627,12 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       // Subtotal text (right aligned in the third column)
       const subtotalText = "Sous-total Traiteur:";
       const subtotalTextWidth = doc.getTextWidth(subtotalText);
-      doc.text(subtotalText, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - subtotalTextWidth, currentY + 7);
+      doc.text(subtotalText, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - subtotalTextWidth, currentY + 6);
       
       // Subtotal amount (right aligned in the fourth column)
       const subtotalAmount = `${traiteurTotal}€`;
       const subtotalAmountWidth = doc.getTextWidth(subtotalAmount);
-      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 7);
+      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 6);
       
       finalY = currentY + rowHeight + 10;
     }
