@@ -207,8 +207,9 @@ const CatalogDisplay: React.FC = () => {
                         key={type.value}
                         checked={selectedType === type.value}
                         onCheckedChange={() => handleTypeChange(type.value)}
+                        className={selectedType === type.value ? "font-medium bg-zinc-100" : ""}
                       >
-                        {type.name}
+                        <span className="pl-6">{type.name}</span>
                       </DropdownMenuCheckboxItem>
                     ))}
                   </DropdownMenuContent>
