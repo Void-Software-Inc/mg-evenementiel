@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { AboutMG } from './components/AboutMG';
 import Faq from './components/Faq';
+import Traiteur from './components/AboutCatering';
 
 export const metadata: Metadata = {
   title: 'Infos - MG Événementiel',
@@ -52,6 +53,7 @@ export default function InfosPage() {
       />
       <div className="h-fit w-full flex flex-col items-center justify-center mt-32">
         <AboutMG/>
+        <Traiteur/>
         <Faq/>
       </div>
     </>
