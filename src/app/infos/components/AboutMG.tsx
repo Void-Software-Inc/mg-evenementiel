@@ -31,18 +31,18 @@ export const AboutMG = () => {
                 </div>
                 </div>
                 <div className="w-full lg:w-[50%] flex flex-col justify-center items-center">
-                    <p className="text-base xl:text-lg text-zinc-700 font-extralight mb-2 ">L’histoire de MG Événements se résume en trois mots: Famille, Réussite et Conception. 
+                    <p className="text-base xl:text-lg text-zinc-700 mb-2 font-light">L’histoire de MG Événements se résume en trois mots: Famille, Réussite et Conception. 
                     Nous sommes une entreprise familiale créée en 2022 dans le but d’organiser et de décorer vos festivités de tout type. Nous réalisons des prestations de service mais également de la location de matériels et de mobiliers,vaisselles.. cela favorise une prise en charge efficace et complète de votre événement. </p>
-                    <p className="text-base xl:text-lg text-zinc-700 font-extralight">Le développement de notre service traiteur connaît son ampleur pour son produit 100% frais et local. 
+                    <p className="text-base xl:text-lg text-zinc-700 font-light">Le développement de notre service traiteur connaît son ampleur pour son produit 100% frais et local. 
                     </p>
                 </div>
             </div>
 
             <div className="w-full h-fit flex justify-center lg:justify-start flex-col sm:flex-row sm:space-x-10">
                 <div className="h-fit w-full sm:w-[50%] flex flex-col">
-                    <p className="text-base xl:text-lg text-zinc-700 font-extralight mb-2">Le professionnalisme, l’écoute minutieuse et l’expertise font parties de nos valeurs de prédilection.
+                    <p className="text-base xl:text-lg text-zinc-700 mb-2 font-light">Le professionnalisme, l’écoute minutieuse et l’expertise font parties de nos valeurs de prédilection.
                     MG évènements est le détail qui fait la différence pour que vos idées se transforment en réalité, nous nous investissons pleinement en veillant à ce que vos moments spéciaux se déroulent en toute sérénité. </p>
-                    <p className="text-base xl:text-lg text-zinc-700 font-extralight">Passion rime avec création, c’est pour cela que MG événements conçoit vos événements sur mesure et de haute qualité.</p>
+                    <p className="text-base xl:text-lg text-zinc-700 font-light">Passion rime avec création, c’est pour cela que MG événements conçoit vos événements sur mesure et de haute qualité.</p>
                 </div>
                 <div className="hidden sm:flex 2xl:h-72 2xl:w-72 lg:h-64 lg:w-64 h-52 w-52 rounded-full bg-white border border-zinc-800 flex-col items-center justify-center">
                     <p className="text-5xl text-zinc-700 font-extralight leading-tight">+80</p>
