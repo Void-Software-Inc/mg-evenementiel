@@ -47,7 +47,7 @@ export default function Prestations() {
 
     return (   
         <div className="h-full w-full mb-40 flex items-center justify-center flex-col">
-            <div className="w-full max-w-4xl px-4 mb-12 flex flex-col items-center justify-center">
+            <div className="w-full max-w-4xl px-4 flex flex-col items-center justify-center">
                 <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
                 NOS PRESTATIONS
                 </h2>
@@ -55,12 +55,12 @@ export default function Prestations() {
                 Des services complets pour répondre à tous vos besoins événementiels
                 </h3>
             </div>
-            <div className="w-[60%] lg:w-[85%] h-full flex flex-row flex-wrap items-center justify-center  gap-4">
+            <div className="w-[60%] lg:w-[85%] h-full flex flex-row flex-wrap items-center justify-center gap-4">
                 {services.map((service, index) => (
                     <ServiceCard key={index} {...service} />
                 ))}
             </div>
-            <div className="w-[95%] h-full flex justify-center lg:justify-end my-5 sm:my-16">
+            <div className="w-[95%] h-full flex justify-center lg:justify-end mt-5 sm:mt-16">
                 <Button asChild className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
                     <Link href="/infos">
                         <span className="text-sm font-medium">EN SAVOIR PLUS</span>
