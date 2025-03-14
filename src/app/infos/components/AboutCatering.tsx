@@ -17,10 +17,20 @@ export default function Traiteur() {
     ];
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center mb-16 mt-10 sm:mt-16">
+        <div id="traiteur" className="w-full h-full flex flex-col items-center justify-center mb-16 mt-10 sm:mt-16">
             <div className="w-[80%] h-full flex justify-start mb-8 sm:mb-10 space-y-2">
                 <p className="text-zinc-800 text-2xl sm:text-3xl font-extralight">
                 MG Traiteur : L'Art de Sublimer Vos Réceptions
+                </p>
+            </div>
+            
+            {/* Introduction Text */}
+            <div className="w-[80%] prose prose-zinc max-w-none mb-8">
+                <p className="text-zinc-700 font-light">
+                    Chez MG Événements, nous mettons notre passion et notre savoir-faire au service de vos événements 
+                    en proposant une expérience culinaire raffinée et savoureuse. Notre service traiteur est conçu 
+                    pour répondre à toutes vos attentes, qu'il s'agisse d'un repas assis élégant, d'un buffet 
+                    convivial ou d'un brunch gourmand.
                 </p>
             </div>
             
@@ -36,16 +46,6 @@ export default function Traiteur() {
                         />
                     </div>
                 ))}
-            </div>
-            
-            {/* Introduction Text */}
-            <div className="w-[80%] prose prose-zinc max-w-none mb-8">
-                <p className="text-zinc-700 font-light">
-                    Chez MG Événements, nous mettons notre passion et notre savoir-faire au service de vos événements 
-                    en proposant une expérience culinaire raffinée et savoureuse. Notre service traiteur est conçu 
-                    pour répondre à toutes vos attentes, qu'il s'agisse d'un repas assis élégant, d'un buffet 
-                    convivial ou d'un brunch gourmand.
-                </p>
             </div>
             
             {/* Menu Section */}
