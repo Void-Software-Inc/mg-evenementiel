@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function Traiteur() {
@@ -10,6 +10,27 @@ export default function Traiteur() {
         setOpenIndex(openIndex === index ? null : index);
     };
 
+    // Handle scroll position adjustment when navigating to this section
+    useEffect(() => {
+        // Check if the URL has the traiteur fragment
+        if (typeof window !== 'undefined' && window.location.hash === '#traiteur') {
+            // Add a small delay to ensure the DOM is fully loaded
+            setTimeout(() => {
+                // Get the element
+                const element = document.getElementById('traiteur-anchor');
+                if (element) {
+                    // Check if we're on a small device
+                    const isMobileDevice = window.innerWidth < 850; // sm breakpoint in Tailwind
+                    
+                    // Use a larger offset for mobile devices
+                    const yOffset = isMobileDevice ? -950 : -450;
+                    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            }, 300);
+        }
+    }, []);
+
     const cateringPics = [
         "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r10.webp",
         "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r17.webp",
@@ -18,6 +39,9 @@ export default function Traiteur() {
 
     return (
         <div id="traiteur" className="w-full h-full flex flex-col items-center justify-center mb-16 mt-10 sm:mt-16">
+            {/* Invisible anchor element positioned higher above the content */}
+            <div id="traiteur-anchor" className="absolute" style={{ marginTop: '-250px' }}></div>
+            
             <div className="w-[80%] h-full flex justify-start mb-8 sm:mb-10 space-y-2">
                 <p className="text-zinc-800 text-2xl sm:text-3xl font-extralight">
                 MG Traiteur : L'Art de Sublimer Vos Réceptions
