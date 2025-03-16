@@ -234,7 +234,7 @@ const TraiteurDisplay: React.FC = () => {
                   ))
                 : (
                     <div className="absolute inset-0 flex items-center justify-center col-span-full">
-                      <p className="text-2xl text-zinc-500 font-light">Pas de résultat.</p>
+                      <p className="text-2xl text-zinc-500 font-light">Catalogue en cours de préparation !</p>
                     </div>
                   )
             }
