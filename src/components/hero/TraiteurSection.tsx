@@ -94,7 +94,7 @@ export default function Traiteur() {
         <div className="grid grid-cols-2 gap-y-4 gap-x-3">
           {/* First image - 270px height */}
           <div className="col-span-1 row-span-1">
-            <div className="relative w-full h-[270px] rounded-full xs:rounded-lg overflow-hidden">
+            <div className="relative w-full h-[270px] rounded-lg overflow-hidden">
               <Image 
                 src={cateringImages[0]} 
                 alt="Service traiteur 1" 
@@ -106,7 +106,7 @@ export default function Traiteur() {
           
           {/* Second image - 220px height */}
           <div className="col-span-1 row-span-1">
-            <div className="relative w-full h-[220px] rounded-full xs:rounded-lg overflow-hidden">
+            <div className="relative w-full h-[220px] rounded-lg overflow-hidden">
               <Image 
                 src={cateringImages[1]} 
                 alt="Service traiteur 2" 
@@ -118,7 +118,7 @@ export default function Traiteur() {
           
           {/* Third image - 220px height */}
           <div className="col-span-1 row-span-1">
-            <div className="relative w-full h-[220px] rounded-full xs:rounded-lg overflow-hidden">
+            <div className="relative w-full h-[220px] rounded-lg overflow-hidden">
               <Image 
                 src={cateringImages[2]} 
                 alt="Service traiteur 3" 
@@ -130,7 +130,7 @@ export default function Traiteur() {
           
           {/* Fourth image - 270px height */}
           <div className="col-span-1 row-span-1 -mt-[50px]">
-            <div className="relative w-full h-[270px] rounded-full xs:rounded-lg overflow-hidden">
+            <div className="relative w-full h-[270px] rounded-lg overflow-hidden">
               <Image 
                 src={cateringImages[3]} 
                 alt="Service traiteur 4" 
