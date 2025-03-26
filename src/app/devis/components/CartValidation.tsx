@@ -25,7 +25,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
   useEffect(() => {
     if (submitResult === 'success') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo(0, 0);
     }
   }, [submitResult]);
 
@@ -662,15 +662,13 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
   // Update the button to download the PDF
   if (submitResult === 'success') {
-  //  console.log("Current formData:", formData); // Debugging log
     return (
       <div className="w-full max-w-2xl mx-auto text-center flex flex-col items-center justify-center h-[60vh]">
         <h2 className="text-2xl font-bold mb-4">Devis envoyé avec succès!</h2>
         <p className="mb-4">Merci pour votre demande. Vous pouvez télécharger votre devis ci-dessous.</p>
-        {/* Download PDF Button */}
-        {formData && ( // Only render if formData is available
+        {formData && (
           <Button
-            onClick={downloadPDF} // Trigger download on button click
+            onClick={downloadPDF}
             className="mt-3 rounded-full py-6 px-8 text-lg font-light bg-green-500 hover:bg-green-700"
           >
             Télécharger le devis en PDF
