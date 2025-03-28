@@ -84,6 +84,14 @@ const FilterControls: React.FC<FilterControlsProps> = ({ initialFilters }) => {
 
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r35.webp", alt: "Gâteau personnalisé", types: ["Traiteur", "Anniversaire"] },
     { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r19.webp", alt: "Fraisier", types: ["Traiteur", "Anniversaire"] },
+  
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r88.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r89.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r93.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r91.webp", alt: "Buffet", types: ["Traiteur", "Anniversaire"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r90.webp", alt: "Sweat MG Événements", types: ["Autre"] },
+    { src: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r92.webp", alt: "Buffet", types: ["Traiteur", "Autre"] },
+
   ];
 
   useEffect(() => {
