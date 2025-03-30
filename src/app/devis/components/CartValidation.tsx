@@ -33,10 +33,14 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const decorationItems = cart.filter((item: any) => item.category === "decoration");
   const traiteurItems = cart.filter((item: any) => item.category === "traiteur");
   
+  // Get selected fees
+  const selectedFees = formData?.fees?.filter((fee: any) => fee.enabled) || [];
+  
   // Calculate totals
   const decorationTotal = decorationItems.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
   const traiteurTotal = traiteurItems.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
-  const totalHT = decorationTotal + traiteurTotal;
+  const feesTotal = selectedFees.reduce((sum: number, fee: any) => sum + fee.price, 0);
+  const totalHT = decorationTotal + traiteurTotal + feesTotal;
   const tva = totalHT * 0.20; // 20% TVA
   const totalTTC = totalHT + tva;
 
@@ -84,6 +88,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             totalPrice: (item.price * item.quantity).toFixed(2),
             category: item.category // Make sure to include the category
         })),
+        fees: formData.fees,
         totalHT: totalHT.toFixed(2),
         tva: tva.toFixed(2),
         totalTTC: totalTTC.toFixed(2),
@@ -99,12 +104,20 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const { voie, compl, cp, ville, depart, pays = "France", ...restFormData } = formData;
     
     const quoteData = {
-      ...restFormData,
+      first_name: restFormData.first_name,
+      last_name: restFormData.last_name,
+      email: restFormData.email,
+      phone_number: restFormData.phone_number,
+      event_start_date: restFormData.event_start_date,
+      event_end_date: restFormData.event_end_date,
+      is_traiteur: restFormData.is_traiteur,
+      description: restFormData.description,
       total_cost: totalTTC,
       status: "nouveau",
       is_paid: false,
       traiteur_price: 0,
       other_expenses: 0,
+      fees: formData.fees,
       address: {
         voie,
         compl,
@@ -156,7 +169,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     }
 
     const doc = new jsPDF();
-    const { userInfo, products, totalHT, tva, totalTTC, quoteId } = pdfData;
+    const { userInfo, products, fees, totalHT, tva, totalTTC, quoteId } = pdfData;
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
     const rightMargin = 15;
@@ -644,6 +657,121 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       finalY = currentY + rowHeight + 10;
     }
 
+    // Check if there's enough space for the fees table
+    const feesTableHeight = fees && fees.length > 0 
+      ? (fees.length + 2) * 8 + 20 // rows + header + subtotal + padding
+      : 0;
+
+    // If there's not enough space, add a new page before the fees table
+    if (fees && fees.length > 0 && finalY + feesTableHeight > pageHeight - 60) {
+      doc.addPage();
+      currentPage++;
+      addFooter(doc, pageHeight, currentPage, totalPages);
+      finalY = 20;
+    }
+
+    // Add fees table if there are any
+    if (fees && fees.length > 0) {
+      // Add a title for the fees table
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.text("Options", 15, finalY + 7);
+      finalY += 10;
+      
+      // Create table with styling to match autoTable
+      const tableStartY = finalY;
+      const tableWidth = pageWidth - 30; // 15px margin on each side
+      const colWidths = [tableWidth - 50, 50]; // Match the columnStyles from autoTable
+      const rowHeight = 8; // Reduced row height
+      
+      // Draw table header (match headStyles from autoTable)
+      doc.setFillColor(50, 50, 50);
+      doc.rect(15, tableStartY, tableWidth, rowHeight, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(8); // Smaller font size
+      doc.setFont('helvetica', 'bold');
+      
+      // Header text alignment to match autoTable
+      doc.text("Option", 17, tableStartY + 6); // Adjusted for smaller row height
+      doc.text("Prix HT", 15 + colWidths[0] + 5, tableStartY + 6);
+      
+      // Draw table rows
+      doc.setTextColor(0, 0, 0);
+      doc.setFont('helvetica', 'normal');
+      let currentY = tableStartY + rowHeight;
+      
+      fees.forEach((fee: any, index: number) => {
+        // Check if we need to add a new page
+        if (currentY + rowHeight > pageHeight - 60) {
+          doc.addPage();
+          currentPage++;
+          addFooter(doc, pageHeight, currentPage, totalPages);
+          currentY = 20;
+          
+          // Redraw header on new page
+          doc.setFillColor(50, 50, 50);
+          doc.rect(15, currentY, tableWidth, rowHeight, 'F');
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(8);
+          doc.setFont('helvetica', 'bold');
+          doc.text("Option", 17, currentY + 6);
+          doc.text("Prix HT", 15 + colWidths[0] + 5, currentY + 6);
+          doc.setTextColor(0, 0, 0);
+          doc.setFont('helvetica', 'normal');
+          currentY += rowHeight;
+        }
+        
+        // Draw row background (alternating colors like autoTable)
+        doc.setFillColor(index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245);
+        doc.rect(15, currentY, tableWidth, rowHeight, 'F');
+        
+        // Draw cell content with proper alignment
+        doc.setFontSize(8);
+        
+        // Option description (left aligned with ellipsis if too long)
+        const name = fee.description.length > 40 ? fee.description.substring(0, 37) + "..." : fee.description;
+        doc.text(name, 17, currentY + 6);
+        
+        // Fee price (right aligned)
+        const feePrice = `${fee.price.toFixed(2)}€`;
+        const feePriceWidth = doc.getTextWidth(feePrice);
+        doc.text(feePrice, 15 + tableWidth - 5 - feePriceWidth, currentY + 6);
+        
+        currentY += rowHeight;
+      });
+      
+      // Add fees subtotal row
+      const feesTotal = fees.reduce(
+        (sum: number, fee: any) => sum + Number(fee.price), 
+        0
+      ).toFixed(2);
+      
+      // Check if we need to add a new page
+      if (currentY + rowHeight > pageHeight - 60) {
+        doc.addPage();
+        currentPage++;
+        addFooter(doc, pageHeight, currentPage, totalPages);
+        currentY = 20;
+      }
+      
+      // Draw subtotal row with styling to match autoTable
+      doc.setFillColor(240, 240, 240);
+      doc.rect(15, currentY, tableWidth, rowHeight, 'F');
+      doc.setFont('helvetica', 'bold');
+      
+      // Subtotal text (right aligned in the first column)
+      const subtotalText = "Sous-total Options:";
+      const subtotalTextWidth = doc.getTextWidth(subtotalText);
+      doc.text(subtotalText, 15 + colWidths[0] - 5 - subtotalTextWidth, currentY + 6);
+      
+      // Subtotal amount (right aligned in the second column)
+      const subtotalAmount = `${feesTotal}€`;
+      const subtotalAmountWidth = doc.getTextWidth(subtotalAmount);
+      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 6);
+      
+      finalY = currentY + rowHeight + 15; // Add more space
+    }
+
     // Check if there's enough space for totals and signature
     const requiredSpace = 100; // Approximate space needed for totals, signature box, and company info
     
@@ -823,18 +951,61 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             </div>
           )}
 
+          {/* Options/Fees Section */}
+          {selectedFees.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center mb-3 pb-1 border-b">
+                <span className="inline-block w-1.5 h-5 bg-green-500 rounded-full mr-1.5"></span>
+                <h3 className="font-medium text-base text-gray-800">Options</h3>
+              </div>
+              
+              <div className="overflow-x-auto -mx-4 sm:mx-0">
+                <div className="min-w-full inline-block align-middle">
+                  <div className="overflow-hidden">
+                    <table className="min-w-full">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="px-3 sm:px-4 py-3 text-left text-sm sm:text-base font-semibold text-gray-600">Option</th>
+                          <th className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-semibold text-gray-600">Prix</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selectedFees.map((fee: any) => (
+                          <tr key={fee.name} className="border-b border-gray-200 hover:bg-gray-50">
+                            <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{fee.description}</td>
+                            <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{fee.price.toFixed(2)}€</td>
+                          </tr>
+                        ))}
+                        <tr className="bg-gray-50">
+                          <td className="px-3 sm:px-4 py-2 text-left text-sm font-medium text-gray-600">Sous-total Options:</td>
+                          <td className="px-3 sm:px-4 py-2 text-right text-sm font-semibold">{feesTotal.toFixed(2)}€ HT</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Totals Section */}
           <div className="mt-6 border-t pt-4">
             <div className="flex flex-col items-end space-y-2">
-              <div className="flex justify-between w-full max-w-[200px]">
+              {selectedFees.length > 0 && (
+                <div className="flex justify-between w-full max-w-[300px]">
+                  <span className="text-gray-600 text-sm sm:text-base">Options:</span>
+                  <span className="font-medium text-sm sm:text-base">{feesTotal.toFixed(2)}€ HT</span>
+                </div>
+              )}
+              <div className="flex justify-between w-full max-w-[300px]">
                 <span className="text-gray-600 text-sm sm:text-base">Total HT:</span>
                 <span className="font-medium text-sm sm:text-base">{totalHT.toFixed(2)}€</span>
               </div>
-              <div className="flex justify-between w-full max-w-[200px]">
+              <div className="flex justify-between w-full max-w-[300px]">
                 <span className="text-gray-600 text-sm sm:text-base">TVA 20%:</span>
                 <span className="font-medium text-sm sm:text-base">{tva.toFixed(2)}€</span>
               </div>
-              <div className="flex justify-between w-full max-w-[200px] bg-zinc-800 text-white p-3 rounded-lg">
+              <div className="flex justify-between w-full max-w-[300px] bg-zinc-800 text-white p-3 rounded-lg">
                 <span className="text-sm sm:text-lg">Total TTC:</span>
                 <span className="font-bold text-sm sm:text-lg">{totalTTC.toFixed(2)}€</span>
               </div>

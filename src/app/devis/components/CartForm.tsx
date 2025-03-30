@@ -113,11 +113,13 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
     }
 
     const quoteData = {
+      ...formData,
       ...restValues,
       event_start_date: startDate,
       event_end_date: endDate,
       is_traiteur: values.is_traiteur === "true",
     };
+    
     setFormData(quoteData);
     onNext(quoteData);
   };
