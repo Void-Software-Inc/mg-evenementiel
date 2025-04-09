@@ -1,3 +1,10 @@
+export type Fee = {
+  name: string;
+  price: number;
+  enabled: boolean;
+  description: string;
+};
+
 export type Quote = {
     id: number;
     first_name: string;
@@ -15,6 +22,7 @@ export type Quote = {
     created_at: string;
     last_update: string;
     description: string;
+    fees: Fee[];
     address: {
       voie: string;
       compl?: string;
