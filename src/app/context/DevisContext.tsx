@@ -10,11 +10,26 @@ interface DevisContextType {
 
 const DevisContext = createContext<DevisContextType | undefined>(undefined);
 
+// Default fees structure
+const defaultFees = [
+  { name: 'delivery', price: 0, enabled: false, description: '' },
+  { name: 'pickup', price: 0, enabled: false, description: '' },
+  { name: 'table_service', price: 0, enabled: false, description: '' },
+  { name: 'retrieval', price: 0, enabled: false, description: '' },
+  { name: 'marquee_setup', price: 0, enabled: false, description: '' },
+  { name: 'marquee_dismantling', price: 0, enabled: false, description: '' },
+  { name: 'decoration', price: 0, enabled: false, description: '' }
+];
+
 export const DevisProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [formData, setFormData] = useState<any>(null);
+  const [formData, setFormData] = useState<any>({
+    fees: defaultFees
+  });
 
   const clearFormData = () => {
-    setFormData(null);
+    setFormData({
+      fees: defaultFees
+    });
   };
 
   return (

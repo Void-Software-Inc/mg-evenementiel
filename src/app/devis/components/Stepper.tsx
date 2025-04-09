@@ -4,13 +4,25 @@ import { useState } from 'react';
 import CartStep from './CartStep';
 import CartForm from './CartForm';
 import CartValidation from './CartValidation';
+import CartOptions from './CartOptions';
 import { useCart } from '@/app/context/CartContext';
 import { useDevis } from '@/app/context/DevisContext';
 
+interface FormData {
+  fees?: Array<{
+    name: string;
+    price: number;
+    enabled: boolean;
+    description: string;
+  }>;
+  [key: string]: any;
+}
+
 const steps = [
   { name: 'Produits', number: 1 },
-  { name: 'Informations', number: 2 },
-  { name: 'Validation', number: 3 },
+  { name: 'Options', number: 2 },
+  { name: 'Informations', number: 3 },
+  { name: 'Validation', number: 4 },
 ];
 
 const Stepper = () => {
@@ -18,11 +30,14 @@ const Stepper = () => {
   const { cart } = useCart();
   const { formData, setFormData } = useDevis();
 
-  const handleNext = (data = null) => {
+  const handleNext = (data: FormData | null = null) => {
     if (currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
       if (data) {
-        setFormData(data);
+        setFormData((prevData: FormData) => ({
+          ...prevData,
+          ...data
+        }));
       }
     }
   };
@@ -71,8 +86,9 @@ const Stepper = () => {
       </div>
 
       {currentStep === 1 && <CartStep onNext={handleNext} />}
-      {currentStep === 2 && <CartForm onNext={handleNext} onPrevious={handlePrevious} />}
-      {currentStep === 3 && <CartValidation formData={formData} cart={cart} onPrevious={handlePrevious} />}
+      {currentStep === 2 && <CartOptions onNext={handleNext} onPrevious={handlePrevious} />}
+      {currentStep === 3 && <CartForm onNext={handleNext} onPrevious={handlePrevious} />}
+      {currentStep === 4 && <CartValidation formData={formData} cart={cart} onPrevious={handlePrevious} />}
       
     </div>
   );
