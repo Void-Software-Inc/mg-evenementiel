@@ -766,12 +766,12 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         {formData && (
           <Button
             onClick={downloadPDF}
-            className="mt-3 rounded-full py-6 px-8 text-lg font-light bg-green-500 hover:bg-green-700"
+            className="mt-3 rounded-full py-6 px-8 text-lg font-light bg-green-500 hover:bg-green-700 w-full sm:w-[280px]"
           >
             Télécharger le devis en PDF
           </Button>
         )}
-        <Button onClick={() => router.push('/')} className="mt-3 rounded-full py-6 px-8 text-lg font-light">
+        <Button onClick={() => router.push('/')} className="mt-3 rounded-full py-6 px-8 text-lg font-light w-full sm:w-[280px]">
           Retour à l'accueil
         </Button>
       </div>
