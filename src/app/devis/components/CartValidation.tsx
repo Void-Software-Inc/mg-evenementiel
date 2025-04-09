@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/app/context/CartContext';
 import { useRouter } from 'next/navigation';
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { generateQuotePDF } from '@/utils/pdf/generateQuotePDF';
+import { Product } from '@/utils/types/products';
+import { QuoteItem } from '@/utils/types/quotes';
+import { jsPDF } from 'jspdf';
 
 const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: any, onPrevious: () => void }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,59 +45,6 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const totalHT = decorationTotal + traiteurTotal + feesTotal;
   const tva = totalHT * 0.20; // 20% TVA
   const totalTTC = totalHT + tva;
-
-  const generatePDFData = (quoteId?: number) => {
-    if (!formData || !cart || cart.length === 0) {
-        console.error("formData or cart is null or empty");
-        return null;
-    }
-
-    const { 
-        first_name, 
-        last_name, 
-        email, 
-        phone_number, 
-        voie, 
-        compl, 
-        cp, 
-        ville, 
-        depart,
-        pays = "France",
-        event_start_date, 
-        event_end_date, 
-        is_traiteur 
-    } = formData;
-
-    const pdfContent = {
-        quoteId,
-        userInfo: { 
-            first_name, 
-            last_name, 
-            email, 
-            phone_number, 
-            voie,
-            compl,
-            cp,
-            ville,
-            depart,
-            pays, 
-            is_traiteur, 
-            date: { from: new Date(event_start_date), to: new Date(event_end_date) }
-        },
-        products: cart.map((item: { name: string; quantity: number; price: number; category: string }) => ({
-            name: item.name,
-            quantity: item.quantity,
-            totalPrice: (item.price * item.quantity).toFixed(2),
-            category: item.category // Make sure to include the category
-        })),
-        fees: formData.fees,
-        totalHT: totalHT.toFixed(2),
-        tva: tva.toFixed(2),
-        totalTTC: totalTTC.toFixed(2),
-    };
-
-    return pdfContent;
-  };
 
   const handleSubmit = async () => {
     if (isSubmitting) return; 
@@ -137,12 +86,32 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       const result = await createQuote(quoteData, quoteItems);
       const quoteId = result.quoteId;
 
-      const pdfContent = generatePDFData(quoteId);
-      if (!pdfContent) {
-        setSubmitResult('error');
-        return;
-      }
-      setPdfData(pdfContent);
+      // Convert cart items to products format
+      const products: Product[] = cart.map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        category: item.category,
+        type: item.type
+      }));
+
+      // Convert quote items to the correct format
+      const formattedQuoteItems: QuoteItem[] = quoteItems.map((item: any) => ({
+        product_id: item.product_id,
+        quantity: item.quantity
+      }));
+
+      // Generate PDF using the new function
+      await generateQuotePDF(
+        { 
+          ...quoteData, 
+          id: quoteId,
+          created_at: new Date().toISOString(),
+          last_update: new Date().toISOString()
+        },
+        formattedQuoteItems,
+        products
+      );
 
       clearCart();
       setSubmitResult('success');

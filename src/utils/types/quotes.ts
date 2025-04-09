@@ -33,7 +33,13 @@ export type Quote = {
     };
   };
 
-  export type QuoteItem = {
+export type FinishedQuote = Quote & {
+  finished_at: string;
+  payment_method: string;
+  payment_reference?: string;
+};
+
+export type QuoteItem = {
     id: number;
     quote_id: number;
     product_id: number;
