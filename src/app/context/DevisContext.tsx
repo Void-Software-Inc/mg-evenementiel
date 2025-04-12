@@ -15,7 +15,6 @@ const defaultFees = [
   { name: 'delivery', price: 0, enabled: false, description: '' },
   { name: 'pickup', price: 0, enabled: false, description: '' },
   { name: 'table_service', price: 0, enabled: false, description: '' },
-  { name: 'retrieval', price: 0, enabled: false, description: '' },
   { name: 'marquee_setup', price: 0, enabled: false, description: '' },
   { name: 'marquee_dismantling', price: 0, enabled: false, description: '' },
   { name: 'decoration', price: 0, enabled: false, description: '' }

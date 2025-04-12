@@ -46,7 +46,6 @@ const CartOptions: React.FC<CartOptionsProps> = ({ onNext, onPrevious }) => {
       { name: 'delivery', price: 0, enabled: false, description: '' },
       { name: 'pickup', price: 0, enabled: false, description: '' },
       { name: 'table_service', price: 0, enabled: false, description: '' },
-      { name: 'retrieval', price: 0, enabled: false, description: '' },
       { name: 'marquee_setup', price: 0, enabled: false, description: '' },
       { name: 'marquee_dismantling', price: 0, enabled: false, description: '' },
       { name: 'decoration', price: 0, enabled: false, description: '' }
@@ -180,28 +179,6 @@ const CartOptions: React.FC<CartOptionsProps> = ({ onNext, onPrevious }) => {
                       Frais d'enlèvement du matériel
                     </Label>
                     <p className="text-xs text-gray-500">Nous récupérons le matériel après votre événement</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Decoration specific options */}
-          {hasDecoration && (
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="font-medium text-gray-800 mb-4 pb-2 border-b border-gray-200">Options de décoration</h3>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-100">
-                  <Checkbox 
-                    id="retrieval" 
-                    checked={fees.find(fee => fee.name === 'retrieval')?.enabled}
-                    onCheckedChange={() => toggleFee('retrieval')}
-                  />
-                  <div className="grid gap-1.5 leading-none">
-                    <Label htmlFor="retrieval" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Mise en place de la décoration
-                    </Label>
-                    <p className="text-xs text-gray-500">Installation par nos équipes de la décoration sur le lieu de l'événement</p>
                   </div>
                 </div>
               </div>
