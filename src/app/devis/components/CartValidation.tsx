@@ -18,6 +18,16 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const { clearCart } = useCart();
   const router = useRouter();
 
+  // Mapping for option names
+  const optionNameMapping: { [key: string]: string } = {
+    'setup': 'Montage et installation pour barnum',
+    'delivery': 'Livraison',
+    'dismantling': 'Démontage du barnum',
+    'pickup': 'Récupération du matériel',
+    'decoration': 'Décoration',
+    'table_service': 'Service à table',
+  };
+
   // Ensure that formData has the necessary user info and check that formData is not undefined
   useEffect(() => {
     if (formData && (!formData.first_name || !formData.last_name || !formData.phone_number)) {
@@ -920,52 +930,34 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             </div>
           )}
 
-          {/* Options/Fees Section */}
-          {selectedFees.length > 0 && (
-            <div className="mb-6">
-              <div className="flex items-center mb-3 pb-1 border-b">
-                <span className="inline-block w-1.5 h-5 bg-green-500 rounded-full mr-1.5"></span>
-                <h3 className="font-medium text-base text-gray-800">Options</h3>
+ {/* Selected Options Section */}
+ <div className="mt-6 border-t pt-4">
+            <p className="text-xl font-semibold mb-4 text-zinc-800 flex items-center">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Options sélectionnées
+            </p>
+            {selectedFees.length > 0 ? (
+              <div className="grid grid-cols-1 gap-2">
+                {selectedFees.map((fee: any, index: number) => {
+                  const displayName = optionNameMapping[fee.name] || fee.name || fee.description || 'Option sans nom';
+                  return (
+                    <div key={index} className="flex items-center">
+                      <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                      <span className="text-gray-700">{displayName}</span>
+                    </div>
+                  );
+                })}
               </div>
-              
-              <div className="overflow-x-auto -mx-4 sm:mx-0">
-                <div className="min-w-full inline-block align-middle">
-                  <div className="overflow-hidden">
-                    <table className="min-w-full">
-                      <thead>
-                        <tr className="bg-gray-100">
-                          <th className="px-3 sm:px-4 py-3 text-left text-sm sm:text-base font-semibold text-gray-600">Option</th>
-                          <th className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-semibold text-gray-600">Prix</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {selectedFees.map((fee: any) => (
-                          <tr key={fee.name} className="border-b border-gray-200 hover:bg-gray-50">
-                            <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{fee.description}</td>
-                            <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{fee.price.toFixed(2)}€</td>
-                          </tr>
-                        ))}
-                        <tr className="bg-gray-50">
-                          <td className="px-3 sm:px-4 py-2 text-left text-sm font-medium text-gray-600">Sous-total Options:</td>
-                          <td className="px-3 sm:px-4 py-2 text-right text-sm font-semibold">{feesTotal.toFixed(2)}€ HT</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+            ) : (
+              <p className="text-gray-500 italic">Aucune option sélectionnée</p>
+            )}
+          </div>
 
           {/* Totals Section */}
           <div className="mt-6 border-t pt-4">
             <div className="flex flex-col items-end space-y-2">
-              {selectedFees.length > 0 && (
-                <div className="flex justify-between w-full max-w-[300px]">
-                  <span className="text-gray-600 text-sm sm:text-base">Options:</span>
-                  <span className="font-medium text-sm sm:text-base">{feesTotal.toFixed(2)}€ HT</span>
-                </div>
-              )}
               <div className="flex justify-between w-full max-w-[300px]">
                 <span className="text-gray-600 text-sm sm:text-base">Total HT:</span>
                 <span className="font-medium text-sm sm:text-base">{totalHT.toFixed(2)}€</span>
