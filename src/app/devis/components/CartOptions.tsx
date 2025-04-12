@@ -148,7 +148,7 @@ const CartOptions: React.FC<CartOptionsProps> = ({ onNext, onPrevious }) => {
           </div>
         )}
 
-        <div className="space-y-8">
+        <div className="space-y-6">
           {/* General options (shown when either decoration or barnum is present) */}
           {(hasDecoration || hasBarnum) && (
             <div className="bg-gray-50 rounded-lg p-6">
@@ -215,6 +215,28 @@ const CartOptions: React.FC<CartOptionsProps> = ({ onNext, onPrevious }) => {
                       Démontage du barnum
                     </Label>
                     <p className="text-xs text-gray-500">Démontage et enlèvement du barnum après votre événement</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+           {/* Decoration specific options */}
+           {hasDecoration && (
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h3 className="font-medium text-gray-800 mb-4 pb-2 border-b border-gray-200">Options de décoration</h3>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3 p-3 bg-white rounded-lg border border-gray-100">
+                  <Checkbox 
+                    id="decoration" 
+                    checked={fees.find(fee => fee.name === 'decoration')?.enabled}
+                    onCheckedChange={() => toggleFee('decoration')}
+                  />
+                  <div className="grid gap-1.5 leading-none">
+                    <Label htmlFor="decoration" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Mise en place de la décoration
+                    </Label>
+                    <p className="text-xs text-gray-500">Installation par nos équipes de la décoration sur le lieu de l'événement</p>
                   </div>
                 </div>
               </div>
