@@ -20,9 +20,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
 
   // Mapping for option names
   const optionNameMapping: { [key: string]: string } = {
-    'setup': 'Montage et installation pour barnum',
+    'marquee_setup': 'Montage et installation pour barnum',
     'delivery': 'Livraison',
-    'dismantling': 'Démontage du barnum',
+    'marquee_dismantling': 'Démontage du barnum',
     'pickup': 'Récupération du matériel',
     'decoration': 'Décoration',
     'table_service': 'Service à table',
@@ -117,7 +117,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           ...quoteData, 
           id: quoteId,
           created_at: new Date().toISOString(),
-          last_update: new Date().toISOString()
+          last_update: new Date().toISOString(),
+          fees: selectedFees // Add the selected fees to the PDF data
         },
         formattedQuoteItems,
         products
@@ -930,8 +931,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             </div>
           )}
 
- {/* Selected Options Section */}
- <div className="mt-6 border-t pt-4">
+          {/* Selected Options Section */}
+          <div className="mt-6 border-t pt-4">
             <p className="text-xl font-semibold mb-4 text-zinc-800 flex items-center">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
