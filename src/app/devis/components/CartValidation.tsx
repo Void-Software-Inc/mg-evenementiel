@@ -18,6 +18,16 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const { clearCart } = useCart();
   const router = useRouter();
 
+  // Mapping for option names
+  const optionNameMapping: { [key: string]: string } = {
+    'marquee_setup': 'Montage et installation pour barnum',
+    'delivery': 'Livraison',
+    'marquee_dismantling': 'Démontage du barnum',
+    'pickup': 'Récupération du matériel',
+    'decoration': 'Décoration',
+    'table_service': 'Service à table',
+  };
+
   // Ensure that formData has the necessary user info and check that formData is not undefined
   useEffect(() => {
     if (formData && (!formData.first_name || !formData.last_name || !formData.phone_number)) {
@@ -107,7 +117,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           ...quoteData, 
           id: quoteId,
           created_at: new Date().toISOString(),
-          last_update: new Date().toISOString()
+          last_update: new Date().toISOString(),
+          fees: selectedFees // Add the selected fees to the PDF data
         },
         formattedQuoteItems,
         products
@@ -130,632 +141,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     return new Date(date).toLocaleDateString('fr-FR', { timeZone: parisTimeZone });
   };
   
-  const downloadPDF = () => {
-    if (!pdfData) {
-      console.error('PDF data is not ready');
-      alert('Unable to download PDF: Missing data.');
-      return;
-    }
-
-    const doc = new jsPDF();
-    const { userInfo, products, fees, totalHT, tva, totalTTC, quoteId } = pdfData;
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const rightMargin = 15;
-    const lineSpacing = 7;
-
-    // Create a reusable footer function that will be applied to all pages
-    const addFooter = (doc: any, pageHeight: number, pageNumber: number, totalPages: number) => {
-      const footerY = pageHeight - 35;
-      
-      // Add horizontal line
-      doc.setDrawColor(168, 168, 168);
-      doc.setLineWidth(0.5);
-      doc.line(15, footerY, pageWidth - 15, footerY);
-      
-      doc.setFontSize(7);
-        
-      // MG Événements section
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(89, 89, 89);
-      doc.text("MG Événements", 15, footerY + 7);
-      doc.setFont('helvetica', 'normal');
-      doc.text("Entreprise Individuelle\nChemin des droits de l'homme\net du citoyen, 31450 Ayguevives\nSIREN : 918 638 008\nNuméro de TVA : FR88918638008\nCode APE : 82.30Z", 15, footerY + 10);
-
-      // MG Traiteur section
-      const traiteurX = (pageWidth / 4) + 10;
-      doc.setFont('helvetica', 'bold');
-      doc.setTextColor(89, 89, 89);
-      doc.text("MG Traiteur", traiteurX, footerY + 7);
-      doc.setFont('helvetica', 'normal');
-      doc.text("Entreprise Individuelle\nSIREN : 911 582 468\nNuméro de TVA : FR88918638008\nCode APE : 5621Z", traiteurX, footerY + 10);
-
-      // Contact section
-      const contactX = (2 * pageWidth) / 4;
-      doc.setFont('helvetica', 'bold');
-      doc.text("Coordonnées", contactX, footerY + 7);
-      doc.setFont('helvetica', 'normal');
-      doc.text("Mani Grimaudo\n07 68 10 96 17\nmgevenementiel31@gmail.com\nwww.mgevenements.fr", contactX, footerY + 10);
-
-      // Bank details section
-      const bankX = ((3 * pageWidth) / 4) - 10;
-      doc.setFont('helvetica', 'bold');
-      doc.text("Coordonnées bancaires", bankX, footerY + 7);
-      doc.setFont('helvetica', 'normal');
-      doc.text("IBAN FR76 2823 3000 0113 2935 6527 041\nCode BIC / SWIFT REVOFRP2\nPaypal: mani.grimaudo@icloud.com", bankX, footerY + 10);
-      
-      // Add page numbers with correct total
-      doc.setFontSize(8);
-      const text = `Page ${pageNumber} sur ${totalPages}`;
-      const textWidth = doc.getTextWidth(text);
-      doc.text(
-        text,
-        doc.internal.pageSize.getWidth() - 15 - textWidth,
-        pageHeight - 5
-      );
-    };
-
-    // Helper function to add totals and signature section
-    const addTotalsAndSignature = (
-      doc: any,
-      startY: number,
-      pageWidth: number,
-      totalHT: number,
-      tva: number,
-      totalTTC: number,
-      rightMargin: number,
-      lineSpacing: number
-    ) => {
-      // Add totals section
-      doc.setFontSize(10);
-      doc.setTextColor(0);
-      
-      // Draw a light gray background for the totals section
-      doc.setFillColor(245, 245, 245);
-      doc.rect(pageWidth - 97, startY, 85, lineSpacing * 4, 'F');
-      
-      // Total HT
-      doc.setFont('helvetica', 'bold');
-      doc.text("Total HT:", pageWidth - 95, startY + lineSpacing);
-      doc.setFont('helvetica', 'normal');
-      const totalHTText = `${Number(totalHT).toFixed(2)}€`;
-      const totalHTWidth = doc.getTextWidth(totalHTText);
-      doc.text(totalHTText, pageWidth - rightMargin - totalHTWidth, startY + lineSpacing);
-      
-      // TVA
-      doc.setFont('helvetica', 'bold');
-      doc.text("TVA 20%:", pageWidth - 95, startY + (lineSpacing * 2));
-      doc.setFont('helvetica', 'normal');
-      const tvaText = `${Number(tva).toFixed(2)}€`;
-      const tvaWidth = doc.getTextWidth(tvaText);
-      doc.text(tvaText, pageWidth - rightMargin - tvaWidth, startY + (lineSpacing * 2));
-      
-      // Total TTC
-      doc.setFont('helvetica', 'bold');
-      doc.text("Total TTC:", pageWidth - 95, startY + (lineSpacing * 3));
-      doc.setFont('helvetica', 'normal');
-      const totalTTCText = `${Number(totalTTC).toFixed(2)}€`;
-      const totalTTCWidth = doc.getTextWidth(totalTTCText);
-      doc.text(totalTTCText, pageWidth - rightMargin - totalTTCWidth, startY + (lineSpacing * 3));
-      
-      // Add signature box
-      const signatureY = startY + (lineSpacing * 3);
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'bold');
-      doc.text("Signature du client", 15, signatureY);
-      doc.setFont('helvetica', 'normal');
-      doc.text("(précédée de la mention « Bon pour accord »)", 15, signatureY + 5);
-      
-      // Draw signature box
-      doc.setDrawColor(200, 200, 200);
-      doc.setLineWidth(0.5);
-      doc.rect(15, signatureY + 10, 60, 30);
-    };
-
-    // Separate products by category
-    const decorationProducts = products.filter((product: any) => 
-      product.category === 'decoration' || 
-      cart.find((item: any) => item.name === product.name && item.category === 'decoration')
-    );
-    
-    const traiteurProducts = products.filter((product: any) => 
-      product.category === 'traiteur' || 
-      cart.find((item: any) => item.name === product.name && item.category === 'traiteur')
-    );
-
-    // Calculate total pages needed
-    const rowsPerPage = 20; // Approximate rows per page
-    const totalRows = decorationProducts.length + (decorationProducts.length > 0 ? 1 : 0) + 
-                      traiteurProducts.length + (traiteurProducts.length > 0 ? 1 : 0);
-    const dataPages = Math.ceil(totalRows / rowsPerPage);
-    
-    // Check if we'll need an extra page for totals
-    const estimatedTableHeight = totalRows * 10 + 40; // rough estimate: 10 units per row + header
-    const availableHeight = pageHeight - 150 - 60; // available space minus margins
-    const needsExtraPage = estimatedTableHeight > availableHeight;
-    const totalPages = needsExtraPage ? dataPages + 1 : dataPages;
-
-    // Add logo with correct aspect ratio
-    const img = new Image();
-    img.src = '/quote-mg-events.png';
-    
-    // Calculate dimensions maintaining aspect ratio
-    const originalWidth = 788;
-    const originalHeight = 380;
-    const desiredWidth = 65;
-    const scaledHeight = (desiredWidth * originalHeight) / originalWidth;
-    
-    doc.setFontSize(50);
-    doc.setTextColor(51); // Single value for grayscale (51 = #333333)
-    doc.text(`Devis`, 15, 30);
-    doc.setTextColor(0); // Reset to black
-
-    doc.addImage(img, 'PNG', 133, 5, desiredWidth, scaledHeight);
-
-    // Adjust subsequent content position based on logo height
-    const contentStartY = 5 + scaledHeight;
-
-    // Quote date and number at the top right
-    const quoteDate = new Date().toLocaleDateString('fr-FR');
-    const quoteValue = (quoteId || '...').toString();
-
-    // Date and quote info on the left
-    doc.setFontSize(9);
-
-    // Date
-    doc.setFont('helvetica', 'bold');
-    doc.text("Date:", 15, contentStartY + 15);
-    doc.setFont('helvetica', 'normal');
-    doc.text(quoteDate, 15 + doc.getTextWidth("Date:   "), contentStartY + 15);
-
-    // Quote number
-    doc.setFont('helvetica', 'bold');
-    doc.text("Numéro devis: ", 15, contentStartY + 21);
-    doc.setFont('helvetica', 'normal');
-    doc.text(quoteValue, 15 + doc.getTextWidth("Numéro devis:   "), contentStartY + 21);
-
-    // Event dates
-    const eventFromDate = formatDateToParisTime(userInfo.date.from);
-    const eventToDate = formatDateToParisTime(userInfo.date.to);
-    const eventDateValue = eventFromDate === eventToDate ? eventFromDate : `du ${eventFromDate} au ${eventToDate}`;
-    doc.setFont('helvetica', 'bold');
-    doc.text("Date(s) de l'événement:", 15, contentStartY + 27);
-    doc.setFont('helvetica', 'normal');
-    doc.text(eventDateValue, 15, contentStartY + 33);
-
-    // Traiteur option
-    const traiteurValue = userInfo.is_traiteur ? 'Oui' : 'Non';
-    doc.setFont('helvetica', 'bold');
-    doc.text("Option traiteur:", 15, contentStartY + 39);
-    doc.setFont('helvetica', 'normal');
-    doc.text(traiteurValue, 15 + doc.getTextWidth("Option traiteur:    "), contentStartY + 39);
-
-    // Add client info aligned to the right
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.text("Client", pageWidth - 15 - doc.getTextWidth("Client"), contentStartY + 15);
-    doc.setFont('helvetica', 'normal');
-
-    const clientInfo = [
-        `${userInfo.first_name} ${userInfo.last_name}`,
-        `${userInfo.email}`,
-        `${userInfo.phone_number}`,
-        `${formData.voie}${formData.compl ? `, ${formData.compl}` : ''}`,
-        `${formData.cp} ${formData.ville}`,
-        `${formData.depart}`
-    ];
-
-    // Fixed position for the last line
-    const lastClientInfoY = contentStartY + 21 + (5 * 6); // 5 is the number of spaces between 6 lines
-
-    clientInfo.forEach((line, index) => {
-        if (line) { // Only render non-empty lines
-            const lineWidth = doc.getTextWidth(line);
-            doc.text(line, pageWidth - 15 - lineWidth, contentStartY + 21 + (index * 6));
-        }
-    });
-
-    // Add payment terms and conditions on the left
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.text("Termes et conditions", 15, lastClientInfoY + 15);
-    doc.setFont('helvetica', 'normal');
-    doc.text("Devis valable un mois", 15, lastClientInfoY + 20);
-    doc.text("Un acompte de 30% est requis", 15, lastClientInfoY + 25);
-
-    // Add address section on the right
-    doc.setFont('helvetica', 'bold');
-    const addressTitle = "Adresse de récupération du matériel";
-    const addressTitleWidth = doc.getTextWidth(addressTitle);
-    doc.text(addressTitle, pageWidth - 15 - addressTitleWidth, lastClientInfoY + 15);
-    
-    doc.setFont('helvetica', 'normal');
-    const addressText = "Chemin des droits de l'homme et du citoyen, 31450 Ayguevives";
-    const addressWidth = doc.getTextWidth(addressText);
-    doc.text(addressText, pageWidth - 15 - addressWidth, lastClientInfoY + 20);
-
-    // Add footer to the first page
-    addFooter(doc, pageHeight, 1, totalPages);
-
-    let finalY = lastClientInfoY + 30;
-    let currentPage = 1;
-
-    // Add decoration products table if there are any
-    if (decorationProducts.length > 0) {
-      // Add a title for the decoration table
-      doc.setFontSize(11);
-      doc.setFont('helvetica', 'bold');
-      doc.text("Matériel et Décoration", 15, finalY + 7);
-      finalY += 10;
-      
-      // Create table with styling to match autoTable
-      const tableStartY = finalY;
-      const tableWidth = pageWidth - 30; // 15px margin on each side
-      const colWidths = [tableWidth - 110, 30, 40, 40]; // Match the columnStyles from autoTable
-      const rowHeight = 8; // Reduced row height
-      
-      // Draw table header (match headStyles from autoTable)
-      doc.setFillColor(50, 50, 50);
-      doc.rect(15, tableStartY, tableWidth, rowHeight, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(8); // Smaller font size
-      doc.setFont('helvetica', 'bold');
-      
-      // Header text alignment to match autoTable
-      doc.text("Produit", 17, tableStartY + 6); // Adjusted for smaller row height
-      doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 6);
-      doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 6);
-      doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 6);
-      
-      // Draw table rows
-      doc.setTextColor(0, 0, 0);
-      doc.setFont('helvetica', 'normal');
-      let currentY = tableStartY + rowHeight;
-      
-      decorationProducts.forEach((item: any, index: number) => {
-        // Check if we need to add a new page
-        if (currentY + rowHeight > pageHeight - 60) {
-          doc.addPage();
-          currentPage++;
-          addFooter(doc, pageHeight, currentPage, totalPages);
-          currentY = 20;
-          
-          // Redraw header on new page
-          doc.setFillColor(50, 50, 50);
-          doc.rect(15, currentY, tableWidth, rowHeight, 'F');
-          doc.setTextColor(255, 255, 255);
-          doc.setFontSize(8);
-          doc.setFont('helvetica', 'bold');
-          doc.text("Produit", 17, currentY + 6);
-          doc.text("Quantité", 15 + colWidths[0] + 5, currentY + 6);
-          doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, currentY + 6);
-          doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 6);
-          doc.setTextColor(0, 0, 0);
-          doc.setFont('helvetica', 'normal');
-          currentY += rowHeight;
-        }
-        
-        // Draw row background (alternating colors like autoTable)
-        doc.setFillColor(index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245);
-        doc.rect(15, currentY, tableWidth, rowHeight, 'F');
-        
-        // Draw cell content with proper alignment
-        doc.setFontSize(8);
-        
-        // Product name (left aligned with ellipsis if too long)
-        const name = item.name.length > 40 ? item.name.substring(0, 37) + "..." : item.name;
-        doc.text(name, 17, currentY + 6);
-        
-        // Quantity (center aligned)
-        const qtyText = item.quantity.toString();
-        const qtyWidth = doc.getTextWidth(qtyText);
-        doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 6);
-        
-        // Unit price (right aligned)
-        const unitPrice = `${(Number(item.totalPrice) / item.quantity).toFixed(2)}€`;
-        const unitPriceWidth = doc.getTextWidth(unitPrice);
-        doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 6);
-        
-        // Total price (right aligned)
-        const totalPrice = `${item.totalPrice}€`;
-        const totalPriceWidth = doc.getTextWidth(totalPrice);
-        doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 6);
-        
-        currentY += rowHeight;
-      });
-      
-      // Add decoration subtotal row
-      const decorationTotal = decorationProducts.reduce(
-        (sum: number, item: any) => sum + Number(item.totalPrice), 
-        0
-      ).toFixed(2);
-      
-      // Check if we need to add a new page
-      if (currentY + rowHeight > pageHeight - 60) {
-        doc.addPage();
-        currentPage++;
-        addFooter(doc, pageHeight, currentPage, totalPages);
-        currentY = 20;
-      }
-      
-      // Draw subtotal row with styling to match autoTable
-      doc.setFillColor(240, 240, 240);
-      doc.rect(15, currentY, tableWidth, rowHeight, 'F');
-      doc.setFont('helvetica', 'bold');
-      
-      // Subtotal text (right aligned in the third column)
-      const subtotalText = "Sous-total Décoration:";
-      const subtotalTextWidth = doc.getTextWidth(subtotalText);
-      doc.text(subtotalText, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - subtotalTextWidth, currentY + 6);
-      
-      // Subtotal amount (right aligned in the fourth column)
-      const subtotalAmount = `${decorationTotal}€`;
-      const subtotalAmountWidth = doc.getTextWidth(subtotalAmount);
-      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 6);
-      
-      finalY = currentY + rowHeight + 15; // Add more space between tables
-    }
-    
-    // Check if there's enough space for the traiteur table
-    // Calculate how much space the traiteur table will need
-    const traiteurTableHeight = traiteurProducts.length > 0 
-      ? (traiteurProducts.length + 2) * 8 + 20 // rows + header + subtotal + padding
-      : 0;
-
-    // If there's not enough space, add a new page before the traiteur table
-    if (traiteurProducts.length > 0 && finalY + traiteurTableHeight > pageHeight - 60) {
-      doc.addPage();
-      currentPage++;
-      addFooter(doc, pageHeight, currentPage, totalPages);
-      finalY = 20;
-    }
-
-    // Add traiteur products table if there are any
-    if (traiteurProducts.length > 0) {
-      // Add a title for the traiteur table
-      doc.setFontSize(11);
-      doc.setFont('helvetica', 'bold');
-      doc.text("Traiteur", 15, finalY + 7);
-      finalY += 10;
-      
-      // Create table with styling to match autoTable
-      const tableStartY = finalY;
-      const tableWidth = pageWidth - 30; // 15px margin on each side
-      const colWidths = [tableWidth - 110, 30, 40, 40]; // Match the columnStyles from autoTable
-      const rowHeight = 8; // Reduced row height
-      
-      // Draw table header (match headStyles from autoTable)
-      doc.setFillColor(50, 50, 50);
-      doc.rect(15, tableStartY, tableWidth, rowHeight, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(8); // Smaller font size
-      doc.setFont('helvetica', 'bold');
-      
-      // Header text alignment to match autoTable
-      doc.text("Produit", 17, tableStartY + 6); // Adjusted for smaller row height
-      doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 6);
-      doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 6);
-      doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 6);
-      
-      // Draw table rows
-      doc.setTextColor(0, 0, 0);
-      doc.setFont('helvetica', 'normal');
-      let currentY = tableStartY + rowHeight;
-      
-      traiteurProducts.forEach((item: any, index: number) => {
-        // Check if we need to add a new page
-        if (currentY + rowHeight > pageHeight - 60) {
-          doc.addPage();
-          currentPage++;
-          addFooter(doc, pageHeight, currentPage, totalPages);
-          currentY = 20;
-          
-          // Redraw header on new page
-          doc.setFillColor(50, 50, 50);
-          doc.rect(15, currentY, tableWidth, rowHeight, 'F');
-          doc.setTextColor(255, 255, 255);
-          doc.setFontSize(8);
-          doc.setFont('helvetica', 'bold');
-          doc.text("Produit", 17, currentY + 6);
-          doc.text("Quantité", 15 + colWidths[0] + 5, currentY + 6);
-          doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, currentY + 6);
-          doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 6);
-          doc.setTextColor(0, 0, 0);
-          doc.setFont('helvetica', 'normal');
-          currentY += rowHeight;
-        }
-        
-        // Draw row background (alternating colors like autoTable)
-        doc.setFillColor(index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245);
-        doc.rect(15, currentY, tableWidth, rowHeight, 'F');
-        
-        // Draw cell content with proper alignment
-        doc.setFontSize(8);
-        
-        // Product name (left aligned with ellipsis if too long)
-        const name = item.name.length > 40 ? item.name.substring(0, 37) + "..." : item.name;
-        doc.text(name, 17, currentY + 6);
-        
-        // Quantity (center aligned)
-        const qtyText = item.quantity.toString();
-        const qtyWidth = doc.getTextWidth(qtyText);
-        doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 6);
-        
-        // Unit price (right aligned)
-        const unitPrice = `${(Number(item.totalPrice) / item.quantity).toFixed(2)}€`;
-        const unitPriceWidth = doc.getTextWidth(unitPrice);
-        doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 6);
-        
-        // Total price (right aligned)
-        const totalPrice = `${item.totalPrice}€`;
-        const totalPriceWidth = doc.getTextWidth(totalPrice);
-        doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 6);
-        
-        currentY += rowHeight;
-      });
-      
-      // Add traiteur subtotal row
-      const traiteurTotal = traiteurProducts.reduce(
-        (sum: number, item: any) => sum + Number(item.totalPrice), 
-        0
-      ).toFixed(2);
-      
-      // Check if we need to add a new page
-      if (currentY + rowHeight > pageHeight - 60) {
-        doc.addPage();
-        currentPage++;
-        addFooter(doc, pageHeight, currentPage, totalPages);
-        currentY = 20;
-      }
-      
-      // Draw subtotal row with styling to match autoTable
-      doc.setFillColor(240, 240, 240);
-      doc.rect(15, currentY, tableWidth, rowHeight, 'F');
-      doc.setFont('helvetica', 'bold');
-      
-      // Subtotal text (right aligned in the third column)
-      const subtotalText = "Sous-total Traiteur:";
-      const subtotalTextWidth = doc.getTextWidth(subtotalText);
-      doc.text(subtotalText, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - subtotalTextWidth, currentY + 6);
-      
-      // Subtotal amount (right aligned in the fourth column)
-      const subtotalAmount = `${traiteurTotal}€`;
-      const subtotalAmountWidth = doc.getTextWidth(subtotalAmount);
-      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 6);
-      
-      finalY = currentY + rowHeight + 10;
-    }
-
-    // Check if there's enough space for the fees table
-    const feesTableHeight = fees && fees.length > 0 
-      ? (fees.length + 2) * 8 + 20 // rows + header + subtotal + padding
-      : 0;
-
-    // If there's not enough space, add a new page before the fees table
-    if (fees && fees.length > 0 && finalY + feesTableHeight > pageHeight - 60) {
-      doc.addPage();
-      currentPage++;
-      addFooter(doc, pageHeight, currentPage, totalPages);
-      finalY = 20;
-    }
-
-    // Add fees table if there are any
-    if (fees && fees.length > 0) {
-      // Add a title for the fees table
-      doc.setFontSize(11);
-      doc.setFont('helvetica', 'bold');
-      doc.text("Options", 15, finalY + 7);
-      finalY += 10;
-      
-      // Create table with styling to match autoTable
-      const tableStartY = finalY;
-      const tableWidth = pageWidth - 30; // 15px margin on each side
-      const colWidths = [tableWidth - 50, 50]; // Match the columnStyles from autoTable
-      const rowHeight = 8; // Reduced row height
-      
-      // Draw table header (match headStyles from autoTable)
-      doc.setFillColor(50, 50, 50);
-      doc.rect(15, tableStartY, tableWidth, rowHeight, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(8); // Smaller font size
-      doc.setFont('helvetica', 'bold');
-      
-      // Header text alignment to match autoTable
-      doc.text("Option", 17, tableStartY + 6); // Adjusted for smaller row height
-      doc.text("Prix HT", 15 + colWidths[0] + 5, tableStartY + 6);
-      
-      // Draw table rows
-      doc.setTextColor(0, 0, 0);
-      doc.setFont('helvetica', 'normal');
-      let currentY = tableStartY + rowHeight;
-      
-      fees.forEach((fee: any, index: number) => {
-        // Check if we need to add a new page
-        if (currentY + rowHeight > pageHeight - 60) {
-          doc.addPage();
-          currentPage++;
-          addFooter(doc, pageHeight, currentPage, totalPages);
-          currentY = 20;
-          
-          // Redraw header on new page
-          doc.setFillColor(50, 50, 50);
-          doc.rect(15, currentY, tableWidth, rowHeight, 'F');
-          doc.setTextColor(255, 255, 255);
-          doc.setFontSize(8);
-          doc.setFont('helvetica', 'bold');
-          doc.text("Option", 17, currentY + 6);
-          doc.text("Prix HT", 15 + colWidths[0] + 5, currentY + 6);
-          doc.setTextColor(0, 0, 0);
-          doc.setFont('helvetica', 'normal');
-          currentY += rowHeight;
-        }
-        
-        // Draw row background (alternating colors like autoTable)
-        doc.setFillColor(index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245, index % 2 === 0 ? 255 : 245);
-        doc.rect(15, currentY, tableWidth, rowHeight, 'F');
-        
-        // Draw cell content with proper alignment
-        doc.setFontSize(8);
-        
-        // Option description (left aligned with ellipsis if too long)
-        const name = fee.description.length > 40 ? fee.description.substring(0, 37) + "..." : fee.description;
-        doc.text(name, 17, currentY + 6);
-        
-        // Fee price (right aligned)
-        const feePrice = `${fee.price.toFixed(2)}€`;
-        const feePriceWidth = doc.getTextWidth(feePrice);
-        doc.text(feePrice, 15 + tableWidth - 5 - feePriceWidth, currentY + 6);
-        
-        currentY += rowHeight;
-      });
-      
-      // Add fees subtotal row
-      const feesTotal = fees.reduce(
-        (sum: number, fee: any) => sum + Number(fee.price), 
-        0
-      ).toFixed(2);
-      
-      // Check if we need to add a new page
-      if (currentY + rowHeight > pageHeight - 60) {
-        doc.addPage();
-        currentPage++;
-        addFooter(doc, pageHeight, currentPage, totalPages);
-        currentY = 20;
-      }
-      
-      // Draw subtotal row with styling to match autoTable
-      doc.setFillColor(240, 240, 240);
-      doc.rect(15, currentY, tableWidth, rowHeight, 'F');
-      doc.setFont('helvetica', 'bold');
-      
-      // Subtotal text (right aligned in the first column)
-      const subtotalText = "Sous-total Options:";
-      const subtotalTextWidth = doc.getTextWidth(subtotalText);
-      doc.text(subtotalText, 15 + colWidths[0] - 5 - subtotalTextWidth, currentY + 6);
-      
-      // Subtotal amount (right aligned in the second column)
-      const subtotalAmount = `${feesTotal}€`;
-      const subtotalAmountWidth = doc.getTextWidth(subtotalAmount);
-      doc.text(subtotalAmount, 15 + tableWidth - 5 - subtotalAmountWidth, currentY + 6);
-      
-      finalY = currentY + rowHeight + 15; // Add more space
-    }
-
-    // Check if there's enough space for totals and signature
-    const requiredSpace = 100; // Approximate space needed for totals, signature box, and company info
-    
-    // If there isn't enough space, add a new page
-    if (finalY + requiredSpace > pageHeight) {
-      doc.addPage();
-      currentPage++;
-      addFooter(doc, pageHeight, currentPage, totalPages);
-      addTotalsAndSignature(doc, 20, pageWidth, totalHT, tva, totalTTC, rightMargin, lineSpacing);
-    } else {
-      addTotalsAndSignature(doc, finalY, pageWidth, totalHT, tva, totalTTC, rightMargin, lineSpacing);
-    }
-
-    doc.save(`Devis_${userInfo.first_name}_${new Date().toLocaleDateString('fr-FR')}.pdf`);
-  };
+ 
+  
 
   // Update the button to download the PDF
   if (submitResult === 'success') {
@@ -765,8 +152,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         <p className="mb-4">Merci pour votre demande. Vous pouvez télécharger votre devis ci-dessous.</p>
         {formData && (
           <Button
-            onClick={downloadPDF}
-            className="mt-3 rounded-full py-6 px-8 text-lg font-light bg-green-500 hover:bg-green-700 w-full sm:w-[280px]"
+          onClick={() => window.location.reload()}
+          className="mt-3 rounded-full py-6 px-8 text-lg font-light bg-green-500 hover:bg-green-700 w-full sm:w-[280px]"
           >
             Télécharger le devis en PDF
           </Button>
@@ -920,52 +307,34 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             </div>
           )}
 
-          {/* Options/Fees Section */}
-          {selectedFees.length > 0 && (
-            <div className="mb-6">
-              <div className="flex items-center mb-3 pb-1 border-b">
-                <span className="inline-block w-1.5 h-5 bg-green-500 rounded-full mr-1.5"></span>
-                <h3 className="font-medium text-base text-gray-800">Options</h3>
+          {/* Selected Options Section */}
+          <div className="mt-6 border-t pt-4">
+            <p className="text-xl font-semibold mb-4 text-zinc-800 flex items-center">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Options sélectionnées
+            </p>
+            {selectedFees.length > 0 ? (
+              <div className="grid grid-cols-1 gap-2">
+                {selectedFees.map((fee: any, index: number) => {
+                  const displayName = optionNameMapping[fee.name] || fee.name || fee.description || 'Option sans nom';
+                  return (
+                    <div key={index} className="flex items-center">
+                      <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                      <span className="text-gray-700">{displayName}</span>
+                    </div>
+                  );
+                })}
               </div>
-              
-              <div className="overflow-x-auto -mx-4 sm:mx-0">
-                <div className="min-w-full inline-block align-middle">
-                  <div className="overflow-hidden">
-                    <table className="min-w-full">
-                      <thead>
-                        <tr className="bg-gray-100">
-                          <th className="px-3 sm:px-4 py-3 text-left text-sm sm:text-base font-semibold text-gray-600">Option</th>
-                          <th className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-semibold text-gray-600">Prix</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {selectedFees.map((fee: any) => (
-                          <tr key={fee.name} className="border-b border-gray-200 hover:bg-gray-50">
-                            <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{fee.description}</td>
-                            <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{fee.price.toFixed(2)}€</td>
-                          </tr>
-                        ))}
-                        <tr className="bg-gray-50">
-                          <td className="px-3 sm:px-4 py-2 text-left text-sm font-medium text-gray-600">Sous-total Options:</td>
-                          <td className="px-3 sm:px-4 py-2 text-right text-sm font-semibold">{feesTotal.toFixed(2)}€ HT</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+            ) : (
+              <p className="text-gray-500 italic">Aucune option sélectionnée</p>
+            )}
+          </div>
 
           {/* Totals Section */}
           <div className="mt-6 border-t pt-4">
             <div className="flex flex-col items-end space-y-2">
-              {selectedFees.length > 0 && (
-                <div className="flex justify-between w-full max-w-[300px]">
-                  <span className="text-gray-600 text-sm sm:text-base">Options:</span>
-                  <span className="font-medium text-sm sm:text-base">{feesTotal.toFixed(2)}€ HT</span>
-                </div>
-              )}
               <div className="flex justify-between w-full max-w-[300px]">
                 <span className="text-gray-600 text-sm sm:text-base">Total HT:</span>
                 <span className="font-medium text-sm sm:text-base">{totalHT.toFixed(2)}€</span>
