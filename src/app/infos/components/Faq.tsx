@@ -30,7 +30,7 @@ export default function Faq() {
                         rel="noopener noreferrer"
                         className="font-normal underline hover:text-gray-600 transition-colors"
                     >
-                        Chemin des droits de l'homme et du citoyen, 31450 Ayguevives
+                        Labège, 31670
                     </a>
                     . De la même manière, vous pouvez nous le ramener à cette même adresse une fois votre événement terminé.
                 </>

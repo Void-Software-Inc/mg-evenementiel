@@ -141,7 +141,7 @@ export const generateDocumentPDF = (
       doc.text(addressTitle, pageWidth - 15 - addressTitleWidth, lastClientInfoY + 15);
 
       doc.setFont('helvetica', 'normal');
-      const addressText = "Chemin des droits de l'homme et du citoyen, 31450 Ayguevives";
+      const addressText = "Labège, 31670";
       const addressWidth = doc.getTextWidth(addressText);
       doc.text(addressText, pageWidth - 15 - addressWidth, lastClientInfoY + 20);
 
@@ -232,7 +232,8 @@ export const generateDocumentPDF = (
         doc.setTextColor(89, 89, 89);
         doc.text("MG Événements", 15, footerY + 7);
         doc.setFont('helvetica', 'normal');
-        doc.text("Entreprise Individuelle\nChemin des droits de l'homme\net du citoyen, 31450 Ayguesvives\nSIREN : 918 638 008\nNuméro de TVA : FR88918638008\nCode APE : 82.30Z", 15, footerY + 10);
+ //       doc.text("Entreprise Individuelle\nChemin des droits de l'homme\net du citoyen, 31450 Ayguesvives\nSIREN : 918 638 008\nNuméro de TVA : FR88918638008\nCode APE : 82.30Z", 15, footerY + 10);
+        doc.text("Entreprise Individuelle\nSIREN : 918 638 008\nNuméro de TVA : FR88918638008\nCode APE : 82.30Z", 15, footerY + 10);
 
         // MG Traiteur section
         const traiteurX = (pageWidth / 4) + 10;
@@ -768,7 +769,7 @@ const addTotalsAndSignature = (
   currentY += addWrappedText("Plusieurs options s'offrent à vous :", currentY);
   currentY += addWrappedText("- Retrait en boutique", currentY);
   currentY += addWrappedText("- Livraison à domicile", currentY);
-  currentY += addWrappedText("Le retrait et le retour du matériel peuvent être effectués au chemin des droits de l'homme et du citoyen, 31450 Ayguesvives.", currentY);
+//  currentY += addWrappedText("Le retrait et le retour du matériel peuvent être effectués au chemin des droits de l'homme et du citoyen, 31450 Ayguesvives.", currentY);
   currentY += addWrappedText("Ou nous pouvons assurer la livraison et le retour à votre adresse.", currentY);
   currentY += addWrappedText("Pour une location en semaine, la durée de la location est de 48 heures environ avec un retrait du matériel la veille de l'événement et un retour le lendemain de l'événement.", currentY);
   currentY += addWrappedText("Pour une location le week-end, la durée de la location est de 96 heures environ avec un retrait du matériel le jeudi matin au plus tôt et un retour le lundi après-midi au plus tard.", currentY);
@@ -841,7 +842,7 @@ const addTotalsAndSignature = (
   doc.setTextColor(89, 89, 89);
   doc.text("MG Événements", 15, footerY + 7);
   doc.setFont('helvetica', 'normal');
-  doc.text("Entreprise Individuelle\nChemin des droits de l'homme\net du citoyen, 31450 Ayguesvives\nSIREN : 918 638 008\nNuméro de TVA : FR88918638008\nCode APE : 82.30Z", 15, footerY + 10);
+  doc.text("Entreprise Individuelle\nSIREN : 918 638 008\nNuméro de TVA : FR88918638008\nCode APE : 82.30Z", 15, footerY + 10);
   
   // MG Traiteur section
   const traiteurX = (pageWidth / 4) + 10;

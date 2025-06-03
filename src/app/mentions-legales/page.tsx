@@ -67,8 +67,6 @@ export default function MentionsLegalesPage() {
                 Informations sur l'entreprise
               </h2>
               <p className="mb-1">MG Événements</p>
-              <p className="mb-1">Chemin des droits de l'homme et du citoyen</p>
-              <p className="mb-1">31450 Ayguevives</p>
               <p className="mb-1">Responsable : Mani GRIMAUDO</p>
               <p className="mb-1">Contact : 07 68 10 96 17 | <a 
                 href="mailto:mgevenementiel31@gmail.com"
