@@ -35,7 +35,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
   const traiteurItems = cart.filter(item => item.category === "traiteur");
   
   // Calculate totals
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce((sum, item) => sum + item.ttc_price * item.quantity, 0);
   const itemCount = cart.length;
   const decorationCount = decorationItems.length;
   const traiteurCount = traiteurItems.length;
@@ -155,7 +155,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
                           >
                             {item.name}
                           </Link>
-                          <p className="text-sm text-gray-500 truncate">{item.price}€</p>
+                          <p className="text-sm text-gray-500 truncate">{item.ttc_price}€</p>
                         </div>
                         <div className="flex items-center space-x-1 flex-shrink-0">
                           <Button 
@@ -239,7 +239,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
                           >
                             {item.name}
                           </Link>
-                          <p className="text-sm text-gray-500 truncate">{item.price}€</p>
+                          <p className="text-sm text-gray-500 truncate">{item.ttc_price}€</p>
                         </div>
                         <div className="flex items-center space-x-1 flex-shrink-0">
                           <Button 
@@ -297,7 +297,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
           <div className="w-full">
             <div className="flex justify-between mb-4">
               <span className="font-medium">Total:</span>
-              <span className="font-bold">{total.toFixed(2)}€ HT</span>
+              <span className="font-bold">{total.toFixed(2)}€</span>
             </div>
             <Link 
               href="/devis" 
