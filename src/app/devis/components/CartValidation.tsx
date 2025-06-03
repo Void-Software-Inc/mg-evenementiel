@@ -54,7 +54,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const feesTotal = selectedFees.reduce((sum: number, fee: any) => sum + fee.price, 0);
   const totalHT = decorationTotal + traiteurTotal + feesTotal;
   const tva = totalHT * 0.20; // 20% TVA
-  const totalTTC = totalHT + tva;
+  const totalTTC = totalHT;
 
   const handleSubmit = async () => {
     if (isSubmitting) return; 
@@ -258,7 +258,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
                         ))}
                         <tr className="bg-gray-50">
                           <td colSpan={2} className="px-3 sm:px-4 py-2 text-left text-sm font-medium text-gray-600">Sous-total Matériel et Décoration:</td>
-                          <td className="px-3 sm:px-4 py-2 text-right text-sm font-semibold">{decorationTotal.toFixed(2)}€ HT</td>
+                          <td className="px-3 sm:px-4 py-2 text-right text-sm font-semibold">{decorationTotal.toFixed(2)}€</td>
                         </tr>
                       </tbody>
                     </table>
@@ -297,7 +297,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
                         ))}
                         <tr className="bg-gray-50">
                           <td colSpan={2} className="px-3 sm:px-4 py-2 text-left text-sm font-medium text-gray-600">Sous-total Traiteur:</td>
-                          <td className="px-3 sm:px-4 py-2 text-right text-sm font-semibold">{traiteurTotal.toFixed(2)}€ HT</td>
+                          <td className="px-3 sm:px-4 py-2 text-right text-sm font-semibold">{traiteurTotal.toFixed(2)}€</td>
                         </tr>
                       </tbody>
                     </table>
@@ -335,16 +335,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           {/* Totals Section */}
           <div className="mt-6 border-t pt-4">
             <div className="flex flex-col items-end space-y-2">
-              <div className="flex justify-between w-full max-w-[300px]">
-                <span className="text-gray-600 text-sm sm:text-base">Total HT:</span>
-                <span className="font-medium text-sm sm:text-base">{totalHT.toFixed(2)}€</span>
-              </div>
-              <div className="flex justify-between w-full max-w-[300px]">
-                <span className="text-gray-600 text-sm sm:text-base">TVA 20%:</span>
-                <span className="font-medium text-sm sm:text-base">{tva.toFixed(2)}€</span>
-              </div>
               <div className="flex justify-between w-full max-w-[300px] bg-zinc-800 text-white p-3 rounded-lg">
-                <span className="text-sm sm:text-lg">Total TTC:</span>
+                <span className="text-sm sm:text-lg">Total :</span>
                 <span className="font-bold text-sm sm:text-lg">{totalTTC.toFixed(2)}€</span>
               </div>
             </div>
