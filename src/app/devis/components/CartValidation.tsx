@@ -49,8 +49,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const selectedFees = formData?.fees?.filter((fee: any) => fee.enabled) || [];
   
   // Calculate totals
-  const decorationTotal = decorationItems.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
-  const traiteurTotal = traiteurItems.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
+  const decorationTotal = decorationItems.reduce((sum: number, item: any) => sum + item.ttc_price * item.quantity, 0);
+  const traiteurTotal = traiteurItems.reduce((sum: number, item: any) => sum + item.ttc_price * item.quantity, 0);
   const feesTotal = selectedFees.reduce((sum: number, fee: any) => sum + fee.price, 0);
   const totalHT = decorationTotal + traiteurTotal + feesTotal;
   const tva = totalHT * 0.20; // 20% TVA
@@ -100,7 +100,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       const products: Product[] = cart.map((item: any) => ({
         id: item.id,
         name: item.name,
-        price: item.price,
+        ttc_price: item.ttc_price,
         category: item.category,
         type: item.type
       }));
@@ -253,7 +253,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
                           <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
                             <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{item.name}</td>
                             <td className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base">{item.quantity}</td>
-                            <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{(item.price * item.quantity).toFixed(2)}€</td>
+                            <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{(item.ttc_price * item.quantity).toFixed(2)}€</td>
                           </tr>
                         ))}
                         <tr className="bg-gray-50">
@@ -292,7 +292,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
                           <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50">
                             <td className="px-3 sm:px-4 py-3 text-sm sm:text-base whitespace-normal">{item.name}</td>
                             <td className="px-3 sm:px-4 py-3 text-center text-sm sm:text-base">{item.quantity}</td>
-                            <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{(item.price * item.quantity).toFixed(2)}€</td>
+                            <td className="px-3 sm:px-4 py-3 text-right text-sm sm:text-base font-medium">{(item.ttc_price * item.quantity).toFixed(2)}€</td>
                           </tr>
                         ))}
                         <tr className="bg-gray-50">

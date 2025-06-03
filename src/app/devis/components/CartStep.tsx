@@ -27,9 +27,9 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
   const traiteurItems = cart.filter(item => item.category === "traiteur");
   
   // Calculate totals
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const decorationTotal = decorationItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const traiteurTotal = traiteurItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce((sum, item) => sum + item.ttc_price * item.quantity, 0);
+  const decorationTotal = decorationItems.reduce((sum, item) => sum + item.ttc_price * item.quantity, 0);
+  const traiteurTotal = traiteurItems.reduce((sum, item) => sum + item.ttc_price * item.quantity, 0);
   
   const decorationCount = decorationItems.length;
   const traiteurCount = traiteurItems.length;
@@ -98,7 +98,7 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
         >
           {item.name}
         </Link>
-        <p className="text-xs sm:text-sm text-gray-500 truncate mt-1">{item.price.toFixed(2)}€</p>
+        <p className="text-xs sm:text-sm text-gray-500 truncate mt-1">{item.ttc_price.toFixed(2)}€</p>
       </div>
       <div className="flex items-center space-x-1 flex-shrink-0 bg-white rounded-lg p-1">
         <Button 
