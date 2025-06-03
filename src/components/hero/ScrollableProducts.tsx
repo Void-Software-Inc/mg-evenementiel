@@ -9,7 +9,7 @@ import Link from "next/link";
 type ProductMenu = {
   id: number;
   name: string;
-  price: number;
+  ttc_price: number;
   image_url: string;
 };
 
@@ -115,7 +115,7 @@ export default function ScrollableProducts() {
                     <p className="pl-2 text-md font-light tracking-tighter w-[95%] truncate">
                       {product.name.toUpperCase()}
                     </p>
-                    <p className="pl-2 text-2xl font-light">{product.price.toFixed(2)} €</p>
+                    <p className="pl-2 text-2xl font-light">{product.ttc_price.toFixed(2)} €</p>
                   </div>
                 </div>
               </Link>
