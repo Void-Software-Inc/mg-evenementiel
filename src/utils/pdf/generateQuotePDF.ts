@@ -294,8 +294,8 @@ export const generateDocumentPDF = (
         // Header text alignment to match autoTable
         doc.text("Produit", 17, tableStartY + 6); // Adjusted for smaller row height
         doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 6);
-        doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 6);
-        doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 6);
+        doc.text("Prix unitaire", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 6);
+        doc.text("Sous-Total", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 6);
         
         // Draw table rows
         doc.setTextColor(0, 0, 0);
@@ -319,8 +319,8 @@ export const generateDocumentPDF = (
             doc.setFont('helvetica', 'bold');
             doc.text("Produit", 17, currentY + 6);
             doc.text("Quantité", 15 + colWidths[0] + 5, currentY + 6);
-            doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, currentY + 6);
-            doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 6);
+            doc.text("Prix unitaire", 15 + colWidths[0] + colWidths[1] + 5, currentY + 6);
+            doc.text("Sous-Total", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, currentY + 6);
             doc.setTextColor(0, 0, 0);
             doc.setFont('helvetica', 'normal');
             currentY += rowHeight;
@@ -427,8 +427,8 @@ export const generateDocumentPDF = (
         // Header text alignment to match autoTable
         doc.text("Produit", 17, tableStartY + 6); // Adjusted for smaller row height
         doc.text("Quantité", 15 + colWidths[0] + 5, tableStartY + 6);
-        doc.text("Prix unitaire HT", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 6);
-        doc.text("Sous-Total HT", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 6);
+        doc.text("Prix unitaire", 15 + colWidths[0] + colWidths[1] + 5, tableStartY + 6);
+        doc.text("Sous-Total", 15 + colWidths[0] + colWidths[1] + colWidths[2] + 5, tableStartY + 6);
         
         // Draw table rows
         doc.setTextColor(0, 0, 0);
@@ -628,7 +628,7 @@ export const generateDocumentPDF = (
       ) + (quote.fees?.reduce((sum, fee) => sum + (fee.enabled ? fee.price : 0), 0) || 0);
       
       const tva = totalHT * 0.2;
-      const totalTTC = totalHT * 1.2;
+      const totalTTC = totalHT;
 
       // Check if there's enough space for totals and signature
       const requiredSpace = 70;
@@ -709,31 +709,31 @@ const addTotalsAndSignature = (
   
   // Draw a light gray background for the totals section
   doc.setFillColor(245, 245, 245);
-  doc.rect(pageWidth - 97, startY, 85, lineSpacing * 4, 'F');
+  doc.rect(pageWidth - 97, startY, 85, lineSpacing * 3, 'F');
   
   // Total HT
   doc.setFont('helvetica', 'bold');
-  doc.text("Total HT:", pageWidth - 95, startY + lineSpacing);
+// doc.text("Total HT:", pageWidth - 95, startY + lineSpacing);
   doc.setFont('helvetica', 'normal');
   const totalHTText = `${totalHT.toFixed(2)}€`;
   const totalHTWidth = doc.getTextWidth(totalHTText);
-  doc.text(totalHTText, pageWidth - rightMargin - totalHTWidth, startY + lineSpacing);
+// doc.text(totalHTText, pageWidth - rightMargin - totalHTWidth, startY + lineSpacing);
   
   // TVA
   doc.setFont('helvetica', 'bold');
-  doc.text("TVA 20%:", pageWidth - 95, startY + (lineSpacing * 2));
+//  doc.text("TVA 20%:", pageWidth - 95, startY + (lineSpacing * 2));
   doc.setFont('helvetica', 'normal');
   const tvaText = `${tva.toFixed(2)}€`;
   const tvaWidth = doc.getTextWidth(tvaText);
-  doc.text(tvaText, pageWidth - rightMargin - tvaWidth, startY + (lineSpacing * 2));
+//  doc.text(tvaText, pageWidth - rightMargin - tvaWidth, startY + (lineSpacing * 2));
   
   // Total TTC
   doc.setFont('helvetica', 'bold');
-  doc.text("Total TTC:", pageWidth - 95, startY + (lineSpacing * 3));
+  doc.text("Total :", pageWidth - 95, startY + (lineSpacing * 1.5));
   doc.setFont('helvetica', 'normal');
   const totalTTCText = `${totalTTC.toFixed(2)}€`;
   const totalTTCWidth = doc.getTextWidth(totalTTCText);
-  doc.text(totalTTCText, pageWidth - rightMargin - totalTTCWidth, startY + (lineSpacing * 3));
+  doc.text(totalTTCText, pageWidth - rightMargin - totalTTCWidth, startY + (lineSpacing * 1.5));
 
   // Add a new page for conditions générales de location
   doc.addPage();

@@ -98,7 +98,7 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
         >
           {item.name}
         </Link>
-        <p className="text-xs sm:text-sm text-gray-500 truncate mt-1">{item.price.toFixed(2)}€ HT</p>
+        <p className="text-xs sm:text-sm text-gray-500 truncate mt-1">{item.price.toFixed(2)}€</p>
       </div>
       <div className="flex items-center space-x-1 flex-shrink-0 bg-white rounded-lg p-1">
         <Button 
@@ -185,7 +185,7 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
                   {decorationItems.map(renderProductItem)}
                   <div className="flex justify-end text-xs sm:text-xs pt-2 sm:pt-1 pb-1 sm:pb-0">
                     <span className="font-medium text-gray-600 mr-2 sm:mr-2">Sous-total Matériel et Décoration:</span>
-                    <span className="font-semibold text-gray-800">{decorationTotal.toFixed(2)}€ HT</span>
+                    <span className="font-semibold text-gray-800">{decorationTotal.toFixed(2)}€</span>
                   </div>
                 </div>
               )}
@@ -212,7 +212,7 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
                   {traiteurItems.map(renderProductItem)}
                   <div className="flex justify-end text-xs sm:text-xs pt-2 sm:pt-1 pb-1 sm:pb-0">
                     <span className="font-medium text-gray-600 mr-2 sm:mr-2">Sous-total Traiteur:</span>
-                    <span className="font-semibold text-gray-800">{traiteurTotal.toFixed(2)}€ HT</span>
+                    <span className="font-semibold text-gray-800">{traiteurTotal.toFixed(2)}€</span>
                   </div>
                 </div>
               )}
@@ -223,7 +223,7 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
       <div className="mt-6 sm:mt-5 pt-4 sm:pt-3 border-t border-gray-200">
         <div className="flex sm:justify-end justify-center mb-4 sm:mb-3 bg-gray-50 p-3 sm:p-2 rounded-lg">
           <span className="font-medium mr-3 sm:mr-3 text-base sm:text-base text-gray-700">Total produits:</span>
-          <span className="font-bold text-lg sm:text-lg text-gray-900">{total.toFixed(2)}€ HT</span>
+          <span className="font-bold text-lg sm:text-lg text-gray-900">{total.toFixed(2)}€</span>
         </div>
       </div>
       <div onClick={() => {
