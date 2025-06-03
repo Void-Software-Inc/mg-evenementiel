@@ -47,10 +47,7 @@ const Footer = () => {
         <p className="text-xl leading-none md:text-xl lg:text-4xl text-white font-extralight">MG ÉVÉNEMENTS</p>
         <div className="text-base leading-snug md:text-sm lg:text-xl text-white font-extralight">
           <p className="text-base md:text-sm lg:text-xl font-thin leading-snug">Adresse de récupération :</p>
-          <Link href="https://maps.google.com/?q=Chemin+des+droits+de+l'homme+et+du+citoyen,+31450+Ayguevives" target="_blank" className="text-base md:text-sm lg:text-xl font-thin">
-            Chemin des droits de l'homme et du citoyen,
-          </Link>
-          <p className='text-base md:text-sm lg:text-xl font-thin'>31450 Ayguevives</p>
+            Labège 31670
         </div>
         <div className="flex justify-center md:justify-end w-full">
           <img
