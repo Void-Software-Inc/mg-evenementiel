@@ -8,7 +8,7 @@ export async function GET() {
 
   const { data: products, error } = await supabase
     .from('products')
-    .select('id, name, price, image_url')
+    .select('id, name, ttc_price, image_url')
     .in('id', productIds);
 
   if (error) {

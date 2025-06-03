@@ -258,7 +258,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ id }) => {
         
           <p className="text-2xl md:text-5xl font-light ">{product.name}</p>
           <div>
-          <p className="text-xl md:text-4xl font-bold py-3 md:py-5">{product.price} €</p>        
+          <p className="text-xl md:text-4xl font-bold py-3 md:py-5">{product.ttc_price} €</p>        
         <div className="w-fit flex flex-col">
           <div className="flex items-center justify-start space-x-6 pb-16">
             <p className="text-2xl font-bold text-zinc-800">Quantité</p>
