@@ -141,7 +141,7 @@ export const generateDocumentPDF = (
       doc.text(addressTitle, pageWidth - 15 - addressTitleWidth, lastClientInfoY + 15);
 
       doc.setFont('helvetica', 'normal');
-      const addressText = "Labège, 31670";
+      const addressText = "14 Allée Chantecaille,\n31670 Labège";
       const addressWidth = doc.getTextWidth(addressText);
       doc.text(addressText, pageWidth - 15 - addressWidth, lastClientInfoY + 20);
 
@@ -522,62 +522,62 @@ export const generateDocumentPDF = (
         finalY = currentY + rowHeight + 10;
       }
 
-      // Add options table (always shown, even if empty)
-      // Check if we need to add a new page before starting the options section
-      // We need space for: title (17px) + spacing (10px) + table header (8px) + at least one row (8px)
-      const requiredSpaceForOptions = 17 + 10 + 8 + 8;
-      if (finalY + requiredSpaceForOptions > pageHeight - 60) {
-        doc.addPage();
-        currentPage++;
-        totalPages++; // Increment total pages when adding a page
-        addFooter(doc, pageHeight, currentPage, totalPages);
-        finalY = 20;
-      }
+      // Add options table (only if there are enabled fees)
+      const enabledFees = quote.fees?.filter((fee: any) => fee.enabled) || [];
+      
+      if (enabledFees.length > 0) {
+        // Check if we need to add a new page before starting the options section
+        // We need space for: title (17px) + spacing (10px) + table header (8px) + at least one row (8px)
+        const requiredSpaceForOptions = 17 + 10 + 8 + 8;
+        if (finalY + requiredSpaceForOptions > pageHeight - 60) {
+          doc.addPage();
+          currentPage++;
+          totalPages++; // Increment total pages when adding a page
+          addFooter(doc, pageHeight, currentPage, totalPages);
+          finalY = 20;
+        }
 
-      // Add a title for the options table
-      doc.setFontSize(11);
-      doc.setTextColor(0, 0, 0);
-      doc.setFont('helvetica', 'bold');
-      doc.text("Options", 15, finalY + 7);
-      finalY += 10;
-      
-      // Create table with styling to match autoTable
-      doc.setTextColor(255, 255, 255);
-      const tableStartY = finalY;
-      const tableWidth = pageWidth - 30; // 15px margin on each side
-      const colWidths = [tableWidth - 40, 30]; // Adjusted column widths for two columns
-      const rowHeight = 8; // Reduced row height
+        // Add a title for the options table
+        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'bold');
+        doc.text("Options", 15, finalY + 7);
+        finalY += 10;
+        
+        // Create table with styling to match autoTable
+        doc.setTextColor(255, 255, 255);
+        const tableStartY = finalY;
+        const tableWidth = pageWidth - 30; // 15px margin on each side
+        const colWidths = [tableWidth - 40, 30]; // Adjusted column widths for two columns
+        const rowHeight = 8; // Reduced row height
 
-      // Mapping for option names
-      const optionNameMapping: { [key: string]: string } = {
-        'marquee_setup': 'Montage et installation pour barnum',
-        'delivery': 'Livraison',
-        'marquee_dismantling': 'Démontage du barnum',
-        'pickup': 'Récupération du matériel',
-        'decoration': 'Décoration',
-        'table_service': 'Service à table',
-      };
-      
-      // Draw table header (match headStyles from autoTable)
-      doc.setFillColor(50, 50, 50);
-      doc.rect(15, finalY, tableWidth, rowHeight, 'F');
-      doc.setFontSize(8); // Smaller font size
-      doc.setFont('helvetica', 'bold');
-      
-      // Header text alignment to match autoTable
-      doc.text("Option", 17, finalY + 6); // Adjusted for smaller row height
-      doc.text("Quantité", 15 + colWidths[0] + 5, finalY + 6);
-      
-      // Draw table rows
-      doc.setTextColor(0, 0, 0);
-      doc.setFont('helvetica', 'normal');
-      let currentY = finalY + rowHeight;
-      
-      // Add options if they exist
-      if (quote.fees && quote.fees.length > 0) {
-        quote.fees.forEach((fee: any, index: number) => {
-          if (!fee.enabled) return; // Skip disabled fees
-          
+        // Mapping for option names
+        const optionNameMapping: { [key: string]: string } = {
+          'marquee_setup': 'Montage et installation pour barnum',
+          'delivery': 'Livraison',
+          'marquee_dismantling': 'Démontage du barnum',
+          'pickup': 'Récupération du matériel',
+          'decoration': 'Décoration',
+          'table_service': 'Service à table',
+        };
+        
+        // Draw table header (match headStyles from autoTable)
+        doc.setFillColor(50, 50, 50);
+        doc.rect(15, finalY, tableWidth, rowHeight, 'F');
+        doc.setFontSize(8); // Smaller font size
+        doc.setFont('helvetica', 'bold');
+        
+        // Header text alignment to match autoTable
+        doc.text("Option", 17, finalY + 6); // Adjusted for smaller row height
+        doc.text("Quantité", 15 + colWidths[0] + 5, finalY + 6);
+        
+        // Draw table rows
+        doc.setTextColor(0, 0, 0);
+        doc.setFont('helvetica', 'normal');
+        let currentY = finalY + rowHeight;
+        
+        // Add enabled options
+        enabledFees.forEach((fee: any, index: number) => {
           // Check if we need to add a new page
           if (currentY + rowHeight > pageHeight - 60) {
             doc.addPage();
@@ -618,9 +618,9 @@ export const generateDocumentPDF = (
           
           currentY += rowHeight;
         });
+        
+        finalY = currentY + rowHeight + 10;
       }
-      
-      finalY = currentY + rowHeight + 10;
 
       // Calculate total from items
       const totalHT = [...decorationProducts, ...traiteurProducts].reduce(
@@ -769,7 +769,7 @@ const addTotalsAndSignature = (
   currentY += addWrappedText("Plusieurs options s'offrent à vous :", currentY);
   currentY += addWrappedText("- Retrait en boutique", currentY);
   currentY += addWrappedText("- Livraison à domicile", currentY);
-//  currentY += addWrappedText("Le retrait et le retour du matériel peuvent être effectués au chemin des droits de l'homme et du citoyen, 31450 Ayguesvives.", currentY);
+  currentY += addWrappedText("Le retrait et le retour du matériel peuvent être effectués au 14 Allée Chantecaille, 31670 Labège.", currentY);
   currentY += addWrappedText("Ou nous pouvons assurer la livraison et le retour à votre adresse.", currentY);
   currentY += addWrappedText("Pour une location en semaine, la durée de la location est de 48 heures environ avec un retrait du matériel la veille de l'événement et un retour le lendemain de l'événement.", currentY);
   currentY += addWrappedText("Pour une location le week-end, la durée de la location est de 96 heures environ avec un retrait du matériel le jeudi matin au plus tôt et un retour le lundi après-midi au plus tard.", currentY);
