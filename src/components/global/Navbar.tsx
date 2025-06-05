@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { Menu, ShoppingBag, X, Phone } from "lucide-react"
+import { Menu, ShoppingBag, X, Phone, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useMediaQuery } from "react-responsive";
@@ -19,12 +19,14 @@ import { CheckCircledIcon, CopyIcon } from "@radix-ui/react-icons";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [traiteurMenuOpen, setTraiteurMenuOpen] = useState(false);
   const is2xlScreen = useMediaQuery({ minWidth: 1698 });
   const pathname = usePathname();
   const [copied, setCopied] = useState<{ phone: boolean; email: boolean }>({
     phone: false,
     email: false,
   });
+  
   useEffect(() => {
     const handleScroll = () => {
       if (pathname === '/') {
@@ -51,6 +53,7 @@ export default function Navbar() {
   };
 
   const isActive = (path: string) => pathname === path;
+  const isTraiteurActive = () => pathname.startsWith('/traiteur');
 
   const PhoneCard = () => {
     const phoneNumber = "07 68 10 96 17";
@@ -97,9 +100,73 @@ export default function Navbar() {
     );
   };
 
+  const TraiteurSubmenu = () => (
+    <div className="w-72 p-4">
+      <div className="space-y-3">
+        <Link
+          href="/traiteur"
+          className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+          onClick={() => setTraiteurMenuOpen(false)}
+        >
+          <div className="font-medium">Présentation</div>
+          <div className="text-sm text-gray-500">Découvrez nos services traiteur</div>
+        </Link>
+        <Link
+          href="/traiteur/catalogue"
+          className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+          onClick={() => setTraiteurMenuOpen(false)}
+        >
+          <div className="font-medium">Catalogue</div>
+          <div className="text-sm text-gray-500">Nos produits et menus</div>
+        </Link>
+      </div>
+    </div>
+  );
 
-  const NavLink = ({ href, label }: { href: string; label: string }) => {
+  const NavLink = ({ href, label, hasSubmenu = false }: { href: string; label: string; hasSubmenu?: boolean }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [submenuOpen, setSubmenuOpen] = useState(false);
+
+    if (hasSubmenu) {
+      return (
+        <div className="relative flex flex-col">
+          <div className="relative flex items-center">
+            <div 
+              className={`absolute left-0 w-5 h-[3px] -ml-3 rounded-full bg-zinc-700 transition-all duration-200 ease-in-out ${
+                isTraiteurActive() || isHovered ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+            <button
+              className="text-xl font-light tracking-wide text-gray-800 pl-4 flex items-center"
+              onClick={() => setSubmenuOpen(!submenuOpen)}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              {label}
+              <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${submenuOpen ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
+          {submenuOpen && (
+            <div className="ml-4 mt-3 space-y-3 border-l-2 border-gray-200 pl-4">
+              <Link
+                href="/traiteur"
+                className="block text-lg font-light text-gray-600 hover:text-gray-800"
+                onClick={() => setIsOpen(false)}
+              >
+                Présentation
+              </Link>
+              <Link
+                href="/traiteur/catalogue"
+                className="block text-lg font-light text-gray-600 hover:text-gray-800"
+                onClick={() => setIsOpen(false)}
+              >
+                Catalogue
+              </Link>
+            </div>
+          )}
+        </div>
+      );
+    }
 
     return (
       <div className="relative flex items-center">
@@ -147,7 +214,7 @@ export default function Navbar() {
               </div>
               <nav className="flex flex-col space-y-6 mt-8">
                 <NavLink href="/catalogue" label="CATALOGUE" />
-                <NavLink href="/traiteur" label="TRAITEUR" />
+                <NavLink href="/traiteur" label="TRAITEUR" hasSubmenu={true} />
                 <NavLink href="/realisations" label="RÉALISATIONS" />
                 <NavLink href="/infos" label="INFOS" />
                 <NavLink href="/contact" label="CONTACT" />
@@ -187,9 +254,51 @@ export default function Navbar() {
         </Link>
 
         <nav className="flex w-full justify-center items-center space-x-10 text-sm 2xl:text-lg font-medium">
+          <div className="relative group">
+            <Link href="/catalogue" className="text-gray-800 font-normal tracking-wider hover:text-black 2xl:text-lg">
+              CATALOGUE
+            </Link>
+            <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
+              <div 
+                className={`w-full h-2 bg-zinc-800 rounded-full transition-all duration-300 ease-out origin-center
+                  ${isActive('/catalogue') ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
+                `}
+              />
+            </div>
+          </div>
+
+          {/* TRAITEUR with dropdown */}
+          <div className="relative group">
+            <Popover open={traiteurMenuOpen} onOpenChange={setTraiteurMenuOpen}>
+              <PopoverTrigger asChild>
+                <button 
+                  className="text-gray-800 font-normal tracking-wider hover:text-black 2xl:text-lg"
+                  onMouseEnter={() => setTraiteurMenuOpen(true)}
+                  onMouseLeave={() => setTraiteurMenuOpen(false)}
+                >
+                  TRAITEUR
+                </button>
+              </PopoverTrigger>
+              <PopoverContent 
+                className="p-0 w-72" 
+                side="bottom" 
+                align="center"
+                onMouseEnter={() => setTraiteurMenuOpen(true)}
+                onMouseLeave={() => setTraiteurMenuOpen(false)}
+              >
+                <TraiteurSubmenu />
+              </PopoverContent>
+            </Popover>
+            <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
+              <div 
+                className={`w-full h-2 bg-zinc-800 rounded-full transition-all duration-300 ease-out origin-center
+                  ${isTraiteurActive() ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
+                `}
+              />
+            </div>
+          </div>
+          
           {[
-            { href: '/catalogue', label: 'CATALOGUE' },
-            { href: '/traiteur', label: 'TRAITEUR' },
             { href: '/realisations', label: 'RÉALISATIONS' },
             { href: '/infos', label: 'INFOS' },
             { href: '/contact', label: 'CONTACT' },
