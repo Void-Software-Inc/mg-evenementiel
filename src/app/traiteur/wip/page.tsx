@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { BackToTop } from "@/components/global/BackToTop";
-import TraiteurWhiteNavbar from "@/components/traiteur/TraiteurWhiteNavbar";
+import Navbar from "@/components/global/Navbar";
 import Link from 'next/link';
 import { ArrowLeft, Construction } from 'lucide-react';
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const TraiteurWIPPage = () => {
   return (
     <>
-      <TraiteurWhiteNavbar />
+      <Navbar />
       
       {/* WIP Content */}
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 lg:px-8">
