@@ -32,6 +32,9 @@ export default function Navbar() {
       if (pathname === '/') {
         const scrollThreshold = window.innerHeight * 1; // 100vh
         setIsVisible(window.scrollY > scrollThreshold);
+      } else if (pathname === '/traiteur') {
+        const scrollThreshold = window.innerHeight * 0.8; // 80vh for smoother transition
+        setIsVisible(window.scrollY > scrollThreshold);
       } else {
         setIsVisible(true); // Always visible on other routes
       }
@@ -245,12 +248,12 @@ export default function Navbar() {
       </header>
 
       <header 
-        className={`hidden md:flex fixed w-full top-0 h-16 items-center justify-between px-6 z-50 bg-white/1 backdrop-blur-md transition-transform duration-300 ${
+        className={`hidden md:flex fixed w-full top-0 h-16 items-center justify-between px-6 z-50 bg-white/50 backdrop-blur-md transition-transform duration-300 ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
         <Link href="/" className="absolute left-2 gap-2 text-base font-semibold">
-          <Image className="cursor-pointer" src="/static/svg/mgelogo.svg" alt="logo" width={is2xlScreen ? 175 : 150} height={is2xlScreen ? 175 : 150} />
+          <Image className="cursor-pointer w-[150px] h-[150px] 2xl:w-[175px] 2xl:h-[175px]" src="/static/svg/mgelogo.svg" alt="logo" width={175} height={175} />
         </Link>
 
         <nav className="flex w-full justify-center items-center space-x-10 text-sm 2xl:text-lg font-medium">
