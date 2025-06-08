@@ -32,7 +32,7 @@ const TraiteurPromo = () => {
                 className="w-96 h-96 lg:w-[800px] lg:h-[800px] rounded-full flex items-center justify-center text-center -ml-48 lg:-ml-52"
                 style={{ backgroundColor: '#2A2926' }}
               >
-                <div className="ml-40 space-y-3 max-w-lg px-4 text-start">
+                <div className="ml-48 space-y-3 max-w-lg px-4 text-start">
                  
                   
                
