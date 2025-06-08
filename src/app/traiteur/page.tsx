@@ -5,6 +5,7 @@ import TraiteurPresentation from "@/components/traiteur/TraiteurPresentation";
 import TraiteurStats from "@/components/traiteur/TraiteurStats";
 import TraiteurServices from "@/components/traiteur/TraiteurServices";
 import TraiteurPromo from "@/components/traiteur/TraiteurPromo";
+import TraiteurFaqSection from "@/components/traiteur/TraiteurFaqSection";
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -87,6 +88,9 @@ const TraiteurPage = () => {
 
       {/* Traiteur Promo Section */}
       <TraiteurPromo />
+
+      {/* Traiteur FAQ Section */}
+      <TraiteurFaqSection />
 
       <BackToTop />
     </>

@@ -10,7 +10,7 @@ const TraiteurStats = () => {
               <div className="relative w-80 h-80 rounded-full border-2 border-dotted border-gray-600 flex items-center justify-center">
                 <div className="text-center px-6">
                   <div className="text-6xl lg:text-7xl font-light text-gray-800 mb-4">
-                    250+
+                    200+
                   </div>
                   <p className="text-sm lg:text-base text-gray-700 leading-relaxed">
                     événements organisés avec succès chaque année
