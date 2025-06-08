@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { BackToTop } from "@/components/global/BackToTop";
 import TraiteurWhiteNavbar from "@/components/traiteur/TraiteurWhiteNavbar";
+import TraiteurPresentation from "@/components/traiteur/TraiteurPresentation";
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -71,6 +72,9 @@ const TraiteurPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Traiteur Presentation Section */}
+      <TraiteurPresentation />
 
       <BackToTop />
     </>
