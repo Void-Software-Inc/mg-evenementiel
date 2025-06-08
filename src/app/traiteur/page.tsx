@@ -87,7 +87,9 @@ const TraiteurPage = () => {
       <TraiteurServices />
 
       {/* Traiteur Promo Section */}
-      <TraiteurPromo />
+      <div className="hidden xl:block">
+        <TraiteurPromo />
+      </div>
 
       {/* Traiteur FAQ Section */}
       <TraiteurFaqSection />

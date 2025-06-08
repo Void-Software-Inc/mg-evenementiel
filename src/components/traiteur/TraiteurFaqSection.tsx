@@ -55,7 +55,7 @@ const TraiteurFaqSection = () => {
                                 Une question ? Nous sommes là pour vous accompagner dans la réalisation de votre événement.
                             </p>
                             <Button asChild className="sm:-ml-1 border-2 bg-transparent max-w-[150px] border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center space-x-2 transition-all duration-300 group">
-                                <Link href="/catalogue">
+                                <Link href="/infos">
                                     <span className="text-sm font-medium">VOIR PLUS</span>
                                     <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
                                 </Link>

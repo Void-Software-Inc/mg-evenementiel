@@ -1,3 +1,4 @@
+import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
 const TraiteurPromo = () => {
@@ -48,8 +49,9 @@ const TraiteurPromo = () => {
                       chacun de vos événements.
                     </p>
                     
-                    <button className="inline-flex items-center px-4 py-2 border border-white border-opacity-50 text-white font-medium text-xs rounded-md hover:bg-white hover:text-gray-800 transition-colors duration-300">
-                      En savoir plus
+                    <button className="inline-flex items-center px-3 py-2 border border-white border-opacity-50 text-white font-medium text-xs rounded-full hover:bg-white hover:text-gray-800 transition-colors duration-300">
+                      CATALOGUE
+                      <ChevronRight className='size-4 ml-1'/>
                     </button>
                   </div>
 
