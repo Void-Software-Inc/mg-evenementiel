@@ -22,11 +22,11 @@ export const AboutMG = () => {
             <div className="w-full h-fit flex justify-center sm:justify-start flex-col sm:flex-row sm:space-x-10">
                 <div className="flex h-fit w-full sm:w-fit flex-row justify-center space-x-3 mb-7">
                 <div className="h-36 w-36 sm:h-40 sm:w-40 lg:h-52 lg:w-52 rounded-full bg-zinc-800 flex flex-col items-center justify-center">
-                    <p className="text-3xl text-white font-extralight leading-tight">+100</p>
+                    <p className="text-3xl text-white font-extralight leading-tight">+50</p>
                     <p className="text-base w-[50%] md:w-fit text-white font-extralight leading-tight">invités en moyenne</p>
                 </div>
                 <div className="sm:hidden flex 2xl:h-72 2xl:w-72 lg:h-64 lg:w-64 sm:h-52 sm:w-52 h-40 w-40 rounded-full bg-white border border-zinc-800 flex-col items-center justify-center">
-                    <p className="text-3xl text-zinc-700 font-extralight">+80</p>
+                    <p className="text-3xl text-zinc-700 font-extralight">+500</p>
                     <p className="text-base text-zinc-700 w-[50%] sm:w-fit font-extralight text-center">événements organisés</p>
                 </div>
                 </div>
@@ -45,7 +45,7 @@ export const AboutMG = () => {
                     <p className="text-base xl:text-lg text-zinc-700 font-light">Passion rime avec création, c’est pour cela que MG événements conçoit vos événements sur mesure et de haute qualité.</p>
                 </div>
                 <div className="hidden sm:flex 2xl:h-72 2xl:w-72 lg:h-64 lg:w-64 h-52 w-52 rounded-full bg-white border border-zinc-800 flex-col items-center justify-center">
-                    <p className="text-5xl text-zinc-700 font-extralight leading-tight">+80</p>
+                    <p className="text-5xl text-zinc-700 font-extralight leading-tight">+500</p>
                     <p className="text-lg text-zinc-700 font-extralight text-center w-[50%] leading-tight">événements organisés</p>
                 </div>
             </div>
