@@ -35,7 +35,7 @@ const TraiteurServices = () => {
               
               {/* Mariage Card */}
               <CarouselItem className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                <Link href="/traiteur/wip" className="group block h-full">
+                <Link href="/traiteur/mariage" className="group block h-full">
                   <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-8 text-center border border-gray-200 hover:border-gray-300 h-full">
                     <div className="mb-6">
                       <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
