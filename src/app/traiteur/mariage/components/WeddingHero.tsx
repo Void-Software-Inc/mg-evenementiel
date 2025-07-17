@@ -18,26 +18,28 @@ const WeddingHero = () => {
           TRAITEUR MARIAGE SUR MESURE POUR VOTRE JOURNÉE D’EXCEPTION
           </p>
           <h1 className="text-3xl lg:text-4xl xl:text-5xl font-serif text-gray-800 mb-6 leading-tight">
-          L’art de sublimer votre mariage avec une cuisine raffinée, un service soigné et une organisation pensée dans les moindres détails.          </h1>
+            Sublimez votre mariage avec une cuisine raffinée et un service sur-mesure      
+          </h1>
           <p className="text-gray-600 mb-8">
-            Vivez une expérience culinaire inoubliable pour le plus beau jour de votre vie. Qu’il s’agisse d’un repas servi à table, d’un vin d’honneur ou d’un brunch du lendemain, nous vous accompagnons à chaque étape avec élégance et simplicité. Nos menus sur mesure mêlent produits de saison, créativité et sens du détail, pour un moment de partage aussi beau que bon.
-            Service professionnel, vaisselle, mobilier, dégustation : tout est prévu pour vous offrir une prestation clé en main, sans stress, centrée sur vos envies.
+            Pour le plus beau jour de votre vie, offrez à vos invités une expérience culinaire unique. Repas assis, vin d’honneur ou brunch du lendemain : nous vous accompagnons avec goût et discrétion. Menus personnalisés, produits de saison, service complet… Profitez pleinement, on s’occupe de tout.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link href="/catalogue" passHref>
-              <Button className="rounded-full h-[60px] w-full sm:w-[190px] py-6 px-8 flex items-center justify-center group ease-in-out transition duration-300 hover:bg-neutral-500">
-                <span className="font-normal text-lg sm:text-xl">CATALOGUE</span>
+              <Button className="rounded-full h-[50px] xl:h-[60px] w-full sm:w-[175px] lg:w-[190px] py-6 px-8 flex items-center justify-center group ease-in-out transition duration-300 hover:bg-transparent hover:text-zinc-800 hover:border-2 hover:border-zinc-800">
+                <span className="font-normal text-lg lg:text-xl">CATALOGUE</span>
                 <span className="ml-2 transition-transform transform group-hover:translate-x-2 duration-300">
-                  <svg width="28" height="28" className="text-white" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.18194 4.18185C6.35767 4.00611 6.6426 4.00611 6.81833 4.18185L9.81833 7.18185C9.90272 7.26624 9.95013 7.3807 9.95013 7.50005C9.95013 7.6194 9.90272 7.73386 9.81833 7.81825L6.81833 10.8182C6.6426 10.994 6.35767 10.994 6.18194 10.8182C6.0062 10.6425 6.0062 10.3576 6.18194 10.1819L8.86374 7.50005L6.18194 4.81825C6.0062 4.64251 6.0062 4.35759 6.18194 4.18185Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
+                  <svg width="28" height="28" className="text-white group-hover:text-zinc-800" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.18194 4.18185C6.35767 4.00611 6.6426 4.00611 6.81833 4.18185L9.81833 7.18185C9.90272 7.26624 9.95013 7.3807 9.95013 7.50005C9.95013 7.6194 9.90272 7.73386 9.81833 7.81825L6.81833 10.8182C6.6426 10.994 6.35767 10.994 6.18194 10.8182C6.0062 10.6425 6.0062 10.3576 6.18194 10.1819L8.86374 7.50005L6.18194 4.81825C6.0062 4.64251 6.0062 4.35759 6.18194 4.18185Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
                 </span>
               </Button>
             </Link>
             <Link href="/contact" passHref>
-              <Button className="border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full h-[60px] w-full sm:w-[190px] p-6 flex items-center justify-center space-x-2 transition-all duration-300 group">
-                  <span className="font-normal text-lg sm:text-xl">CONTACT</span>
+              <Button className="h-[50px] xl:h-[60px] border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full w-full sm:w-[160px] lg:w-[190px] py-6 flex items-center justify-center transition-all duration-300 group">
+                <div className='flex justify-center w-fit h-fit'>
+                  <span className="font-normal text-lg lg:text-xl">CONTACT</span>
                   <span className="ml-2 transition-transform transform group-hover:translate-x-2 duration-300">
-                  <svg width="28" height="28" className="text-black group-hover:text-white" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.18194 4.18185C6.35767 4.00611 6.6426 4.00611 6.81833 4.18185L9.81833 7.18185C9.90272 7.26624 9.95013 7.3807 9.95013 7.50005C9.95013 7.6194 9.90272 7.73386 9.81833 7.81825L6.81833 10.8182C6.6426 10.994 6.35767 10.994 6.18194 10.8182C6.0062 10.6425 6.0062 10.3576 6.18194 10.1819L8.86374 7.50005L6.18194 4.81825C6.0062 4.64251 6.0062 4.35759 6.18194 4.18185Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
+                  <svg width="28" height="28" className="text-zinc-800 group-hover:text-white" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.18194 4.18185C6.35767 4.00611 6.6426 4.00611 6.81833 4.18185L9.81833 7.18185C9.90272 7.26624 9.95013 7.3807 9.95013 7.50005C9.95013 7.6194 9.90272 7.73386 9.81833 7.81825L6.81833 10.8182C6.6426 10.994 6.35767 10.994 6.18194 10.8182C6.0062 10.6425 6.0062 10.3576 6.18194 10.1819L8.86374 7.50005L6.18194 4.81825C6.0062 4.64251 6.0062 4.35759 6.18194 4.18185Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
                   </span>
+                  </div>
               </Button>
             </Link>
           </div>
