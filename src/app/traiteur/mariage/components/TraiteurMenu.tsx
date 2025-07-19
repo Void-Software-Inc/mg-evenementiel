@@ -76,6 +76,9 @@ const TraiteurMenu = () => {
 
   return (
     <div className="w-[90%] mx-auto my-12 px-5 sm:px-12 md:px-16 lg:px-20 xl:px-24">
+       <h2 className="w-full lg:w-[90%] text-zinc-800 text-2xl sm:text-3xl font-extralight mb-4">
+              Formules et menus pour mariage
+            </h2>
       <div className="relative">
         {/* Navigation arrows */}
         <Button onClick={handlePrevMenu} className="absolute top-1/2 -translate-y-1/2 -left-8 sm:-left-10 md:-left-14 lg:-left-16 bg-black/20 hover:bg-black/50 rounded-full p-2 z-10 shrink-0">

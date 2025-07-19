@@ -10,7 +10,7 @@ export type Menu = {
 export const menus: Menu[] = [
   {
     id: "essentiel",
-    title: "Essentiel",
+    title: "Menu Essentiel",
     price: "59 €/pers.",
     description: "La formule parfaite pour un mariage élégant et raffiné, en toute simplicité.",
     details: {
@@ -24,7 +24,7 @@ export const menus: Menu[] = [
   },
   {
     id: "premium",
-    title: "Premium",
+    title: "Menu Premium",
     price: "79 €/pers.",
     description: "Montez en gamme avec des saveurs plus audacieuses et des produits d'exception.",
     details: {
