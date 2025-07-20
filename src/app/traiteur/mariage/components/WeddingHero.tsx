@@ -17,7 +17,7 @@ const WeddingHero = () => {
           <p className="text-sm uppercase tracking-widest text-gray-500 mb-4">
           TRAITEUR MARIAGE SUR MESURE POUR VOTRE JOURNÉE D’EXCEPTION
           </p>
-          <h1 className="text-zinc-800 mb-6 text-3xl sm:text-4xl xl:text-6xl 2xl:text-7xl font-thin tracking-tight uppercase">
+          <h1 className="text-zinc-800 mb-6 text-3xl sm:text-4xl xl:text-6xl 2xl:text-7xl font-extralight tracking-tight uppercase">
             Cuisine raffinée et service sur-mesure pour votre mariage
           </h1>
           <p className="text-gray-600 mb-8">
