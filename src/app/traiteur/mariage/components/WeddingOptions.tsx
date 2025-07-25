@@ -8,25 +8,21 @@ const optionsData = [
         description: {
             sections: [
                 {
-                    title: "Formules au choix :",
+                    title: "Un cocktail sur-mesure",
                     items: [
-                        "Cocktail 10 pièces : 15 €/pers.",
-                        "Cocktail 15 pièces : 21 €/pers.",
-                        "Assortiment de bouchées froides et chaudes (mini-burgers, quiches, verrines, croques…)."
+                        "Un assortiment de bouchées créatives, froides et chaudes, pour surprendre vos invités : mini-burgers, quiches, verrines, croques-monsieur revisitées..."
                     ]
                 },
                 {
-                    title: "Boissons :",
+                    title: "Des boissons pour tous les goûts",
                     items: [
-                        "Rafraîchissements maison : 2,80 €/pers.",
-                        "Bar à cocktails : 4,00 €/verre",
-                        "Mojito, Spritz, Gin Tonic ou version sans alcool."
+                        "Des rafraîchissements maison aux saveurs subtiles, et un bar à cocktails (Mojito, Spritz, Gin Tonic...) pour une ambiance festive, avec ou sans alcool."
                     ]
                 },
                 {
-                    title: "Inclus dans la formule :",
+                    title: "Un service clé en main",
                     items: [
-                        "Mise en place, service, nappage, verrerie, vaisselle, serviettes, eaux plate et gazeuse."
+                        "Nous assurons la mise en place, le service discret et efficace, le nappage, la verrerie, et la vaisselle pour une tranquillité d'esprit totale."
                     ]
                 }
             ]
@@ -36,12 +32,22 @@ const optionsData = [
     {
         title: "Buffet dînatoire",
         intro: "Un buffet riche et varié pour régaler tous vos convives",
-        description: [
-            "Composez un buffet équilibré entre plats froids et chauds, avec des produits savoureux, une belle présentation et un service soigné.",
-            "À partir de 27 €/pers.",
-            "Coin froid : salades variées, charcuteries, rôtis",
-            "Coin chaud : 2 plats au choix, 2 accompagnements"
-        ],
+        description: {
+            sections: [
+                {
+                    title: "",
+                    items: ["Composez un buffet équilibré entre plats froids et chauds, avec des produits savoureux, une belle présentation et un service soigné. Une solution conviviale et gourmande qui s'adapte à toutes vos envies."]
+                },
+                {
+                    title: "Coin Froid",
+                    items: ["Un assortiment de salades fraîches et créatives, de plateaux de charcuteries fines, de rôtis tendres et de produits de la mer."]
+                },
+                {
+                    title: "Coin Chaud",
+                    items: ["Laissez-vous tenter par nos plats mijotés, nos viandes et poissons cuisinés avec soin, accompagnés de garnitures de saison."]
+                }
+            ]
+        },
         image: 'https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/enmanuel-betances-santos-Xxe37tN-Rcs-unsplash.jpg'
     },
     {
@@ -52,10 +58,10 @@ const optionsData = [
                 {
                     title: "",
                     items: [
-                        { main: "Wedding Cake — 6,50 €/part", sub: "Aux parfums au choix (fraise, framboise, chocolat, vanille, citron, mangue…), nombre d’étages sur mesure, découpe assurée par nos soins." },
-                        { main: "Number Cake — 5,50 €/part", sub: "Décor floral avec fleurs fraîches assorties au thème, feuilles d’or ou d’argent en finition. Idéal pour faire apparaître votre date ou vos initiales." },
-                        { main: "Fraisier personnalisé — 4,50 €/part", sub: "En forme de cœur, de pièce montée ou dans un design plus contemporain." },
-                        { main:"Buffet sucré — 8,50 €/pers.", sub: "Une cascade de chocolat entourée de fruits frais et de petites douceurs en verrines."},
+                        { main: "Wedding Cake", sub: "Majestueux et personnalisable à l'infini. Choisissez les parfums qui vous ressemblent (fraise, chocolat, vanille, mangue...) et le nombre d'étages pour un effet spectaculaire. Nous assurons la découpe pour un service parfait." },
+                        { main: "Number Cake", sub: "Tendance et original, il met en scène vos initiales ou la date de votre mariage. Un gâteau léger, décoré de fleurs fraîches et de touches dorées ou argentées pour une finition élégante." },
+                        { main: "Fraisier Personnalisé", sub: "Un grand classique revisité. En forme de cœur, de pièce montée ou dans un design contemporain, le fraisier reste une valeur sûre qui séduira tous vos invités par sa fraîcheur." },
+                        { main:"Buffet de douceurs", sub: "Créez un véritable bar à desserts avec une cascade de chocolat, des fruits frais, et une variété de mignardises en verrines. Une option gourmande et visuellement spectaculaire."},
                     ]
                 }
             ]
@@ -74,22 +80,22 @@ const optionsData = [
             sections: [
                 {
                     title: "",
-                    items: ["Offrez à vos invités de quoi se régaler après quelques heures de danse ! Nos plateaux sont pensés pour être partagés simplement et rapidement, sans interrompre l’ambiance."]
+                    items: ["Après quelques heures de danse, offrez à vos invités de quoi reprendre des forces ! Nos plateaux sont conçus pour être partagés simplement, sans interrompre l'ambiance festive."]
                 },
                 {
                     title: "Nos suggestions gourmandes :",
                     items: [
-                        "Plateau de fromages (5 variétés + salade verte) — 45 € / ~25 pers.",
-                        "Plateau de charcuteries (5 variétés) — 50 € / ~25 pers.",
-                        "Plateau de club-sandwichs (saumon, jambon, poulet) — 35 € / 30 pièces (~25 pers.)",
-                        "Plateau de mini-burgers (viande, poulet, poisson, vegan) — 40 € / 25 pièces",
-                        "Plateau de mini-pizzas (thon, fromage, jambon-fromage) — 40 € / 25 pièces",
-                        "Mignardises sucrées — 1,60 € / pièce"
+                        "Plateau de fromages affinés, accompagné de sa salade verte.",
+                        "Assortiment de charcuteries fines.",
+                        "Plateau de club-sandwichs variés (saumon, jambon, poulet).",
+                        "Assortiment de mini-burgers gourmands (viande, poulet, poisson, vegan).",
+                        "Plateau de mini-pizzas pour une touche conviviale.",
+                        "Farandole de mignardises sucrées pour les becs sucrés."
                     ]
                 },
                 {
                     title: "",
-                    items: ["Service et vaisselle inclus sur demande.", "Idéal pour garder vos invités jusqu’au bout de la nuit !"]
+                    items: ["Une attention appréciée qui permettra à vos invités de faire la fête jusqu'au bout de la nuit !"]
                 }
             ]
         },
@@ -107,20 +113,20 @@ const optionsData = [
             sections: [
                 {
                     title: "",
-                    items: ["Animez votre réception avec des stands gourmands, salés ou sucrés, préparés sous les yeux de vos invités."]
+                    items: ["Animez votre réception avec des stands gourmands où nos chefs préparent, sous les yeux de vos invités, des mets salés ou sucrés. Une animation culinaire qui crée une ambiance chaleureuse et des souvenirs mémorables."]
                 },
                 {
                     title: "Ateliers salés",
                     items: [
-                        { main: "Jambon sec à la griffe — 5,00 €/pers.", sub: "Dégustation de jambon Serrano découpé à la main, servi avec pain & tomates fraîches." },
-                        { main: "Duo de brochettes à la plancha (au choix) — 5,00 €/pers.", sub: "Gambas à la thaï, poulet à la mexicaine, bœuf mariné, ou magret de canard miellé." }
+                        { main: "Découpe de Jambon Serrano", sub: "Un spectacle pour les yeux et un régal pour les papilles. Notre maître-coupeur tranche finement un jambon de qualité, servi avec du pain frais et des tomates." },
+                        { main: "Plancha en direct", sub: "Choisissez parmi nos brochettes savoureuses : gambas à la thaï, poulet à la mexicaine, bœuf mariné, ou magret de canard miellé. Une cuisson minute pour des saveurs préservées." }
                     ]
                 },
                 {
                     title: "Ateliers sucrés",
                     items: [
-                        { main: "Stand gourmand — 4,50 €/pers.", sub: "Crêpes, gaufres & mini-pancakes (4 pièces)" },
-                        { main: "Stand fête foraine — 4,00 €/pers.", sub: "Barbe à papa & pop-corn" }
+                        { main: "Stand de Crêpes et Gaufres", sub: "Un classique indémodable qui ravit petits et grands. Des crêpes et gaufres préparées à la demande, avec un choix de garnitures gourmandes." },
+                        { main: "Ambiance Fête Foraine", sub: "Retombez en enfance avec notre stand de barbe à papa et pop-corn. Une touche ludique et sucrée pour animer votre soirée." }
                     ]
                 }
             ]
@@ -139,10 +145,11 @@ const optionsData = [
             sections: [
                 {
                     title: "",
-                    items: [
-                        { main: "Brunch servi sur place – 35 €/pers.", sub: "11h30, inclut service, vaisselle, café, déplacements jusqu’à 30 km" },
-                        { main: "Brunch en livraison – 23 €/pers.", sub: "repas + boissons, vaisselle et mobilier en option" }
-                    ]
+                    items: ["Et si la fête continuait le lendemain ? Prolongez la magie de votre mariage avec un brunch décontracté et savoureux. C'est l'occasion parfaite pour se retrouver en plus petit comité, partager les souvenirs de la veille et finir le week-end en douceur."]
+                },
+                {
+                    title: "Une formule adaptée à vos envies",
+                    items: ["Nous vous proposons une formule brunch complète avec un assortiment de viennoiseries, salades, quiches, charcuteries, fromages, et boissons chaudes et froides. Que vous souhaitiez un service sur place ou une livraison, nous nous adaptons pour rendre ce moment aussi simple et agréable que possible."]
                 }
             ]
         },
@@ -174,11 +181,11 @@ const WeddingOptions = () => {
                                     <div className="text-gray-600 space-y-2 text-base">
                                         {Array.isArray(option.description) ? (
                                             option.description.map((line, i) => {
-                                                if (line.startsWith('Coin froid :') || line.startsWith('Coin chaud :')) {
-                                                    const [title, ...rest] = line.split(':');
+                                                const parts = line.split(':');
+                                                if (parts.length > 1 && (parts[0].includes('Coin froid') || parts[0].includes('Coin chaud'))) {
                                                     return (
                                                         <p key={i}>
-                                                            <span>&bull; </span><strong className="font-semibold">{title}:</strong>{rest.join(':')}
+                                                            <span>&bull; </span><strong className="font-semibold">{parts[0]}:</strong>{parts.slice(1).join(':')}
                                                         </p>
                                                     );
                                                 }
@@ -198,14 +205,7 @@ const WeddingOptions = () => {
                                                                     const parts = item.main.split(' — ');
                                                                     return (
                                                                         <li key={j}>
-                                                                            {parts.length > 1 ? (
-                                                                                <>
-                                                                                    <span className="font-semibold">{parts[0]}</span>
-                                                                                    <span> — {parts.slice(1).join(' — ')}</span>
-                                                                                </>
-                                                                            ) : (
-                                                                                <span className="font-semibold">{item.main}</span>
-                                                                            )}
+                                                                            <span className="font-semibold">{parts[0]}</span>
                                                                             {item.sub && <p className="pl-4 text-sm">{item.sub}</p>}
                                                                         </li>
                                                                     );
@@ -216,18 +216,10 @@ const WeddingOptions = () => {
                                                                 if (typeof item === 'string') {
                                                                     return <p key={j}>{item}</p>;
                                                                 }
-                                                                const parts = item.main.split(' — ');
                                                                 return (
                                                                     <div key={j} className="mb-2">
                                                                         <p>
-                                                                            {parts.length > 1 ? (
-                                                                                <>
-                                                                                    <span className="font-semibold">{parts[0]}</span>
-                                                                                    <span> — {parts.slice(1).join(' — ')}</span>
-                                                                                </>
-                                                                            ) : (
-                                                                                <span className="font-semibold">{item.main}</span>
-                                                                            )}
+                                                                            <span className="font-semibold">{item.main}</span>
                                                                         </p>
                                                                         {item.sub && <p className="pl-4 text-sm">{item.sub}</p>}
                                                                     </div>
