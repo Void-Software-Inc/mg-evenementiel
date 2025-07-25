@@ -1,85 +1,55 @@
+'use client';
+
 import Image from 'next/image';
 
 const WeddingImageGallery = () => {
-  const imageUrl = "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/ibrahim-boran-aoGA9N8QNrI-unsplash.webp";
+  const imageUrl1 = "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/chris-kursikowski-QUrs6RIp6hE-unsplash.webp?t=2025-06-23T15%3A32%3A36.856Z";
+  const imageUrl2 = "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/jonathan-borba-8U9tUnpKRYs-unsplash.jpg";
+  const imageUrl3 = "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/gabriella-clare-marino-jidekhfidA4-unsplash.jpg";
+  const imageUrl4 = "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/photos-by-lanty-yMY1QE5wpyA-unsplash.webp?t=2025-06-23T15%3A35%3A22.466Z";
+  const imageUrl5 = "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/soulseeker-creative-photography-SmaNINKn7Hs-unsplash_1_.webp?t=2025-06-23T15%3A35%3A36.104Z";
+  const imageUrl6 = "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/troy-t-kbiGSJpiTKE-unsplash%2017.30.05.jpg";
+
+  const images = [
+    { url: imageUrl1, alt: "Wedding catering - Elegant couple" },
+    { url: imageUrl2, alt: "Wedding catering - Reception setup" },
+    { url: imageUrl2, alt: "Wedding catering - Bride portrait" },
+    { url: imageUrl4, alt: "Wedding catering - Table setting" },
+    { url: imageUrl5, alt: "Wedding catering - Ceremony" },
+    { url: imageUrl6, alt: "Wedding catering - Celebration" }
+  ];
 
   return (
-    <section className="w-full py-16 bg-neutral-100">
-      <div className="container mx-auto px-4">
-    
-
-        {/* Horizontal Image Gallery */}
-        <div className="relative w-full h-80 md:h-[800px] overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative flex justify-center w-full max-w-7xl h-full mx-auto px-4 items-center">
-              
-              {/* Image 1 - Left */}
-              <div className="relative w-32 h-40 md:h-[400px] md:w-[250px] -mr-8 mb-10 z-10">
-                <Image
-                  src={imageUrl}
-                  alt="Wedding catering"
-                  fill
-                  className="object-cover shadow-lg"
-                  sizes="(max-width: 768px) 128px, 160px"
-                />
+    <section className="w-full py-24 bg-neutral-100">
+      <div className="container mx-auto">
+        
+        {/* Horizontal Scrollable Image Gallery */}
+        <div className="relative w-full">
+          <div className="flex overflow-x-auto pb-4 scrollbar-hide" 
+               style={{ 
+                 gap: '1px',
+                 scrollbarWidth: 'none', 
+                 msOverflowStyle: 'none'
+               }}>
+            {images.map((image, index) => (
+              <div key={index} className="flex-shrink-0 relative">
+                <div className="relative w-[280px] h-[400px] md:w-[320px] md:h-[450px] overflow-hidden">
+                  <Image
+                    src={image.url}
+                    alt={image.alt}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 280px, 320px"
+                    quality={95}
+                  />
+                </div>
               </div>
-
-              {/* Image 2 - Second from left */}
-              <div className="relative w-28 h-36  md:h-[230px] md:w-[170px] mb-4 -mr-10 z-40">
-                <Image
-                  src={imageUrl}
-                  alt="Wedding catering"
-                  fill
-                  className="object-cover shadow-lg"
-                  sizes="(max-width: 768px) 112px, 144px"
-                />
-              </div>
-
-              {/* Image 3 - Small overlapping */}
-              <div className="relative w-24 h-32 md:h-[180px] md:w-[130px] -mb-32 -mr-10 z-30">
-                <Image
-                  src={imageUrl}
-                  alt="Wedding catering"
-                  fill
-                  className="object-cover shadow-lg"
-                  sizes="(max-width: 768px) 96px, 112px"
-                />
-              </div>
-
-              {/* Image 4 - Center large */}
-              <div className="relative w-40 h-52 md:h-[500px] md:w-[350px] mb-6 -mr-3 z-0">
-                <Image
-                  src={imageUrl}
-                  alt="Wedding catering centerpiece"
-                  fill
-                  className="object-cover shadow-xl"
-                  sizes="(max-width: 768px) 160px, 192px"
-                />
-              </div>
-
-              {/* Image 5 - Right of center */}
-              <div className="relative w-36 h-44 md:h-[300px] md:w-[200px] -mb-4 -mr-2 z-50">
-                <Image
-                  src={imageUrl}
-                  alt="Wedding catering"
-                  fill
-                  className="object-cover shadow-lg"
-                  sizes="(max-width: 768px) 144px, 176px"
-                />
-              </div>
-
-              {/* Image 6 - Right side */}
-              <div className="relative w-32 h-40 md:h-[215px] md:w-[150px] mb-40 -mr-6 z-0">
-                <Image
-                  src={imageUrl}
-                  alt="Wedding catering"
-                  fill
-                  className="object-cover shadow-lg"
-                  sizes="(max-width: 768px) 128px, 160px"
-                />
-              </div>
-
-            </div>
+            ))}
+          </div>
+          
+          {/* Scroll hint for mobile */}
+          <div className="text-center mt-4 md:hidden">
+            <p className="text-sm text-gray-500">← Faites défiler pour voir plus d'images →</p>
           </div>
         </div>
 
