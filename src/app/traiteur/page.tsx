@@ -50,33 +50,7 @@ const TraiteurPage = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      <TraiteurWhiteNavbar />
       
-      {/* Hero Section */}
-      <div className="w-full h-screen relative overflow-hidden">
-        <Image
-          src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/heroHeaderImage.webp"
-          alt="Background"
-          fill
-          sizes="100vw"
-          style={{
-            objectFit: 'cover'
-          }}
-          priority
-        />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
-          <div className="text-center px-4">
-            <h1 className="text-white text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
-              SERVICE TRAITEUR
-            </h1>
-            <p className="text-white text-center text-lg sm:text-xl xl:text-2xl font-extralight">
-              Une cuisine raffinée pour tous vos événements dans le Sud de la France
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* Traiteur Presentation Section */}
       <TraiteurPresentation />
 
@@ -86,10 +60,6 @@ const TraiteurPage = () => {
       {/* Traiteur Services Section */}
       <TraiteurServices />
 
-      {/* Traiteur Promo Section */}
-      <div className="hidden xl:block">
-        <TraiteurPromo />
-      </div>
 
       {/* Traiteur FAQ Section */}
       <TraiteurFaqSection />
