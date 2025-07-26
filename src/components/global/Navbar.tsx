@@ -32,9 +32,6 @@ export default function Navbar() {
       if (pathname === '/') {
         const scrollThreshold = window.innerHeight * 1; // 100vh
         setIsVisible(window.scrollY > scrollThreshold);
-      } else if (pathname === '/traiteur') {
-        const scrollThreshold = window.innerHeight * 0.8; // 80vh for smoother transition
-        setIsVisible(window.scrollY > scrollThreshold);
       } else {
         setIsVisible(true); // Always visible on other routes
       }
