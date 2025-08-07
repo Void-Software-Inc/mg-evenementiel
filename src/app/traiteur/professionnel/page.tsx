@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { BackToTop } from "@/components/global/BackToTop";
 import Link from 'next/link';
-import CorporateHero from '@/components/traiteur/professionnel/CorporateHero';
+import CorporateHero from '@/app/traiteur/professionnel/components/CorporateHero';
+import { CorporateCarousel } from './components/CorporateCarousel';
 
 export const metadata: Metadata = {
   title: 'Traiteur Événements Professionnels - MG Événementiel',
@@ -28,6 +29,7 @@ const TraiteurProfessionnelPage = () => {
   return (
     <>
       <CorporateHero />
+      <CorporateCarousel />
       {/* Services professionnels */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4">
