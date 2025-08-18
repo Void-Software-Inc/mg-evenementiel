@@ -14,7 +14,9 @@ import { jsPDF } from 'jspdf';
 const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: any, onPrevious: () => void }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitResult, setSubmitResult] = useState<'success' | 'error' | null>(null);
-  const [pdfData, setPdfData] = useState<any>(null);
+  const [quoteData, setQuoteData] = useState<any>(null);
+  const [savedQuoteItems, setSavedQuoteItems] = useState<any[]>([]);
+  const [savedProducts, setSavedProducts] = useState<Product[]>([]);
   const { clearCart } = useCart();
   const router = useRouter();
 
@@ -110,15 +112,22 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         quantity: item.quantity
       }));
 
+      // Save data for PDF download
+      const completeQuoteData = { 
+        ...quoteData, 
+        id: quoteId,
+        created_at: new Date().toISOString(),
+        last_update: new Date().toISOString(),
+        fees: selectedFees // Add the selected fees to the PDF data
+      };
+      
+      setQuoteData(completeQuoteData);
+      setSavedQuoteItems(formattedQuoteItems);
+      setSavedProducts(products);
+
       // Generate PDF using the new function
       await generateQuotePDF(
-        { 
-          ...quoteData, 
-          id: quoteId,
-          created_at: new Date().toISOString(),
-          last_update: new Date().toISOString(),
-          fees: selectedFees // Add the selected fees to the PDF data
-        },
+        completeQuoteData,
         formattedQuoteItems,
         products
       );
@@ -139,6 +148,19 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     // Format the date to 'dd/mm/yyyy' format
     return new Date(date).toLocaleDateString('fr-FR', { timeZone: parisTimeZone });
   };
+
+  const handleDownloadPDF = async () => {
+    if (!quoteData || !savedQuoteItems || !savedProducts) {
+      console.error('Missing data for PDF generation');
+      return;
+    }
+
+    try {
+      await generateQuotePDF(quoteData, savedQuoteItems, savedProducts);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
   
  
   
@@ -151,7 +173,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         <p className="mb-4">Merci pour votre demande. Vous pouvez télécharger votre devis ci-dessous.</p>
         {formData && (
           <Button
-          onClick={() => window.location.reload()}
+          onClick={handleDownloadPDF}
           className="mt-3 rounded-full py-6 px-8 text-lg font-light bg-green-500 hover:bg-green-700 w-full sm:w-[280px]"
           >
             Télécharger le devis en PDF
