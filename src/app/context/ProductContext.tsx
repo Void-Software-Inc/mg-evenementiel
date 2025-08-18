@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { createClient } from '@/utils/supabase/client'
 
+const schema = process.env.NEXT_PUBLIC_SUPABASE_SCHEMA || 'public'
+
 type ProductContextType = {
   productsShouldRefetch: boolean;
   setProductsShouldRefetch: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,7 +24,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     const productsChannel = supabase.channel('products_changes')
 
     productsChannel
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+      .on('postgres_changes', { event: '*', schema: schema, table: 'products' }, () => {
         setProductsShouldRefetch(true)
       })
       .subscribe()

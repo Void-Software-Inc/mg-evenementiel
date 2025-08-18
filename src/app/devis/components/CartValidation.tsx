@@ -52,9 +52,8 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const decorationTotal = decorationItems.reduce((sum: number, item: any) => sum + item.ttc_price * item.quantity, 0);
   const traiteurTotal = traiteurItems.reduce((sum: number, item: any) => sum + item.ttc_price * item.quantity, 0);
   const feesTotal = selectedFees.reduce((sum: number, fee: any) => sum + fee.price, 0);
-  const totalHT = decorationTotal + traiteurTotal + feesTotal;
-  const tva = totalHT * 0.20; // 20% TVA
-  const totalTTC = totalHT;
+  const totalTTC = decorationTotal + traiteurTotal + feesTotal;
+  const totalHT = totalTTC / 1.2; // Calculate HT amount (20% less than TTC)
 
   const handleSubmit = async () => {
     if (isSubmitting) return; 
@@ -71,7 +70,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       event_end_date: restFormData.event_end_date,
       is_traiteur: restFormData.is_traiteur,
       description: restFormData.description,
-      total_cost: totalTTC,
+      total_cost: totalHT, // Send HT amount to backend
       status: "nouveau",
       is_paid: false,
       traiteur_price: 0,
