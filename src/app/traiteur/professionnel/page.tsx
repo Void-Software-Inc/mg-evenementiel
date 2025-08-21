@@ -1,8 +1,12 @@
+
+
 import type { Metadata } from 'next';
 import { BackToTop } from "@/components/global/BackToTop";
 import Link from 'next/link';
 import CorporateHero from '@/app/traiteur/professionnel/components/CorporateHero';
 import Carousel from '../components/Carousel';
+import CorporateService from './components/CorporateService';
+import CorporateExpertise from '@/app/traiteur/professionnel/components/CorporateExpertise';
 
 export const metadata: Metadata = {
   title: 'Traiteur Événements Professionnels - MG Événementiel',
@@ -29,75 +33,9 @@ const TraiteurProfessionnelPage = () => {
   return (
     <>
       <CorporateHero />
-      <Carousel />
-      {/* Services professionnels */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-16">
-            Nos Services Corporate
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <div className="text-center p-6 bg-green-50 rounded-lg">
-              <div className="text-4xl mb-4">📊</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Séminaires</h3>
-              <p className="text-gray-600">Pauses café, déjeuners d'affaires et collations pour vos formations.</p>
-            </div>
-            
-            <div className="text-center p-6 bg-green-50 rounded-lg">
-              <div className="text-4xl mb-4">🥂</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Cocktails Corporate</h3>
-              <p className="text-gray-600">Inaugurations, lancements de produits et événements networking.</p>
-            </div>
-            
-            <div className="text-center p-6 bg-green-50 rounded-lg">
-              <div className="text-4xl mb-4">🎯</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Événements Client</h3>
-              <p className="text-gray-600">Réceptions prestige pour impressionner vos clients et partenaires.</p>
-            </div>
-            
-            <div className="text-center p-6 bg-green-50 rounded-lg">
-              <div className="text-4xl mb-4">🏆</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">Cérémonies d'Entreprise</h3>
-              <p className="text-gray-600">Remises de prix, anniversaires d'entreprise et fêtes de fin d'année.</p>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
-                Excellence et Professionnalisme
-              </h3>
-              <div className="space-y-4 text-gray-600">
-                <p>
-                  Votre image d'entreprise est précieuse. Nous comprenons les enjeux du monde corporate et adaptons nos prestations à vos exigences de qualité et de timing.
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex items-center">
-                    <span className="text-green-500 mr-2">✓</span>
-                    Service discret et professionnel
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-500 mr-2">✓</span>
-                    Respect des contraintes horaires
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-500 mr-2">✓</span>
-                    Adaptation aux espaces d'entreprise
-                  </li>
-                  <li className="flex items-center">
-                    <span className="text-green-500 mr-2">✓</span>
-                    Devis détaillés et facturation professionnelle
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="relative h-96 bg-gradient-to-br from-green-200 to-emerald-300 rounded-lg flex items-center justify-center">
-              <div className="text-9xl opacity-60">📈</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CorporateExpertise />
+
 
       {/* Solutions Section */}
       <section className="py-20 bg-green-50">
