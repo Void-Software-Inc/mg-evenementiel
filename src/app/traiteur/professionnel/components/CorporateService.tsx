@@ -10,26 +10,14 @@ interface Service {
     imagePosition?: string;
 }
 
-const ServiceCard = ({ service, isMobile = false }: { service: Service; isMobile?: boolean }) => (
-    <div className={`bg-white rounded-lg overflow-hidden shadow-md transform transition-all duration-300 group hover:scale-[1.02] ${isMobile ? 'h-[300px]' : ''}`}>
-        <div className={`relative ${isMobile ? 'h-40' : 'h-32 sm:h-36 md:h-40 lg:h-44'} w-full`}>
-            <Image
-                src={service.image}
-                alt={service.title}
-                fill
-                className="object-cover"
-                style={{ objectPosition: service.imagePosition || 'center' }}
-            />
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-        </div>
-        <div className={`${isMobile ? 'p-4' : 'p-3 sm:p-4 md:p-5'} flex flex-col`}>
-            <h3 className={`${isMobile ? 'text-lg' : 'text-base sm:text-lg md:text-xl'} font-light text-zinc-900 mb-1.5`}>
-                {service.title}
-            </h3>
-            <p className={`${isMobile ? 'text-sm' : 'text-xs sm:text-sm'} text-zinc-600 leading-snug line-clamp-3`}>
-                {service.description}
-            </p>
-        </div>
+const ServiceCard = ({ service }: { service: Service }) => (
+    <div className="flex flex-col items-center text-center px-4 lg:px-8 lg:border-r last:border-r-0 border-zinc-400">
+        <h3 className="text-xl lg:text-2xl font-light text-zinc-900 mb-3">
+            {service.title}
+        </h3>
+        <p className="text-sm lg:text-base text-zinc-600 leading-relaxed pb-5">
+            {service.description}
+        </p>
     </div>
 );
 
@@ -42,23 +30,22 @@ const CorporateService = () => {
         {
             title: "Options Variées",
             description: "Des menus pensés pour convenir à différents formats : repas assis, buffets, cocktails, brunchs ou pauses gourmandes.",
-            image: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/professionnel/duc-van-lWP96yVQnvU-unsplash.webp"
+            image: ""
         },
         {
             title: "Organisation Simplifiée",
             description: "Un service clé en main qui s'adapte à vos contraintes, avec livraison, installation et reprise du matériel.",
-            image: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/professionnel/rosebox-BFdSCxmqvYc-unsplash.webp?t=2025-08-22T15%3A42%3A58.182Z",
-            imagePosition: 'center 75%'
+            image: "",
         },
         {
             title: "Accompagnement Fiable",
             description: "Une équipe attentive à vos besoins pour garantir des événements réussis et sans imprévus.",
-            image: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/professionnel/cytonn-photography-n95VMLxqM2I-unsplash.webp"
+            image: ""
         },
         {
             title: "Flexibilité Totale",
             description: "Des prestations modulables selon la taille de votre groupe, vos préférences alimentaires et le style de votre événement.",
-            image: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/professionnel/ludovic-delot-YscvJmAdLbA-unsplash.webp"
+            image: ""
         }
     ];
 
@@ -89,7 +76,7 @@ const CorporateService = () => {
                 </p>
             </div>
 
-            {/* Cards Container */}
+            {/* Services Container */}
             <div className="w-[85%]">
                 {/* Mobile View: Scrollable with Buttons */}
                 <div className="sm:hidden relative w-full">
@@ -97,7 +84,7 @@ const CorporateService = () => {
                     {showLeftButton && (
                         <button 
                             onClick={() => scroll('left')}
-                            className="absolute -left-1 top-1/2 -translate-y-1/2 z-10 bg-white/90 rounded-full p-3 shadow-lg"
+                            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 rounded-full p-3 shadow-lg"
                             aria-label="Précédent"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +95,7 @@ const CorporateService = () => {
                     {showRightButton && (
                         <button 
                             onClick={() => scroll('right')}
-                            className="absolute -right-1 top-1/2 -translate-y-1/2 z-10 bg-white/90 rounded-full p-3 shadow-lg"
+                            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 rounded-full p-3 shadow-lg"
                             aria-label="Suivant"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,18 +118,21 @@ const CorporateService = () => {
                         {services.map((service, index) => (
                             <div 
                                 key={index}
-                                className="flex-none w-full snap-center p-4"
+                                className="flex-none w-full snap-center py-8"
                             >
-                                <ServiceCard service={service} isMobile={true} />
+                                <ServiceCard service={service} />
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Tablet/Desktop View: Grid Layout */}
-                <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 py-12">
                     {services.map((service, index) => (
-                        <ServiceCard key={index} service={service} />
+                        <ServiceCard 
+                            key={index} 
+                            service={service}
+                        />
                     ))}
                 </div>
             </div>
