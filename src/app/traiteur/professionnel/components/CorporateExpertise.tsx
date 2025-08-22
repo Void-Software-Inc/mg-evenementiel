@@ -2,14 +2,14 @@ import Image from 'next/image';
 
 const CorporateExpertise = () => {
   return (
-    <section className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 max-w-[90%] mx-auto px-4 py-12 lg:py-20">
+    <section className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 w-[85%] mx-auto px-4 sm:px-0 py-12 lg:py-20">
       {/* Image Section */}
       <div className="w-full h-[300px] lg:w-1/2 relative lg:h-[600px] lg:aspect-auto">
         <Image
-          src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/professionnel/daniel-kM6aqwla7Wg-unsplash.webp"
+          src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/professionnel/al-elmes-ULHxWq8reao-unsplash(1).webp?t=2025-08-22T15%3A37%3A17.217Z-"
           alt="Événement d'entreprise"
           fill
-          className="object-cover rounded-md"
+          className="object-cover rounded-xl"
           priority
         />
       </div>
@@ -20,10 +20,10 @@ const CorporateExpertise = () => {
           <h3 className="text-zinc-700 font-medium tracking-wide uppercase">
             EXPERTISE ÉVÉNEMENTIELLE CORPORATE
           </h3>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-zinc-900">
-            Une Expérience Événementielle Impeccable
+          <h2 className="text-4xl sm:text-5xl leading-loose font-extralight text-zinc-900">
+            Une Expérience Événementielle Réussie
           </h2>
-          <p className="text-zinc-700 leading-relaxed text-sm lg:text-base">
+          <p className="text-zinc-600 leading-relaxed font-light">
             MG Événements se spécialise dans une large gamme d'événements d'entreprise, garantissant professionnalisme et service d'exception à chaque occasion. Que vous organisiez un événement de networking, de team-building ou une fête d'entreprise, nous apportons l'expertise culinaire et le service nécessaires pour rendre votre événement mémorable.
           </p>
         </div>

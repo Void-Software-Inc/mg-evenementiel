@@ -12,12 +12,12 @@ const CorporateHero = () => {
               ENTREPRISES
             </h1>
             <div className="w-24 h-1 bg-stone-400 mb-8"></div>
-            <p className="text-zinc-600 leading-relaxed mb-10">
+            <p className="text-zinc-600 leading-relaxed mb-10 font-light">
                 Des petites réunions aux lancements de produits, nous accompagnons les entreprises dans tous leurs événements. Grâce à une planification claire et une prestation tout compris, nous nous chargeons des détails pour que vous restiez concentrés sur l’essentiel. Transformez votre prochain événement en un moment convivial, fluide et motivant pour vos équipes.
             </p>
             <Link 
               href="/contact" 
-              className="group inline-flex items-center font-semibold text-stone-800 tracking-widest text-sm uppercase"
+              className="group inline-flex items-center font-semibold text-stone-800 tracking-widest text-sm uppercase border-b border-stone-800 w-fit"
             >
               Contactez-nous
               <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-2" size={16} />
