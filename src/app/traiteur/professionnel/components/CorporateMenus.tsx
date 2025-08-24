@@ -28,7 +28,7 @@ const CorporateMenus = () => {
             nos menus personnalisables s'adaptent à tous vos besoins de restauration.
           </p>
           <Link 
-            href="/traiteur/catalogue"
+            href="/traiteur/menus"
             className="group inline-flex items-center font-semibold text-white tracking-widest text-xs sm:text-sm uppercase border-b border-white w-fit"
           >
             VOIR LES MENUS

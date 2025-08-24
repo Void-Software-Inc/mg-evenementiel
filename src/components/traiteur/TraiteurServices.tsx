@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 
 const TraiteurServices = () => {
   return (
-    <div className="w-full flex justify-center bg-white py-6 lg:py-16 px-2 sm:px-6 lg:px-8">
+    <div className="w-full flex justify-center bg-white pt-6 lg:pt-16 px-2 sm:px-6 lg:px-8">
       <div className="w-full lg:w-[95%]">
         
         {/* Centered Text Section */}
@@ -65,7 +65,7 @@ const TraiteurServices = () => {
 
               {/* Professionnel Card */}
               <CarouselItem className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                <Link href="/traiteur/wip" className="group block h-full">
+                <Link href="/traiteur/professionnel" className="group block h-full">
                     <div className="relative bg-gray-100/30 backdrop-blur-lg rounded-xl min-h-[300px] transition-all duration-500 p-8 text-center border border-gray-200/50 h-full overflow-hidden flex flex-col justify-between">
                         <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-indigo-100 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-500"></div>
                         <div className="relative z-10">

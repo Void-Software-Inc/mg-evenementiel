@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 const CorporateHero = () => {
   return (
-    <section className="bg-[#F8F5F0] overflow-hidden">
+    <section className="bg-transparent overflow-hidden">
       <div className="container mx-auto px-4 py-24 sm:py-32">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="max-w-2xl md:justify-self-center">
