@@ -8,6 +8,7 @@ import TraiteurPromo from "@/components/traiteur/TraiteurPromo";
 import TraiteurFaqSection from "@/components/traiteur/TraiteurFaqSection";
 import Link from 'next/link';
 import Image from 'next/image';
+import CorporateMenus from './professionnel/components/CorporateMenus';
 
 export const metadata: Metadata = {
   title: 'Service Traiteur - MG Événementiel',
@@ -60,6 +61,10 @@ const TraiteurPage = () => {
       {/* Traiteur Services Section */}
       <TraiteurServices />
 
+      <div className="w-full flex justify-center bg-white py-6 lg:py-16 px-2 sm:px-6 lg:px-8">
+      <div className="w-full lg:w-[95%]">
+      <CorporateMenus />
+      </div></div>
 
       {/* Traiteur FAQ Section */}
       <TraiteurFaqSection />
