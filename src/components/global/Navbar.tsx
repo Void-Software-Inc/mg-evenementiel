@@ -117,7 +117,15 @@ export default function Navbar() {
           onClick={() => setTraiteurMenuOpen(false)}
         >
           <div className="font-medium">Catalogue</div>
-          <div className="text-sm text-gray-500">Nos produits et menus</div>
+          <div className="text-sm text-gray-500">Commencez votre devis</div>
+        </Link>
+        <Link
+          href="/traiteur/menus"
+          className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+          onClick={() => setTraiteurMenuOpen(false)}
+        >
+          <div className="font-medium">Menus</div>
+          <div className="text-sm text-gray-500">Découvrez nos suggestions</div>
         </Link>
       </div>
     </div>
