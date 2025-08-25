@@ -6,6 +6,10 @@ import WeddingCateringService from './components/WeddingCateringService';
 import WeddingHero from './components/WeddingHero';
 import TraiteurMenu from '@/app/traiteur/mariage/components/TraiteurMenu';
 import WeddingOptions from './components/WeddingOptions';
+import CorporateMenus from '../professionnel/components/CorporateMenus';
+import WeddingServices from './components/WeddingServices';
+import WeddingCallToAction from './components/WeddingCallToAction';
+import WeddingMenus from './components/WeddingMenus';
 
 export const metadata: Metadata = {
   title: 'Traiteur pour Mariages - MG Événementiel',
@@ -35,11 +39,18 @@ const TraiteurMariagePage = () => {
       
       <div className='w-full h-fit flex justify-center'>
         <WeddingCateringService />
-        </div>
-      <div className='w-full h-fit flex justify-center'>
-        <TraiteurMenu />
       </div>
+
+      <WeddingServices />
+   
+      <div className="w-full h-fit flex justify-center pb-12 md:pb-24 bg-white">
+        <div className="w-[80%] px-4">
+          <WeddingMenus />
+        </div>
+      </div>
+
       <WeddingOptions />
+      <WeddingCallToAction />
       <BackToTop />
     </>
   );

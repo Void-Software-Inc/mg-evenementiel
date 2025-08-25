@@ -1,41 +1,66 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 const WeddingCateringService = () => {
-  const imageUrl1 = "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/troy-t-kbiGSJpiTKE-unsplash%2017.30.05.jpg";
-  const imageUrl2 = "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/photos-by-lanty-yMY1QE5wpyA-unsplash.webp?t=2025-06-23T15%3A35%3A22.466Z";
-
   return (
-    <section className="w-[80%] py-12 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
-          <div className="lg:w-1/2 text-center lg:text-left">
-            <h2 className="w-full lg:w-[90%] text-zinc-800 text-2xl sm:text-3xl font-extralight mb-4">
-              Une organisation fluide, un accompagnement sur-mesure
-            </h2>
-            <p className="text-base xl:text-lg text-zinc-700 mb-2 font-light">
-              Du premier échange à la dernière bouchée, nous vous accompagnons à chaque étape. Menu personnalisé, dégustation en amont, adaptation à vos envies et à votre budget : tout est pensé pour vous.
-            </p>
-            <p className="text-base xl:text-lg text-zinc-700 mb-2 font-light">
-              Nous assurons la logistique complète : installation, service en salle, vaisselle, mobilier… Vous n’avez rien à gérer, si ce n’est profiter pleinement de votre événement. Notre équipe, discrète et attentive, veille à ce que chaque détail soit parfaitement orchestré.
-            </p>
-          </div>
-          <div className="w-full lg:w-1/2 mt-8 lg:mt-0">
-            <div className="relative h-[500px] w-full">
-              <div className="absolute bottom-0 right-0 w-[65%] h-[60%] lg:w-[60%] lg:h-[80%] overflow-hidden rounded-md shadow-xl">
-                <Image
-                  src={imageUrl1}
-                  alt="Pièce montée et buffet de mariage"
-                  layout="fill"
-                  objectFit="cover"
-                />
+    <section className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 w-[85%] mx-auto px-4 sm:px-0 py-12 lg:py-20">
+      {/* Image Section */}
+      <div className="w-full h-[300px] lg:w-1/2 relative lg:h-[600px] lg:aspect-auto">
+        <Image
+          src="https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/traiteur/mariage/bennie-bates--MZwBtdj9vE-unsplash.webp?t=2025-08-24T23%3A56%3A46.495Z"
+          alt="Service traiteur mariage"
+          fill
+          className="object-cover rounded-xl"
+          priority
+        />
+      </div>
+
+      {/* Content Section */}
+      <div className="w-full lg:w-1/2 space-y-6">
+        <div className="space-y-4">
+          <h3 className="text-zinc-700 font-medium tracking-wide uppercase">
+            EXPERTISE TRAITEUR MARIAGE
+          </h3>
+          <h2 className="text-4xl sm:text-5xl leading-loose font-extralight text-zinc-900">
+            Une organisation fluide, un accompagnement sur-mesure
+          </h2>
+          <p className="text-zinc-600 leading-relaxed font-light">
+            Du premier échange à la dernière bouchée, nous vous accompagnons à chaque étape. Menu personnalisé, dégustation en amont, adaptation à vos envies et à votre budget : tout est pensé pour vous. Notre équipe, discrète et attentive, veille à ce que chaque détail soit parfaitement orchestré.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-zinc-700 font-medium mb-4">
+            NOS PRESTATIONS INCLUENT :
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+            {/* Column 1 */}
+            <div className="space-y-3">
+              
+            <div className="flex items-center gap-2">
+                <span className="text-[#AAA07E]">✓</span>
+                <span>Dégustation en amont</span>
               </div>
-              <div className="absolute top-0 left-0 w-[65%] h-[60%] lg:w-[55%] lg:h-[70%] rounded-md overflow-hidden shadow-xl">
-                <Image
-                  src={imageUrl2}
-                  alt="Verrines et champagne pour mariage"
-                  layout="fill"
-                  objectFit="cover"
-                />
+              <div className="flex items-center gap-2">
+                <span className="text-[#AAA07E]">✓</span>
+                <span>Service à l'assiette</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[#AAA07E]">✓</span>
+                <span>Installation et logistique</span>
+              </div>
+            </div>
+            
+            {/* Column 2 */}
+            <div className="space-y-3">
+                
+              
+              <div className="flex items-center gap-2">
+                <span className="text-[#AAA07E]">✓</span>
+                <span>Vaisselle et mobilier</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[#AAA07E]">✓</span>
+                <span>Service en salle</span>
               </div>
             </div>
           </div>
