@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const WeddingMenus = () => {
   return (
-    <div className="relative w-full overflow-hidden rounded-2xl mt-20">
+    <div className="relative w-full overflow-hidden rounded-2xl">
       <div className="flex flex-col lg:flex-row lg:h-[450px]">
         {/* Image Section */}
         <div className="order-1 lg:order-2 w-full h-[300px] sm:h-[280px] lg:h-auto lg:w-1/2 relative">
