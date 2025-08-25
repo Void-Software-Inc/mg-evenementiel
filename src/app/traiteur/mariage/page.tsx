@@ -43,7 +43,7 @@ const TraiteurMariagePage = () => {
 
       <WeddingServices />
    
-      <div className="w-full h-fit flex justify-center pb-12 md:pb-24 bg-white">
+      <div className="w-full h-fit flex justify-center mt-20 pb-12 md:pb-24 bg-white">
         <div className="w-[80%] px-4">
           <WeddingMenus />
         </div>
