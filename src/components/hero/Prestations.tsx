@@ -47,7 +47,7 @@ export default function Prestations() {
 
     return (   
         <div className="h-full w-full mb-40 flex items-center justify-center flex-col">
-            <div className="w-full max-w-4xl px-4 flex flex-col items-center justify-center">
+            <div className="w-full max-w-4xl px-4 flex flex-col items-center justify-center mb-10">
                 <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
                 NOS PRESTATIONS
                 </h2>

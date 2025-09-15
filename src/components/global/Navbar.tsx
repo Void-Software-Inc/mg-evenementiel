@@ -15,11 +15,22 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CheckCircledIcon, CopyIcon } from "@radix-ui/react-icons";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [traiteurMenuOpen, setTraiteurMenuOpen] = useState(false);
+
   const is2xlScreen = useMediaQuery({ minWidth: 1698 });
   const pathname = usePathname();
   const [copied, setCopied] = useState<{ phone: boolean; email: boolean }>({
@@ -100,37 +111,6 @@ export default function Navbar() {
     );
   };
 
-  const TraiteurSubmenu = () => (
-    <div className="w-72 p-4">
-      <div className="space-y-3">
-        <Link
-          href="/traiteur"
-          className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
-          onClick={() => setTraiteurMenuOpen(false)}
-        >
-          <div className="font-medium">Présentation</div>
-          <div className="text-sm text-gray-500">Découvrez nos services traiteur</div>
-        </Link>
-        <Link
-          href="/traiteur/catalogue"
-          className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
-          onClick={() => setTraiteurMenuOpen(false)}
-        >
-          <div className="font-medium">Catalogue</div>
-          <div className="text-sm text-gray-500">Commencez votre devis</div>
-        </Link>
-        <Link
-          href="/traiteur/menus"
-          className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
-          onClick={() => setTraiteurMenuOpen(false)}
-        >
-          <div className="font-medium">Menus</div>
-          <div className="text-sm text-gray-500">Découvrez nos suggestions</div>
-        </Link>
-      </div>
-    </div>
-  );
-
   const NavLink = ({ href, label, hasSubmenu = false }: { href: string; label: string; hasSubmenu?: boolean }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [submenuOpen, setSubmenuOpen] = useState(false);
@@ -164,12 +144,41 @@ export default function Navbar() {
                 Présentation
               </Link>
               <Link
+                href="/traiteur/menus"
+                className="block text-lg font-light text-gray-600 hover:text-gray-800"
+                onClick={() => setIsOpen(false)}
+              >
+                Menus
+              </Link>
+              <Link
                 href="/traiteur/catalogue"
                 className="block text-lg font-light text-gray-600 hover:text-gray-800"
                 onClick={() => setIsOpen(false)}
               >
                 Catalogue
               </Link>
+                <Link
+                  href="/traiteur/mariage"
+                  className="block text-lg font-light text-gray-600 hover:text-gray-800"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Mariage
+                </Link>
+                <Link
+                  href="/traiteur/particulier"
+                  className="block text-lg font-light text-gray-600 hover:text-gray-800"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Particulier
+                </Link>
+                <Link
+                  href="/traiteur/professionnel"
+                  className="block text-lg font-light text-gray-600 hover:text-gray-800"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Professionnel
+                </Link>
+           
             </div>
           )}
         </div>
@@ -275,26 +284,82 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* TRAITEUR with dropdown */}
+          {/* TRAITEUR with Popover */}
           <div className="relative group">
             <Popover open={traiteurMenuOpen} onOpenChange={setTraiteurMenuOpen}>
               <PopoverTrigger asChild>
                 <button 
                   className="text-gray-800 font-normal tracking-wider hover:text-black 2xl:text-lg"
-                  onMouseEnter={() => setTraiteurMenuOpen(true)}
-                  onMouseLeave={() => setTraiteurMenuOpen(false)}
+                  onClick={() => setTraiteurMenuOpen(!traiteurMenuOpen)}
                 >
                   TRAITEUR
                 </button>
               </PopoverTrigger>
-              <PopoverContent 
-                className="p-0 w-72" 
-                side="bottom" 
-                align="center"
-                onMouseEnter={() => setTraiteurMenuOpen(true)}
-                onMouseLeave={() => setTraiteurMenuOpen(false)}
-              >
-                <TraiteurSubmenu />
+              <PopoverContent className="p-0 w-[600px]" side="bottom" align="center">
+                <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
+                  <ul className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3">
+                    <li>
+                      <Link
+                        href="/traiteur"
+                        className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                        onClick={() => setTraiteurMenuOpen(false)}
+                      >
+                        <div className="font-medium">Présentation</div>
+                        <div className="text-sm text-gray-500">Découvrez nos services traiteur</div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/traiteur/catalogue"
+                        className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                        onClick={() => setTraiteurMenuOpen(false)}
+                      >
+                        <div className="font-medium">Catalogue</div>
+                        <div className="text-sm text-gray-500">Commencez votre devis</div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/traiteur/menus"
+                        className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                        onClick={() => setTraiteurMenuOpen(false)}
+                      >
+                        <div className="font-medium">Menus</div>
+                        <div className="text-sm text-gray-500">Découvrez nos suggestions</div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/traiteur/mariage"
+                        className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                        onClick={() => setTraiteurMenuOpen(false)}
+                      >
+                        <div className="font-medium">Mariage</div>
+                        <div className="text-sm text-gray-500">Cérémonies et réceptions de mariage</div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/traiteur/particulier"
+                        className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                        onClick={() => setTraiteurMenuOpen(false)}
+                      >
+                        <div className="font-medium">Particulier</div>
+                        <div className="text-sm text-gray-500">Événements privés et familiaux</div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/traiteur/professionnel"
+                        className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                        onClick={() => setTraiteurMenuOpen(false)}
+                      >
+                        <div className="font-medium">Professionnel</div>
+                        <div className="text-sm text-gray-500">Événements d'entreprise et séminaires</div>
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               </PopoverContent>
             </Popover>
             <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
