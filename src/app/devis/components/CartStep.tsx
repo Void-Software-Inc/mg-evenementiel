@@ -2,17 +2,26 @@ import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { useCart } from '@/app/context/CartContext';
-import { Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
+import { Plus, Minus, Trash2, ShoppingBag, Check, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ChevronRight } from "lucide-react";
+import { getCodesPromos } from '@/services/codesPromos';
+import { CodePromo } from '@/utils/types/codesPromos';
 
 const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
   const router = useRouter();
   const { cart, updateQuantity, removeFromCart } = useCart();
   const [localQuantities, setLocalQuantities] = useState<{ [key: number]: number | '' }>({});
   const inputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
+  
+  // Code promo states
+  const [promoCode, setPromoCode] = useState('');
+  const [promoStatus, setPromoStatus] = useState<'idle' | 'checking' | 'valid' | 'invalid' | 'inactive'>('idle');
+  const [promoErrorMessage, setPromoErrorMessage] = useState('');
+  const [validatedPromo, setValidatedPromo] = useState<CodePromo | null>(null);
+  const [codesPromos, setCodesPromos] = useState<CodePromo[]>([]);
 
   useEffect(() => {
     const initialQuantities = cart.reduce((acc, item) => {
@@ -21,6 +30,72 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
     }, {} as { [key: number]: number });
     setLocalQuantities(initialQuantities);
   }, [cart]);
+
+  // Load codes promos on component mount
+  useEffect(() => {
+    const loadCodesPromos = async () => {
+      try {
+        const codes = await getCodesPromos();
+        setCodesPromos(codes);
+      } catch (error) {
+        console.error('Error loading codes promos:', error);
+      }
+    };
+    loadCodesPromos();
+  }, []);
+
+  // Validate promo code
+  const validatePromoCode = (code: string) => {
+    if (!code.trim()) {
+      setPromoStatus('idle');
+      setValidatedPromo(null);
+      setPromoErrorMessage('');
+      return;
+    }
+
+    setPromoStatus('checking');
+    
+    // Simulate a small delay for better UX
+    setTimeout(() => {
+      const foundPromo = codesPromos.find(
+        promo => promo.code_promo.toLowerCase() === code.toLowerCase()
+      );
+      
+      if (foundPromo) {
+        if (foundPromo.is_active) {
+          setPromoStatus('valid');
+          setValidatedPromo(foundPromo);
+          setPromoErrorMessage('');
+        } else {
+          setPromoStatus('inactive');
+          setValidatedPromo(null);
+          setPromoErrorMessage("Ce code n'est plus disponible");
+        }
+      } else {
+        setPromoStatus('invalid');
+        setValidatedPromo(null);
+        setPromoErrorMessage("Ce code n'existe pas");
+      }
+    }, 500);
+  };
+
+  const handlePromoCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const code = e.target.value;
+    setPromoCode(code);
+    
+    // Debounce validation
+    if (code.trim()) {
+      setTimeout(() => {
+        if (e.target.value === code) {
+          validatePromoCode(code);
+        }
+      }, 300);
+    } else {
+      setPromoStatus('idle');
+      setValidatedPromo(null);
+      setPromoErrorMessage('');
+    }
+  };
 
   // Separate cart items by category
   const decorationItems = cart.filter(item => item.category === "decoration");
@@ -217,6 +292,57 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
                 </div>
               )}
             </div>
+
+            {/* Code Promo Section */}
+            <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+              <h3 className="font-medium text-base text-gray-800 mb-3 flex items-center">
+                <span className="inline-block w-1.5 h-5 bg-green-500 rounded-full mr-1.5"></span>
+                Code Promo
+              </h3>
+              
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Entrez votre code promo (ex: TESTPROMO15)"
+                  value={promoCode}
+                  onChange={handlePromoCodeChange}
+                  className={`pr-10 ${
+                    promoStatus === 'valid' 
+                      ? 'border-green-500 bg-green-50' 
+                      : promoStatus === 'invalid' || promoStatus === 'inactive'
+                      ? 'border-red-500 bg-red-50' 
+                      : ''
+                  }`}
+                />
+                
+                {/* Status indicator */}
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  {promoStatus === 'checking' && (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900"></div>
+                  )}
+                  {promoStatus === 'valid' && (
+                    <Check className="h-4 w-4 text-green-500" />
+                  )}
+                  {(promoStatus === 'invalid' || promoStatus === 'inactive') && (
+                    <X className="h-4 w-4 text-red-500" />
+                  )}
+                </div>
+              </div>
+              
+              {/* Status messages */}
+              {promoStatus === 'valid' && validatedPromo && (
+                <p className="text-sm text-green-600 mt-2 flex items-center">
+                  <Check className="h-4 w-4 mr-1" />
+                  Code valide! Réduction de {validatedPromo.amount}%
+                </p>
+              )}
+              {(promoStatus === 'invalid' || promoStatus === 'inactive') && (
+                <p className="text-sm text-red-600 mt-2 flex items-center">
+                  <X className="h-4 w-4 mr-1" />
+                  {promoErrorMessage}
+                </p>
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -225,13 +351,32 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
           <span className="font-medium mr-3 sm:mr-3 text-base sm:text-base text-gray-700">Total produits:</span>
           <span className="font-bold text-lg sm:text-lg text-gray-900">{total.toFixed(2)}€</span>
         </div>
+        
+        {/* Show discount preview */}
+        {validatedPromo && (
+          <div className="flex sm:justify-end justify-center mb-4 sm:mb-3 bg-green-50 p-3 sm:p-2 rounded-lg">
+            <span className="font-medium mr-3 sm:mr-3 text-base sm:text-base text-green-700">
+              Réduction ({validatedPromo.amount}%):
+            </span>
+            <span className="font-bold text-lg sm:text-lg text-green-700">
+              -{(total * validatedPromo.amount / 100).toFixed(2)}€
+            </span>
+          </div>
+        )}
       </div>
       <div onClick={() => {
         window.scrollTo(0, 0);
       }} className="mt-4 xl:mt-6 w-full flex justify-end">
         <Button 
           className="h-[65px] w-full sm:h-[78px] sm:w-[170px] rounded-full p-6 flex items-center space-x-4 transition-all duration-300 group"
-          onClick={onNext}
+          onClick={() => {
+            const promoData = validatedPromo ? {
+              code_promo_id: validatedPromo.id,
+              code_promo_code: validatedPromo.code_promo,
+              code_promo_discount: validatedPromo.amount
+            } : null;
+            onNext(promoData);
+          }}
           disabled={cart.length === 0}
         >
           <span className='font-semibold text-xl'>Suivant</span>

@@ -31,6 +31,7 @@ export type Quote = {
       depart: string;
       pays: string;
     };
+    code_promo?: number;
   };
 
 export type FinishedQuote = Quote & {

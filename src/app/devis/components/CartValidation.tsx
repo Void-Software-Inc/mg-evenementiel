@@ -50,11 +50,17 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   // Get selected fees
   const selectedFees = formData?.fees?.filter((fee: any) => fee.enabled) || [];
   
-  // Calculate totals
+  // Calculate totals with promo code discount
   const decorationTotal = decorationItems.reduce((sum: number, item: any) => sum + item.ttc_price * item.quantity, 0);
   const traiteurTotal = traiteurItems.reduce((sum: number, item: any) => sum + item.ttc_price * item.quantity, 0);
   const feesTotal = selectedFees.reduce((sum: number, fee: any) => sum + fee.price, 0);
-  const totalTTC = decorationTotal + traiteurTotal + feesTotal;
+  const subtotal = decorationTotal + traiteurTotal + feesTotal;
+  
+  // Apply promo code discount
+  const promoDiscount = formData?.code_promo_discount 
+    ? (subtotal * formData.code_promo_discount / 100) 
+    : 0;
+  const totalTTC = subtotal - promoDiscount;
   const totalHT = totalTTC / 1.2; // Calculate HT amount (20% less than TTC)
 
   const handleSubmit = async () => {
@@ -78,6 +84,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
       traiteur_price: 0,
       other_expenses: 0,
       fees: formData.fees,
+      code_promo: formData.code_promo_id || null, // Add promo code ID
       address: {
         voie,
         compl,
@@ -353,12 +360,73 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
             )}
           </div>
 
-          {/* Totals Section */}
+          {/* Code Promo Section */}
+          {formData?.code_promo_code && (
+            <div className="mt-6 border-t pt-4">
+              <p className="text-xl font-semibold mb-4 text-green-800 flex items-center">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                </svg>
+                Code Promo Appliqué
+              </p>
+              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-green-700">Code: {formData.code_promo_code}</p>
+                    <p className="text-sm text-green-600">Réduction de {formData.code_promo_discount}%</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-green-600">Économie</p>
+                    <p className="font-bold text-green-700 text-lg">-{promoDiscount.toFixed(2)}€</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Updated Totals Section */}
           <div className="mt-6 border-t pt-4">
-            <div className="flex flex-col items-end space-y-2">
-              <div className="flex justify-between w-full max-w-[300px] bg-zinc-800 text-white p-3 rounded-lg">
-                <span className="text-sm sm:text-lg">Total :</span>
-                <span className="font-bold text-sm sm:text-lg">{totalTTC.toFixed(2)}€</span>
+            <div className="space-y-2">
+              {decorationItems.length > 0 && (
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Matériel et Décoration:</span>
+                  <span>{decorationTotal.toFixed(2)}€</span>
+                </div>
+              )}
+              
+              {traiteurItems.length > 0 && (
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Traiteur:</span>
+                  <span>{traiteurTotal.toFixed(2)}€</span>
+                </div>
+              )}
+              
+              {selectedFees.length > 0 && (
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Options:</span>
+                  <span>{feesTotal.toFixed(2)}€</span>
+                </div>
+              )}
+              
+              <div className="border-t pt-2">
+                <div className="flex justify-between text-sm font-medium text-gray-700">
+                  <span>Sous-total:</span>
+                  <span>{subtotal.toFixed(2)}€</span>
+                </div>
+              </div>
+              
+              {promoDiscount > 0 && (
+                <div className="flex justify-between text-sm text-green-600 font-medium">
+                  <span>Réduction code promo ({formData.code_promo_discount}%):</span>
+                  <span>-{promoDiscount.toFixed(2)}€</span>
+                </div>
+              )}
+              
+              <div className="border-t pt-2">
+                <div className="flex justify-between text-lg font-bold text-white bg-zinc-800 p-3 rounded-lg">
+                  <span>Total:</span>
+                  <span>{totalTTC.toFixed(2)}€</span>
+                </div>
               </div>
             </div>
           </div>
