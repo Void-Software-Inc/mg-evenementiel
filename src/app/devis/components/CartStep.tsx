@@ -80,7 +80,7 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
   };
 
   const handlePromoCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const code = e.target.value;
+    const code = e.target.value.toUpperCase(); // Convert to uppercase automatically
     setPromoCode(code);
     
     // Debounce validation
@@ -303,7 +303,7 @@ const CartStep = ({ onNext }: { onNext: (data: any) => void }) => {
               <div className="relative">
                 <Input
                   type="text"
-                  placeholder="Entrez votre code promo (ex: TESTPROMO15)"
+                  placeholder="Entrez votre code promo"
                   value={promoCode}
                   onChange={handlePromoCodeChange}
                   className={`pr-10 ${
