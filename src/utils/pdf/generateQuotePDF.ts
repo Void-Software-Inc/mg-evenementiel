@@ -622,14 +622,20 @@ export const generateDocumentPDF = (
         finalY = currentY + rowHeight + 10;
       }
 
-      // Calculate total from items
-      const totalHT = [...decorationProducts, ...traiteurProducts].reduce(
+      // Calculate total from items (these are TTC prices)
+      const subtotalTTC = [...decorationProducts, ...traiteurProducts].reduce(
         (sum, item) => sum + Number(item.totalPrice), 
         0
       ) + (quote.fees?.reduce((sum, fee) => sum + (fee.enabled ? fee.price : 0), 0) || 0);
       
-      const tva = totalHT * 0.2;
-      const totalTTC = totalHT;
+      // Apply promo code discount to TTC amount (same as CartValidation logic)
+      const promoDiscount = quote.code_promo_discount 
+        ? (subtotalTTC * quote.code_promo_discount / 100) 
+        : 0;
+      const finalTotalTTC = subtotalTTC - promoDiscount;
+      const finalTotalHT = finalTotalTTC; // Since we're working with TTC prices, keep the same value
+      
+      const tva = finalTotalHT * 0.2;
 
       // Check if there's enough space for totals and signature
       const requiredSpace = 70;
@@ -643,15 +649,17 @@ export const generateDocumentPDF = (
           doc,
           20,
           pageWidth,
-          totalHT,
+          subtotalTTC,
+          finalTotalHT,
           tva,
-          totalTTC,
+          finalTotalTTC,
           rightMargin,
           lineSpacing,
           documentType,
           pageHeight,
           currentPage,
-          totalPages
+          totalPages,
+          quote
         );
       } else {
         totalPages = currentPage + 1; // Add one more for conditions page
@@ -659,15 +667,17 @@ export const generateDocumentPDF = (
           doc,
           finalY,
           pageWidth,
-          totalHT,
+          subtotalTTC,
+          finalTotalHT,
           tva,
-          totalTTC,
+          finalTotalTTC,
           rightMargin,
           lineSpacing,
           documentType,
           pageHeight,
           currentPage,
-          totalPages
+          totalPages,
+          quote
         );
       }
       
@@ -694,6 +704,7 @@ const addTotalsAndSignature = (
   doc: any,
   startY: number,
   pageWidth: number,
+  subtotalHT: number,
   totalHT: number,
   tva: number,
   totalTTC: number,
@@ -702,39 +713,53 @@ const addTotalsAndSignature = (
   documentType: DocumentType,
   pageHeight: number,
   currentPage: number,
-  totalPages: number
+  totalPages: number,
+  quote: AnyQuote
 ) => {
   // Add totals section
   doc.setFontSize(10);
   doc.setTextColor(0);
   
+  // Calculate the height needed for the totals section
+  const hasPromoCode = quote.code_promo_code && quote.code_promo_discount;
+  const totalsSectionHeight = hasPromoCode ? lineSpacing * 4 : lineSpacing * 1.5;
+  
   // Draw a light gray background for the totals section
   doc.setFillColor(245, 245, 245);
-  doc.rect(pageWidth - 97, startY, 85, lineSpacing * 3, 'F');
+  doc.rect(pageWidth - 97, startY, 85, totalsSectionHeight, 'F');
   
-  // Total HT
-  doc.setFont('helvetica', 'bold');
-// doc.text("Total HT:", pageWidth - 95, startY + lineSpacing);
-  doc.setFont('helvetica', 'normal');
-  const totalHTText = `${totalHT.toFixed(2)}€`;
-  const totalHTWidth = doc.getTextWidth(totalHTText);
-// doc.text(totalHTText, pageWidth - rightMargin - totalHTWidth, startY + lineSpacing);
+  let currentLineY = startY + lineSpacing;
   
-  // TVA
-  doc.setFont('helvetica', 'bold');
-//  doc.text("TVA 20%:", pageWidth - 95, startY + (lineSpacing * 2));
-  doc.setFont('helvetica', 'normal');
-  const tvaText = `${tva.toFixed(2)}€`;
-  const tvaWidth = doc.getTextWidth(tvaText);
-//  doc.text(tvaText, pageWidth - rightMargin - tvaWidth, startY + (lineSpacing * 2));
+  // If there's a promo code, show the breakdown
+  if (hasPromoCode) {
+    // Subtotal before discount
+    doc.setFont('helvetica', 'normal');
+    doc.text("Sous-total :", pageWidth - 95, currentLineY);
+    const subtotalText = `${subtotalHT.toFixed(2)}€`;
+    const subtotalWidth = doc.getTextWidth(subtotalText);
+    doc.text(subtotalText, pageWidth - rightMargin - subtotalWidth, currentLineY);
+    currentLineY += lineSpacing;
+    
+    // Promo code discount
+    doc.setTextColor(34, 197, 94); // Green color for discount
+    doc.text(`Code ${quote.code_promo_code} (-${quote.code_promo_discount || 0}%) :`, pageWidth - 95, currentLineY);
+    const discountAmount = subtotalHT * ((quote.code_promo_discount || 0) / 100);
+    const discountText = `-${discountAmount.toFixed(2)}€`;
+    const discountWidth = doc.getTextWidth(discountText);
+    doc.text(discountText, pageWidth - rightMargin - discountWidth, currentLineY);
+    currentLineY += lineSpacing;
+    
+    // Reset text color
+    doc.setTextColor(0);
+  }
   
-  // Total TTC
+  // Total
   doc.setFont('helvetica', 'bold');
-  doc.text("Total :", pageWidth - 95, startY + (lineSpacing * 1.5));
+  doc.text("Total :", pageWidth - 95, currentLineY);
   doc.setFont('helvetica', 'normal');
   const totalTTCText = `${totalTTC.toFixed(2)}€`;
   const totalTTCWidth = doc.getTextWidth(totalTTCText);
-  doc.text(totalTTCText, pageWidth - rightMargin - totalTTCWidth, startY + (lineSpacing * 1.5));
+  doc.text(totalTTCText, pageWidth - rightMargin - totalTTCWidth, currentLineY);
 
   // Add a new page for conditions générales de location
   doc.addPage();
