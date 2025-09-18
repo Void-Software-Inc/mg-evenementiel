@@ -160,7 +160,7 @@ export const generateDocumentPDF = (
           name: product.name || 'Produit inconnu',
           quantity: item.quantity,
           unitPrice: unitPriceHT,
-          totalPrice: subtotalHT.toFixed(2)
+          totalPrice: subtotalHT
         };
 
         // Categorize based on product type (assuming there's a category field)
@@ -178,7 +178,7 @@ export const generateDocumentPDF = (
           name: 'Service traiteur',
           quantity: 1,
           unitPrice: quote.traiteur_price,
-          totalPrice: quote.traiteur_price.toFixed(2)
+          totalPrice: quote.traiteur_price
         });
       }
       
@@ -187,7 +187,7 @@ export const generateDocumentPDF = (
           name: 'Frais supplémentaires',
           quantity: 1,
           unitPrice: quote.other_expenses,
-          totalPrice: quote.other_expenses.toFixed(2)
+          totalPrice: quote.other_expenses
         });
       }
 
@@ -344,12 +344,12 @@ export const generateDocumentPDF = (
           doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 6);
           
           // Unit price (right aligned)
-          const unitPrice = `${(Number(item.totalPrice) / item.quantity).toFixed(2)}€`;
+          const unitPrice = `${(item.totalPrice / item.quantity).toFixed(2)}€`;
           const unitPriceWidth = doc.getTextWidth(unitPrice);
           doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 6);
           
           // Total price (right aligned)
-          const totalPrice = `${item.totalPrice}€`;
+          const totalPrice = `${item.totalPrice.toFixed(2)}€`;
           const totalPriceWidth = doc.getTextWidth(totalPrice);
           doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 6);
           
@@ -358,7 +358,7 @@ export const generateDocumentPDF = (
         
         // Add decoration subtotal row
         const decorationTotal = decorationProducts.reduce(
-          (sum: number, item: any) => sum + Number(item.totalPrice), 
+          (sum: number, item: any) => sum + item.totalPrice, 
           0
         ).toFixed(2);
         
@@ -477,12 +477,12 @@ export const generateDocumentPDF = (
           doc.text(qtyText, 15 + colWidths[0] + (colWidths[1] / 2) - (qtyWidth / 2), currentY + 6);
           
           // Unit price (right aligned)
-          const unitPrice = `${(Number(item.totalPrice) / item.quantity).toFixed(2)}€`;
+          const unitPrice = `${(item.totalPrice / item.quantity).toFixed(2)}€`;
           const unitPriceWidth = doc.getTextWidth(unitPrice);
           doc.text(unitPrice, 15 + colWidths[0] + colWidths[1] + colWidths[2] - 5 - unitPriceWidth, currentY + 6);
           
           // Total price (right aligned)
-          const totalPrice = `${item.totalPrice}€`;
+          const totalPrice = `${item.totalPrice.toFixed(2)}€`;
           const totalPriceWidth = doc.getTextWidth(totalPrice);
           doc.text(totalPrice, 15 + tableWidth - 5 - totalPriceWidth, currentY + 6);
           
@@ -491,7 +491,7 @@ export const generateDocumentPDF = (
         
         // Add traiteur subtotal row
         const traiteurTotal = traiteurProducts.reduce(
-          (sum: number, item: any) => sum + Number(item.totalPrice), 
+          (sum: number, item: any) => sum + item.totalPrice, 
           0
         ).toFixed(2);
         
@@ -629,9 +629,10 @@ export const generateDocumentPDF = (
       ) + (quote.fees?.reduce((sum, fee) => sum + (fee.enabled ? fee.price : 0), 0) || 0);
       
       // Apply promo code discount to TTC amount (same as CartValidation logic)
-      const promoDiscount = quote.code_promo_discount 
-        ? (subtotalTTC * quote.code_promo_discount / 100) 
+      const rawPromoDiscount = quote.code_promo_discount 
+        ? (subtotalTTC * quote.code_promo_discount / 100)
         : 0;
+      const promoDiscount = Math.round(rawPromoDiscount * 100) / 100;
       const finalTotalTTC = subtotalTTC - promoDiscount;
       const finalTotalHT = finalTotalTTC; // Since we're working with TTC prices, keep the same value
       
@@ -743,7 +744,9 @@ const addTotalsAndSignature = (
     // Promo code discount
     doc.setTextColor(34, 197, 94); // Green color for discount
     doc.text(`Code ${quote.code_promo_code} (-${quote.code_promo_discount || 0}%) :`, pageWidth - 95, currentLineY);
-    const discountAmount = subtotalHT * ((quote.code_promo_discount || 0) / 100);
+    const rawDiscountAmount = subtotalHT * ((quote.code_promo_discount || 0) / 100);
+    // Use the same rounding method as financial calculations: round to nearest cent
+    const discountAmount = Math.round(rawDiscountAmount * 100) / 100;
     const discountText = `-${discountAmount.toFixed(2)}€`;
     const discountWidth = doc.getTextWidth(discountText);
     doc.text(discountText, pageWidth - rightMargin - discountWidth, currentLineY);
