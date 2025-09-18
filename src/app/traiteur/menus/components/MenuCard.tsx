@@ -36,7 +36,7 @@ const MenuCard = ({ title, type, imageUrl, pdfUrl }: MenuCardProps) => {
         </div>
       </div>
       <h2 className="text-xl sm:text-2xl font-light mb-2">{title}</h2>
-      <p className="uppercase tracking-widest text-xs sm:text-sm">{type}</p>
+      <p className="uppercase tracking-widest text-sm">{type}</p>
     </div>
   );
 };

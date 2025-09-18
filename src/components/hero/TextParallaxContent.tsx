@@ -15,6 +15,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CopyIcon, CheckCircledIcon } from "@radix-ui/react-icons";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
+import ClientMessage from "@/components/global/ClientMessage";
 
 const TextParallaxContent = () => {
   const targetRef = useRef(null);
@@ -129,28 +140,147 @@ const TextParallaxContent = () => {
                 <Image className="cursor-pointer" src="/static/svg/mgelogowhite.svg" alt="logo" width={is2xlScreen ? 175 : 150} height={is2xlScreen ? 175 : 150} />
               </Link>
               <nav className="flex w-full justify-center items-center space-x-10 text-sm 2xl:text-lg font-medium">
-                {[
-                  { href: '/catalogue', label: 'CATALOGUE' },
-                  { href: '/traiteur', label: 'TRAITEUR' },
-                  { href: '/realisations', label: 'RÉALISATIONS' },
-                  { href: '/infos', label: 'INFOS' },
-                  { href: '/contact', label: 'CONTACT' },
-                ].map(({ href, label }) => (
-                  <div key={href} className="relative group">
-                    <Link href={href} className="text-white font-light tracking-wider relative group transition-colors duration-500">
-                      <span className="relative inline-block">
-                        {label}
-                      </span>
-                    </Link>
-                    <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
-                      <div 
-                        className={`w-full h-2 bg-white rounded-full transition-all duration-300 ease-out origin-center
-                          ${isActive(href) ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
-                        `}
-                      />
-                    </div>
+                {/* CATALOGUE */}
+                <div className="relative group">
+                  <Link href="/catalogue" className="text-white font-light tracking-wider relative group transition-colors duration-500">
+                    <span className="relative inline-block">
+                      CATALOGUE
+                    </span>
+                  </Link>
+                  <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
+                    <div 
+                      className={`w-full h-2 bg-white rounded-full transition-all duration-300 ease-out origin-center
+                        ${isActive('/catalogue') ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
+                      `}
+                    />
                   </div>
-                ))}
+                </div>
+
+                {/* TRAITEUR with Popover */}
+                <div className="relative group">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="text-white font-light tracking-wider hover:text-white 2xl:text-lg">
+                        TRAITEUR
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="p-0 w-[600px]" side="bottom" align="center">
+                      <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
+                        <ul className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3">
+                          <li>
+                            <Link
+                              href="/traiteur"
+                              className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                            >
+                              <div className="font-medium">Présentation</div>
+                              <div className="text-sm text-gray-500">Découvrez nos services traiteur</div>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/traiteur/menus"
+                              className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                            >
+                              <div className="font-medium">Menus</div>
+                              <div className="text-sm text-gray-500">Découvrez nos suggestions</div>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/traiteur/catalogue"
+                              className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                            >
+                              <div className="font-medium">Catalogue</div>
+                              <div className="text-sm text-gray-500">Commencez votre devis</div>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/traiteur/mariage"
+                              className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                            >
+                              <div className="font-medium">Mariage</div>
+                              <div className="text-sm text-gray-500">Cérémonies et réceptions de mariage</div>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/traiteur/particulier"
+                              className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                            >
+                              <div className="font-medium">Particulier</div>
+                              <div className="text-sm text-gray-500">Événements privés et familiaux</div>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/traiteur/professionnel"
+                              className="block px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
+                            >
+                              <div className="font-medium">Professionnel</div>
+                              <div className="text-sm text-gray-500">Événements d'entreprise et séminaires</div>
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                  <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
+                    <div 
+                      className={`w-full h-2 bg-white rounded-full transition-all duration-300 ease-out origin-center
+                        ${isActive('/traiteur') ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
+                      `}
+                    />
+                  </div>
+                </div>
+
+                {/* RÉALISATIONS */}
+                <div className="relative group">
+                  <Link href="/realisations" className="text-white font-light tracking-wider relative group transition-colors duration-500">
+                    <span className="relative inline-block">
+                      RÉALISATIONS
+                    </span>
+                  </Link>
+                  <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
+                    <div 
+                      className={`w-full h-2 bg-white rounded-full transition-all duration-300 ease-out origin-center
+                        ${isActive('/realisations') ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
+                      `}
+                    />
+                  </div>
+                </div>
+
+                {/* INFOS */}
+                <div className="relative group">
+                  <Link href="/infos" className="text-white font-light tracking-wider relative group transition-colors duration-500">
+                    <span className="relative inline-block">
+                      INFOS
+                    </span>
+                  </Link>
+                  <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
+                    <div 
+                      className={`w-full h-2 bg-white rounded-full transition-all duration-300 ease-out origin-center
+                        ${isActive('/infos') ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
+                      `}
+                    />
+                  </div>
+                </div>
+
+                {/* CONTACT */}
+                <div className="relative group">
+                  <Link href="/contact" className="text-white font-light tracking-wider relative group transition-colors duration-500">
+                    <span className="relative inline-block">
+                      CONTACT
+                    </span>
+                  </Link>
+                  <div className="absolute -top-[21px] left-1/2 transform -translate-x-1/2 w-20 h-1">
+                    <div 
+                      className={`w-full h-2 bg-white rounded-full transition-all duration-300 ease-out origin-center
+                        ${isActive('/contact') ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'}
+                      `}
+                    />
+                  </div>
+                </div>
               </nav>
               <div className="absolute right-8 flex items-center space-x-4 text-white font-light tracking-wider transition-colors duration-500">
                 <Popover>
@@ -191,6 +321,9 @@ const TextParallaxContent = () => {
                 <p className="text-base w-[90%] hidden md:block sm:w-full sm:text-xl font-light sm:font-extralight 2xl:text-2xl uppercase tracking-wider mb-4 text-center">TRANSFORMEZ VOS MOMENTS SPÉCIAUX EN CÉLÉBRATIONS UNIQUES</p>
                 <p className="text-base w-[90%] md:hidden sm:w-full sm:text-xl font-light sm:font-extralight 2xl:text-2xl uppercase tracking-wider mb-4 text-center">Chaque détail est important</p>
                 <p className="text-3xl sm:text-5xl font-normal mb-6 text-center px-2 md:px-10 leading-snug sm:font-light">LOCATION DE MOBILIER ET DE DÉCORATION POUR ÉVÉNEMENTS</p>
+                <div className="w-full max-w-4xl px-4">
+                  <ClientMessage />
+                </div>
               </motion.div>
             </div>
           </motion.div>
