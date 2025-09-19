@@ -3,11 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { getClientMessages } from '@/services/clientMessage';
 import { ClientMessage as ClientMessageType } from '@/utils/types/clientMessage';
-import { motion } from 'framer-motion';
+import { X } from 'lucide-react';
 
 const ClientMessage = () => {
   const [activeMessage, setActiveMessage] = useState<ClientMessageType | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
     const fetchClientMessages = async () => {
@@ -26,121 +27,72 @@ const ClientMessage = () => {
     fetchClientMessages();
   }, []);
 
-  // Don't render anything if loading or no active message
-  if (loading || !activeMessage) {
+  const handleDismiss = () => {
+    setIsDismissed(true);
+  };
+
+  // Don't render anything if loading, no active message, or dismissed
+  if (loading || !activeMessage || isDismissed) {
     return null;
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ 
-        duration: 1, 
-        delay: 0.6, 
-        ease: "easeOut",
-        scale: { duration: 0.8, delay: 0.7 }
-      }}
-      className="mt-6 relative"
-    >
-      {/* Elegant divider line above */}
-      <div className="flex items-center justify-center mb-4">
-        <motion.div 
-          className="h-px bg-gradient-to-r from-transparent via-white/50 to-transparent w-16"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        />
-        <motion.div 
-          className="mx-4 w-3 h-3 bg-gradient-to-r from-yellow-300 via-yellow-200 to-yellow-100 rounded-full"
-          animate={{ 
-            scale: [1, 1.4, 1],
-            opacity: [0.8, 1, 0.8],
-            boxShadow: [
-              "0 0 15px rgba(255, 255, 0, 0.4), 0 0 30px rgba(255, 255, 0, 0.2)",
-              "0 0 25px rgba(255, 255, 0, 0.8), 0 0 50px rgba(255, 255, 0, 0.4)", 
-              "0 0 15px rgba(255, 255, 0, 0.4), 0 0 30px rgba(255, 255, 0, 0.2)"
-            ]
-          }}
-          transition={{ 
-            duration: 1.5, 
-            repeat: Infinity, 
-            ease: "easeInOut" 
-          }}
-        />
-        <motion.div 
-          className="h-px bg-gradient-to-r from-transparent via-white/50 to-transparent w-16"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        />
-      </div>
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-slate-900 via-gray-900 to-slate-900 backdrop-blur-md border-t border-gray-700/50 shadow-2xl">
+      <div className="relative flex items-center px-4 py-4 mx-auto">
+        
+        {/* Message content - Normal for larger screens */}
+        <div className="hidden lg:flex flex-1 text-center pr-10">
+          <p className="text-white text-sm sm:text-base font-light tracking-wide leading-relaxed w-full">
+            {activeMessage.message}
+          </p>
+        </div>
 
-      {/* Message content with subtle shimmer effect */}
-      <div className="text-center px-6 relative">
-        <motion.div
-          className="absolute inset-0"
-          animate={{ x: ["-100%", "100%"] }}
-          transition={{ 
-            duration: 3, 
-            repeat: Infinity, 
-            ease: "linear",
-            delay: 1
-          }}
-        />
-        <motion.p 
-          className="text-white text-base sm:text-lg font-light tracking-wider leading-relaxed italic relative z-10"
-          animate={{ 
-            textShadow: [
-              "0 0 10px rgba(255, 255, 255, 0.3)",
-              "0 0 20px rgba(255, 255, 255, 0.5)",
-              "0 0 10px rgba(255, 255, 255, 0.3)"
-            ]
-          }}
-          transition={{ 
-            duration: 2.5, 
-            repeat: Infinity, 
-            ease: "easeInOut" 
-          }}
+        {/* Message content - Scrolling marquee for mobile and tablet */}
+        <div className="lg:hidden flex-1 overflow-hidden pr-10">
+          <div className="whitespace-nowrap">
+            <p className="text-white text-sm font-light tracking-wide leading-relaxed inline-block animate-marquee">
+              {activeMessage.message}
+              <span className="mx-8">•</span>
+              {activeMessage.message}
+              <span className="mx-8">•</span>
+              {activeMessage.message}
+              <span className="mx-8">•</span>
+              {activeMessage.message}
+              <span className="mx-8">•</span>
+              {activeMessage.message}
+              <span className="mx-8">•</span>
+              {activeMessage.message}
+              <span className="mx-8">•</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Dismiss button positioned at absolute far right */}
+        <button
+          onClick={handleDismiss}
+          className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/10 transition-all duration-200 group z-10 lg:bg-transparent bg-black/40 lg:backdrop-blur-none backdrop-blur-sm"
+          title="Fermer"
         >
-          {activeMessage.message}
-        </motion.p>
+          <X className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-200" />
+        </button>
       </div>
-
-      {/* Elegant divider line below */}
-      <div className="flex items-center justify-center mt-4">
-        <motion.div 
-          className="h-px bg-gradient-to-r from-transparent via-white/50 to-transparent w-16"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 1 }}
-        />
-        <motion.div 
-          className="mx-4 w-3 h-3 bg-gradient-to-r from-yellow-300 via-yellow-200 to-yellow-100 rounded-full"
-          animate={{ 
-            scale: [1, 1.4, 1],
-            opacity: [0.8, 1, 0.8],
-            boxShadow: [
-              "0 0 15px rgba(255, 255, 0, 0.4), 0 0 30px rgba(255, 255, 0, 0.2)",
-              "0 0 25px rgba(255, 255, 0, 0.8), 0 0 50px rgba(255, 255, 0, 0.4)", 
-              "0 0 15px rgba(255, 255, 0, 0.4), 0 0 30px rgba(255, 255, 0, 0.2)"
-            ]
-          }}
-          transition={{ 
-            duration: 1.5, 
-            repeat: Infinity, 
-            ease: "easeInOut",
-            delay: 0.5
-          }}
-        />
-        <motion.div 
-          className="h-px bg-gradient-to-r from-transparent via-white/50 to-transparent w-16"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 1 }}
-        />
-      </div>
-    </motion.div>
+      
+      {/* Custom CSS for marquee animation */}
+      <style jsx>{`
+        @keyframes marquee {
+          0% {
+            transform: translateX(0%);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        
+        .animate-marquee {
+          animation: marquee 20s linear infinite;
+        }
+      `}</style>
+    </div>
   );
 };
 
