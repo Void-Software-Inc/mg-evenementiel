@@ -125,7 +125,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
         id: quoteId,
         created_at: new Date().toISOString(),
         last_update: new Date().toISOString(),
-        fees: selectedFees // Add the selected fees to the PDF data
+        fees: selectedFees, // Add the selected fees to the PDF data
+        code_promo_code: formData.code_promo_code || null,
+        code_promo_discount: formData.code_promo_discount || null
       };
       
       setQuoteData(completeQuoteData);
