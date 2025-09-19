@@ -32,6 +32,12 @@ const menuCategories = {
         pdfUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/pdf-menus/Repas_Assis_Mariage_MG_TRAITEUR.pdf"
       },
       {
+        title: "Menu prestataire",
+        type: "SUGGESTIONS DE MENUS",
+        imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu%20cards/filipp-romanovski-TsdDPnG-bHE-unsplash.webp?t=2025-09-19T12%3A07%3A52.654Z",
+        pdfUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/pdf-menus/Menu_Prestataire_MG_TRAITEUR.pdf?t=2025-09-19T12%3A06%3A59.299Z"
+      },
+      {
         title: "Petites Fringales",
         type: "BUFFET POUR FIN DE SOIRÉE",
         imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu%20cards/karl-joshua-bernal-N7wQG77kTB8-unsplash.webp",
@@ -87,7 +93,7 @@ const menuCategories = {
         title: "Ateliers culinaires",
         type: "ATELIERS INTERACTIFS SUCRÉS ET SALÉS",
         imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu%20cards/israel-pina-UHJ3fOfJ-5c-unsplash.webp?t=2025-08-24T22%3A34%3A33.143Z",
-        pdfUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/pdf-menus/Ateliers_Culinaires_MG_TRAITEUR.pdf"
+        pdfUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/pdf-menus/Ateliers_Culinaires_MG_TRAITEUR.pdf?t=2025-09-19T12%3A00%3A54.250Z"
       },
       {
         title: "Moment du gâteau & Buffet sucré",
