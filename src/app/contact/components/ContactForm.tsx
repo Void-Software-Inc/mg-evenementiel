@@ -25,13 +25,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
 
   export interface FormData {
@@ -39,12 +32,6 @@ import {
     nom: string;
     email: string;
     telephone: string;
-    voie: string;
-    compl: string;
-    cp: string;
-    ville: string;
-    depart: string;
-    pays: string; 
     date?: DateRange | null;
     message: string;
   }
@@ -54,12 +41,6 @@ import {
     nom: z.string().min(2, "Veuillez renseignez votre nom").max(20, "Limite de 50 caractères dépassée"),
     email: z.string().email("Adresse email invalide"),
     telephone: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
-    voie: z.string().min(2, "Format invalide").max(100, "Limite de 100 caractères dépassée"),
-    compl: z.string().max(100, "Limite de 100 caractères dépassée").optional(),
-    cp: z.string().min(5, "Format invalide").max(5, "Format invalide"),
-    ville: z.string().min(2, "Veuillez renseigner ce champ").max(100, "Limite de 100 caractères dépassée"),
-    depart: z.string().min(1, "Veuillez sélectionner un département"),
-    pays: z.string().default("France"), 
     date: z.any().optional(),
     eventType: z.string().min(1, "Veuillez choisir un type d'événement"),
     traiteur: z.enum(["oui", "non"], { required_error: "Veuillez sélectionner une option" }),
@@ -87,12 +68,6 @@ import {
         nom: "",
         email: "",
         telephone: "",
-        voie: "",
-        compl: "",
-        cp: "",
-        ville: "",
-        depart: "",
-        pays: "France",   
         date: undefined,
         eventType: "",
         message: "",      
@@ -135,12 +110,6 @@ import {
             nom: values.nom,
             email: values.email,
             telephone: values.telephone,
-            voie: values.voie,
-            compl: values.compl,
-            cp: values.cp,
-            ville: values.ville,
-            depart: values.depart,
-            pays: values.pays,
             date: date ? `${date.from ? format(date.from, 'dd LLL, y', { locale: fr }) : ''} - ${date.to ? format(date.to, 'dd LLL, y', { locale: fr }) : ''}` : "Aucune date sélectionnée",
             eventType: values.eventType,
             traiteur: values.traiteur,
@@ -156,12 +125,6 @@ import {
             nom: "",
             email: "",
             telephone: "",
-            voie: "",
-            compl: "",
-            cp: "",
-            ville: "",
-            depart: "",
-            pays: "France",
             date: undefined,
             eventType: "",
             traiteur: "non",
@@ -239,109 +202,6 @@ import {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="voie"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Voie" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-left" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="compl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Complément d'adresse" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-left" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="cp"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Code Postal" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-left" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="ville"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Ville" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-left" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="depart"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Sélectionnez un département" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Ariege">Ariège</SelectItem>
-                          <SelectItem value="Aude">Aude</SelectItem>
-                          <SelectItem value="Aveyron">Aveyron</SelectItem>
-                          <SelectItem value="Bouches-du-Rhone">Bouches-du-Rhône</SelectItem>
-                          <SelectItem value="Gard">Gard</SelectItem>
-                          <SelectItem value="Gers">Gers</SelectItem>
-                          <SelectItem value="Gironde">Gironde</SelectItem>
-                          <SelectItem value="Haute-Garonne">Haute-Garonne</SelectItem>
-                          <SelectItem value="Hautes-Alpes">Hautes-Alpes</SelectItem>
-                          <SelectItem value="Hautes-Pyrenees">Hautes-Pyrénées</SelectItem>
-                          <SelectItem value="Herault">Hérault</SelectItem>
-                          <SelectItem value="Landes">Landes</SelectItem>
-                          <SelectItem value="Lot">Lot</SelectItem>
-                          <SelectItem value="Lot-et-Garonne">Lot-et-Garonne</SelectItem>
-                          <SelectItem value="Pyrenees-Atlantiques">Pyrénées-Atlantiques</SelectItem>
-                          <SelectItem value="Pyrenees-Orientales">Pyrénées-Orientales</SelectItem>
-                          <SelectItem value="Tarn">Tarn</SelectItem>
-                          <SelectItem value="Tarn-et-Garonne">Tarn-et-Garonne</SelectItem>
-                          <SelectItem value="Var">Var</SelectItem>
-                          <SelectItem value="Vaucluse">Vaucluse</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage className="text-left" />
-                  </FormItem>
-                )}
-              />
-  
-              <FormField
-                control={form.control}
-                name="pays"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Pays" {...field} disabled />
-                    </FormControl>
-                    <FormMessage className="text-left" />
-                  </FormItem>
-                )}
-              />
   
           <div>
             <div className="h-full w-full flex justify-start items-center pt-4">
