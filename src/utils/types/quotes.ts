@@ -9,6 +9,7 @@ export type Quote = {
     id: number;
     first_name: string;
     last_name: string;
+    raison_sociale?: string;
     phone_number: string;
     email: string;
     event_start_date: string;

@@ -30,6 +30,7 @@ import {
   export interface FormData {
     prenom: string;
     nom: string;
+    raison_sociale?: string;
     email: string;
     telephone: string;
     date?: DateRange | null;
@@ -39,6 +40,7 @@ import {
   const formSchema = z.object({
     prenom: z.string().min(2, "Veuillez renseignez votre prénom").max(50, "Limite de 50 caractères dépassée"),
     nom: z.string().min(2, "Veuillez renseignez votre nom").max(20, "Limite de 50 caractères dépassée"),
+    raison_sociale: z.string().max(100, "Limite de 100 caractères dépassée").optional(),
     email: z.string().email("Adresse email invalide"),
     telephone: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
     date: z.any().optional(),
@@ -66,6 +68,7 @@ import {
       defaultValues: {
         prenom: "",
         nom: "",
+        raison_sociale: "",
         email: "",
         telephone: "",
         date: undefined,
@@ -108,6 +111,7 @@ import {
           body: JSON.stringify({
             prenom: values.prenom,
             nom: values.nom,
+            raison_sociale: values.raison_sociale,
             email: values.email,
             telephone: values.telephone,
             date: date ? `${date.from ? format(date.from, 'dd LLL, y', { locale: fr }) : ''} - ${date.to ? format(date.to, 'dd LLL, y', { locale: fr }) : ''}` : "Aucune date sélectionnée",
@@ -123,6 +127,7 @@ import {
           form.reset({
             prenom: "",
             nom: "",
+            raison_sociale: "",
             email: "",
             telephone: "",
             date: undefined,
@@ -170,6 +175,19 @@ import {
                   <FormItem>
                     <FormControl>
                       <Input placeholder="Nom" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-left" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="raison_sociale"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Raison sociale (optionnel)" {...field} />
                     </FormControl>
                     <FormMessage className="text-left" />
                   </FormItem>

@@ -72,6 +72,7 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     const quoteData = {
       first_name: restFormData.first_name,
       last_name: restFormData.last_name,
+      raison_sociale: restFormData.raison_sociale,
       email: restFormData.email,
       phone_number: restFormData.phone_number,
       event_start_date: restFormData.event_start_date,
@@ -223,6 +224,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <p className="flex items-center"><span className="font-medium mr-2">Nom:</span> {formData?.last_name}</p>
             <p className="flex items-center"><span className="font-medium mr-2">Prénom:</span> {formData?.first_name}</p>
+            {formData?.raison_sociale && (
+              <p className="flex items-center"><span className="font-medium mr-2">Raison sociale:</span> {formData?.raison_sociale}</p>
+            )}
             <p className="flex items-center"><span className="font-medium mr-2">Email:</span> {formData?.email}</p>
             <p className="flex items-center"><span className="font-medium mr-2">Téléphone:</span> {formData?.phone_number}</p>
           </div>

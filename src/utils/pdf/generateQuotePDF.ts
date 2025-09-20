@@ -102,24 +102,23 @@ export const generateDocumentPDF = (
       doc.text("Client", pageWidth - 15 - doc.getTextWidth("Client"), contentStartY + 15);
       doc.setFont('helvetica', 'normal');
       
-      // Always create 6 lines of client info, using empty strings for missing address fields
+      // Always create client info lines, using empty strings for missing fields
       const clientInfo = [
         `${quote.first_name} ${quote.last_name}`,
+        quote.raison_sociale || '', // Add raison_sociale if it exists
         quote.email,
         quote.phone_number,
         quote.address?.voie ? `${quote.address.voie}${quote.address?.compl ? `, ${quote.address.compl}` : ''}` : '',
         quote.address?.cp || quote.address?.ville ? `${quote.address?.cp || ''} ${quote.address?.ville || ''}`.trim() : '',
         quote.address?.depart || ''
-      ];
+      ].filter(line => line); // Filter out empty lines
 
-      // Fixed position for the last line
-      const lastClientInfoY = contentStartY + 21 + (5 * 6); // 5 is the number of spaces between 6 lines
+      // Calculate position for the last line based on actual number of lines
+      const lastClientInfoY = contentStartY + 21 + ((clientInfo.length - 1) * 6);
 
       clientInfo.forEach((line, index) => {
-        if (line) { // Only render non-empty lines
-          const lineWidth = doc.getTextWidth(line);
-          doc.text(line, pageWidth - 15 - lineWidth, contentStartY + 21 + (index * 6));
-        }
+        const lineWidth = doc.getTextWidth(line);
+        doc.text(line, pageWidth - 15 - lineWidth, contentStartY + 21 + (index * 6));
       });
 
       // Add payment terms and conditions on the left

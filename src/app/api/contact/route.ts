@@ -3,7 +3,8 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const RECIPIENT_EMAIL = 'mgevenementiel31@gmail.com';
+//const RECIPIENT_EMAIL = 'mgevenementiel31@gmail.com';
+const RECIPIENT_EMAIL = 'evab.onbon37@gmail.com';
 
 export async function POST(request: Request) {
   try {
@@ -11,6 +12,7 @@ export async function POST(request: Request) {
     const { 
       prenom, 
       nom, 
+      raison_sociale,
       email, 
       telephone, 
       date, 
@@ -26,6 +28,7 @@ export async function POST(request: Request) {
       react: EmailTemplate({ 
         prenom, 
         nom, 
+        raison_sociale,
         email, 
         telephone, 
         date, 

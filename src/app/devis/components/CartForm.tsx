@@ -35,6 +35,7 @@ import { formatInTimeZone } from 'date-fns-tz'
 const formSchema = z.object({
   first_name: z.string().min(2, "Veuillez renseignez votre prénom").max(50, "Limite de 50 caractères dépassée"),
   last_name: z.string().min(2, "Veuillez renseignez votre nom").max(50, "Limite de 50 caractères dépassée"),
+  raison_sociale: z.string().max(100, "Limite de 100 caractères dépassée").optional(),
   email: z.string().email("Adresse email invalide"),
   phone_number: z.string().min(10, "Numéro de téléphone invalide").max(10, "Numéro de téléphone invalide").regex(/^\d{10}$/, "Le numéro de téléphone doit uniquement contenir des chiffres"),
   voie: z.string().min(2, "Veuillez renseigner votre adresse").max(100, "Limite de 100 caractères dépassée"),
@@ -81,6 +82,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
     } : {
       first_name: "",
       last_name: "",
+      raison_sociale: "",
       email: "",
       phone_number: "",
       voie: "",
@@ -162,6 +164,20 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
                 <FormMessage>
                   {form.formState.errors.last_name && "Veuillez renseignez votre nom"}
                 </FormMessage>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="raison_sociale"
+            render={({ field }) => (
+              <FormItem>
+                <Label className="text-lg font-medium leading-loose text-gray-700">Raison sociale</Label>
+                <FormControl>
+                  <Input placeholder="Raison sociale (optionnel)" {...field} />
+                </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
