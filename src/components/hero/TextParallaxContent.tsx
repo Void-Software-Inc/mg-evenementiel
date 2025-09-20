@@ -25,7 +25,6 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import ClientMessage from "@/components/global/ClientMessage";
 
 const TextParallaxContent = () => {
   const targetRef = useRef(null);
@@ -321,9 +320,6 @@ const TextParallaxContent = () => {
                 <p className="text-base w-[90%] hidden md:block sm:w-full sm:text-xl font-light sm:font-extralight 2xl:text-2xl uppercase tracking-wider mb-4 text-center">TRANSFORMEZ VOS MOMENTS SPÉCIAUX EN CÉLÉBRATIONS UNIQUES</p>
                 <p className="text-base w-[90%] md:hidden sm:w-full sm:text-xl font-light sm:font-extralight 2xl:text-2xl uppercase tracking-wider mb-4 text-center">Chaque détail est important</p>
                 <p className="text-3xl sm:text-5xl font-normal mb-6 text-center px-2 md:px-10 leading-snug sm:font-light">LOCATION DE MOBILIER ET DE DÉCORATION POUR ÉVÉNEMENTS</p>
-                <div className="w-full max-w-4xl px-4">
-                  <ClientMessage />
-                </div>
               </motion.div>
             </div>
           </motion.div>
