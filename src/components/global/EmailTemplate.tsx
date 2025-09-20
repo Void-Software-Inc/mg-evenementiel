@@ -16,12 +16,6 @@ import {
     nom: string;
     email: string;
     telephone: string;
-    voie: string;
-    compl: string;
-    cp: string;
-    ville: string;
-    depart: string;
-    pays: string;
     date: string;
     eventType: string;
     traiteur: string;
@@ -33,12 +27,6 @@ import {
     nom,
     email,
     telephone,
-    voie,
-    compl,
-    cp,
-    ville,
-    depart,
-    pays,
     date,
     eventType,
     traiteur,
@@ -74,40 +62,6 @@ import {
                 <Section style={infoRow}>
                   <Text style={label}>Téléphone :</Text>
                   <Text style={value}>{telephone}</Text>
-                </Section>
-  
-                <Hr style={divider} />
-  
-                <Section style={infoRow}>
-                  <Text style={label}>Adresse :</Text>
-                  <Text style={value}>{voie}</Text>
-                </Section>
-  
-                {compl && (
-                  <Section style={infoRow}>
-                    <Text style={label}>Complément :</Text>
-                    <Text style={value}>{compl}</Text>
-                  </Section>
-                )}
-  
-                <Section style={infoRow}>
-                  <Text style={label}>Code Postal :</Text>
-                  <Text style={value}>{cp}</Text>
-                </Section>
-  
-                <Section style={infoRow}>
-                  <Text style={label}>Ville :</Text>
-                  <Text style={value}>{ville}</Text>
-                </Section>
-  
-                <Section style={infoRow}>
-                  <Text style={label}>Département :</Text>
-                  <Text style={value}>{depart}</Text>
-                </Section>
-  
-                <Section style={infoRow}>
-                  <Text style={label}>Pays :</Text>
-                  <Text style={value}>{pays}</Text>
                 </Section>
   
                 <Hr style={divider} />
