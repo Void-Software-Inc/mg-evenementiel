@@ -14,6 +14,7 @@ import {
   interface EmailTemplateProps {
     prenom: string;
     nom: string;
+    raison_sociale?: string;
     email: string;
     telephone: string;
     date: string;
@@ -25,6 +26,7 @@ import {
   export const EmailTemplate = ({
     prenom,
     nom,
+    raison_sociale,
     email,
     telephone,
     date,
@@ -53,6 +55,13 @@ import {
                   <Text style={label}>Prénom :</Text>
                   <Text style={value}>{prenom}</Text>
                 </Section>
+
+                {raison_sociale && (
+                  <Section style={infoRow}>
+                    <Text style={label}>Raison sociale :</Text>
+                    <Text style={value}>{raison_sociale}</Text>
+                  </Section>
+                )}
   
                 <Section style={infoRow}>
                   <Text style={label}>Email :</Text>
