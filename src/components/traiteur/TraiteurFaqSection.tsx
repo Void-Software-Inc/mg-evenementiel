@@ -39,7 +39,7 @@ const TraiteurFaqSection = () => {
         },
         {
             question: "Que se passe-t-il en cas d'annulation ?",
-            answer: "L'annulation doit être notifiée par écrit. Des frais s'appliquent selon la date d'annulation (voir nos CGV)."
+            answer: <>L'annulation doit être notifiée par écrit. Des frais s'appliquent selon la date d'annulation (<Link href="/conditions" className="underline hover:text-gray-900">voir nos CGV</Link>).</>
         }
     ];
 
