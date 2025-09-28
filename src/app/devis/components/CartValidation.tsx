@@ -63,6 +63,64 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
   const totalTTC = subtotal - promoDiscount;
   const totalHT = totalTTC / 1.2; // Calculate HT amount (20% less than TTC)
 
+  // Helper function to send catering notification
+  const sendCateringNotification = async (quoteId: number, quoteData: any) => {
+    try {
+      // Check if quote contains catering products
+      const hasTraiteurProducts = cart.some((item: any) => 
+        item.category === "traiteur" || item.type === "catering"
+      );
+      
+      // Check if traiteur option is selected
+      const isTraiteurOptionSelected = formData?.is_traiteur === true;
+      
+      // Only send notification if catering is involved
+      if (hasTraiteurProducts || isTraiteurOptionSelected) {
+        const eventStartDate = new Date(quoteData.event_start_date);
+        const eventEndDate = new Date(quoteData.event_end_date);
+        
+        // Format event date
+        let eventDateText = eventStartDate.toLocaleDateString('fr-FR', { 
+          timeZone: 'Europe/Paris' 
+        });
+        
+        if (eventEndDate && eventStartDate.getTime() !== eventEndDate.getTime()) {
+          eventDateText += ` au ${eventEndDate.toLocaleDateString('fr-FR', { 
+            timeZone: 'Europe/Paris' 
+          })}`;
+        }
+
+        const notificationData = {
+          quoteId: quoteId.toString(),
+          clientName: `${quoteData.first_name} ${quoteData.last_name}`,
+          clientEmail: quoteData.email,
+          clientPhone: quoteData.phone_number,
+          eventDate: eventDateText,
+          hasTraiteurProducts,
+          isTraiteurOptionSelected,
+          totalAmount: totalTTC.toFixed(2)
+        };
+
+        const response = await fetch('/api/catering-notification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(notificationData),
+        });
+
+        if (!response.ok) {
+          console.error('Failed to send catering notification');
+        } else {
+          console.log('Catering notification sent successfully');
+        }
+      }
+    } catch (error) {
+      console.error('Error sending catering notification:', error);
+      // Don't throw the error as this shouldn't break the quote creation process
+    }
+  };
+
   const handleSubmit = async () => {
     if (isSubmitting) return; 
     setIsSubmitting(true);
@@ -104,6 +162,9 @@ const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: a
     try {
       const result = await createQuote(quoteData, quoteItems);
       const quoteId = result.quoteId;
+
+      // Send catering notification if applicable
+      await sendCateringNotification(quoteId, quoteData);
 
       // Convert cart items to products format
       const products: Product[] = cart.map((item: any) => ({
