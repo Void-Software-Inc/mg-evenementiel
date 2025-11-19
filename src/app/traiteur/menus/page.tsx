@@ -29,7 +29,7 @@ const menuCategories = {
         title: "Repas assis",
         type: "SUGGESTIONS DE MENUS",
         imageUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/menu%20cards/robert-vasquez-OyINhnh9bbw-unsplash.webp",
-        pdfUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/pdf-menus/Repas_Assis_Mariage_MG_TRAITEUR.pdf"
+        pdfUrl: "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/pdf-menus/Repas_Assis_Mariages_MG_TRAITEUR.pdf?t=2025-11-19T16%3A50%3A31.077Z"
       },
       {
         title: "Menu prestataire",
