@@ -62,7 +62,15 @@ const Footer = () => {
     </div>
     <div className='w-[90%] flex flex-col md:flex-row justify-between items-center md:items-start space-y-4 md:space-y-0 mt-6 sm:mt-20'>
       <p className='text-sm leading-snug md:text-xs lg:text-base font-extralight text-white text-center md:text-left'>
-        © {new Date().getFullYear()} MG Événementiel - All rights reserved. Developed by Void Sofwtare Inc.
+        © {new Date().getFullYear()} MG Événementiel - All rights reserved. Developed by{' '}
+        <a 
+          href="https://github.com/Void-Software-Inc" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="hover:text-gray-400 transition-colors ease-in-out duration-300 underline"
+        >
+          Void Sofwtare Inc.
+        </a>
       </p>
       <div className='flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6'>
         <Link href="/conditions" passHref>
