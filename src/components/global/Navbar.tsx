@@ -39,18 +39,7 @@ export default function Navbar() {
   });
   
   useEffect(() => {
-    const handleScroll = () => {
-      if (pathname === '/') {
-        const scrollThreshold = window.innerHeight * 1; // 100vh
-        setIsVisible(window.scrollY > scrollThreshold);
-      } else {
-        setIsVisible(true); // Always visible on other routes
-      }
-    };
-
-    handleScroll(); // Call once to set initial state
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    setIsVisible(true); // Always visible on all routes
   }, [pathname]);
 
   const handleItemClick = () => {

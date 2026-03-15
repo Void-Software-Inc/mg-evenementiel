@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/global/Navbar";
 import { CartProvider } from "@/app/context/CartContext";
@@ -9,6 +9,7 @@ import CookieConsent from "@/components/global/CookieConsent";
 import ClientMessage from "@/components/global/ClientMessage";
 
 const inter = Inter({ subsets: ["latin"] });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 export const metadata: Metadata = {
   title: "MG Événementiel - Location de Matériel et Mobilier pour Événements dans le Sud de la France",
@@ -42,7 +43,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png" />
         <link rel="manifest" href="/favicon_io/site.webmanifest" />
       </head>
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
+      <body className={`${inter.className} ${playfair.variable} flex flex-col min-h-screen`}>
         <CartProvider>
           <Navbar />
           <CookieConsent />

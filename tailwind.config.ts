@@ -15,6 +15,9 @@ const config = {
      
     },
     extend: {
+      fontFamily: {
+        playfair: ["var(--font-playfair)", "serif"],
+      },
       screens: {
         "xs": "410px",
         "2xl": "1698px",
