@@ -71,12 +71,12 @@ export default function ScrollableProducts() {
     
   return (   
     <div className="h-full w-full mb-40 flex flex-col items-center justify-center">
-      <div className="w-full px-4 mb-2 mt-0 md:mt-40 flex flex-col items-center justify-center">
-        <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
-          LOCATION DE MATÉRIEL
+      <div className="w-full px-6 sm:px-8 md:px-12 lg:px-16 mb-6 mt-0 md:mt-40 flex flex-col items-start">
+        <h2 className="font-playfair text-zinc-800 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight">
+          LOCATION DE MOBILIER ET DE DÉCORATION
         </h2>
-        <p className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
-          Une large gamme de produits pour décorer et personnaliser vos événements
+        <p className="text-zinc-600 text-sm sm:text-base lg:text-lg font-light leading-relaxed mt-4 max-w-[85%] lg:max-w-[65%] text-justify">
+          Découvrez notre sélection de mobilier et de décoration pour sublimer vos événements. Des pièces élégantes et soigneusement choisies pour créer une atmosphère unique et raffinée, adaptée à chaque occasion.
         </p>
       </div>
       <div className="w-full h-full flex items-center justify-center relative">

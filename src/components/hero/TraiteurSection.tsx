@@ -1,286 +1,86 @@
 'use client';
 
-import { useRef, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from 'next/image';
 import { Button } from "../ui/button";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-type ProductMenu = {
-  id: number;
-  name: string;
-  price: number;
-  image_url: string;
-};
+const cateringImages = [
+  "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r10.webp",
+  "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r17.webp",
+  "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r8.webp",
+];
 
 export default function Traiteur() {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const xlScrollContainerRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const [canXlScrollLeft, setCanXlScrollLeft] = useState(false);
-  const [canXlScrollRight, setCanXlScrollRight] = useState(true);
   
-  const cateringImages = [
-    "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r10.webp",
-    "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r17.webp",
-    "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r8.webp",
-    "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r31.webp",
-    "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r7.webp",
-    "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r32.webp",
-    "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r30.webp",
-    "https://supabase.mge-dashboard.pro/storage/v1/object/public/mge-website-images/display/r84.webp"
-  ];
-  
-  const checkScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1); // -1 to account for potential rounding errors
-    }
-  };
+  return (
+    <div className="w-full mb-32 flex flex-col">
 
-  const checkXlScroll = () => {
-    if (xlScrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = xlScrollContainerRef.current;
-      setCanXlScrollLeft(scrollLeft > 0);
-      setCanXlScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-    }
-  };
-
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    const xlScrollContainer = xlScrollContainerRef.current;
-    
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', checkScroll);
-      checkScroll(); // Check initial state
-    }
-    
-    if (xlScrollContainer) {
-      xlScrollContainer.addEventListener('scroll', checkXlScroll);
-      checkXlScroll(); // Check initial state
-    }
-    
-    return () => {
-      scrollContainer?.removeEventListener('scroll', checkScroll);
-      xlScrollContainer?.removeEventListener('scroll', checkXlScroll);
-    };
-  }, []);
-
-  const scroll = (direction: "left" | "right", containerRef: React.RefObject<HTMLDivElement>) => {
-    if (containerRef.current) {
-      const scrollAmount = 400;
-      containerRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
-    
-  return (   
-    <div className="h-full w-full mb-40 flex flex-col items-center justify-center">
-      <div className="w-full px-4 mb-2 mt-0 flex flex-col items-center justify-center">
-        <h2 className="text-zinc-800 text-center text-4xl sm:text-6xl xl:text-7xl font-extralight">
-          TRAITEUR
+      {/* Header */}
+      <div className="px-6 sm:px-10 lg:px-16 mb-10">
+        <h2 className="font-playfair text-zinc-800 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight">
+          SERVICE TRAITEUR
         </h2>
-        <p className="text-zinc-800 text-center text-lg sm:text-xl xl:text-2xl font-extralight">
-          Un service traiteur conçu pour répondre à vos attentes : repas assis, buffets dînatoires, vin d'honneur, cocktails, brunch...
-        </p>  
+        <p className="text-zinc-600 text-sm sm:text-base lg:text-lg font-light leading-relaxed mt-4 max-w-[85%] lg:max-w-[65%] text-justify">
+          Nous proposons également un service traiteur spécialisé dans les mariages et les événements — réunions familiales, séminaires professionnels — pour tous les moments de la journée : brunch, repas assis, pièces montées, gâteaux sur mesure, et collations en soirée.
+        </p>
       </div>
-      
-      {/* Small screens (grid layout) */}
-      <div className="w-full px-4 mt-8 max-w-7xl mx-auto sm:hidden">
-        <div className="grid grid-cols-2 gap-y-4 gap-x-3">
-          {/* First image - 270px height */}
-          <div className="col-span-1 row-span-1">
-            <div className="relative w-full h-[270px] rounded-lg overflow-hidden">
-              <Image 
-                src={cateringImages[0]} 
-                alt="Service traiteur 1" 
-                fill
-                className="object-cover"
-              />
+
+      {/* Images */}
+      <div className="px-6 sm:px-10 lg:px-16">
+        {/* Mobile: single column */}
+        <div className="flex flex-col gap-4 sm:hidden">
+          {cateringImages.map((src, i) => (
+            <div key={i} className="relative w-full h-[300px] bg-zinc-200 rounded-sm overflow-hidden">
+              <Image src={src} alt={`Service traiteur ${i + 1}`} fill className="object-cover" />
             </div>
-          </div>
-          
-          {/* Second image - 220px height */}
-          <div className="col-span-1 row-span-1">
-            <div className="relative w-full h-[220px] rounded-lg overflow-hidden">
-              <Image 
-                src={cateringImages[1]} 
-                alt="Service traiteur 2" 
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-          
-          {/* Third image - 220px height */}
-          <div className="col-span-1 row-span-1">
-            <div className="relative w-full h-[220px] rounded-lg overflow-hidden">
-              <Image 
-                src={cateringImages[2]} 
-                alt="Service traiteur 3" 
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-          
-          {/* Fourth image - 270px height */}
-          <div className="col-span-1 row-span-1 -mt-[50px]">
-            <div className="relative w-full h-[270px] rounded-lg overflow-hidden">
-              <Image 
-                src={cateringImages[3]} 
-                alt="Service traiteur 4" 
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
+          ))}
         </div>
-      </div>
-      
-      {/* Medium screens (scrollable) */}
-      <div className="hidden sm:block lg:hidden w-full h-full relative">
-        <div 
-          className="w-full bg-transparent p-8 overflow-x-auto scrollbar-hide" 
-          ref={scrollContainerRef}
-          style={{
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none',
-          }}
-        >
-          <div 
-            className="flex space-x-6 min-w-max pr-4"
-            style={{
-              '&::WebkitScrollbar': {
-                display: 'none',
-              },
-            } as React.CSSProperties}
-          >
-            {cateringImages.map((image, index) => (
-              <div key={index} className="w-[300px] flex-shrink-0">
-                <div className="relative w-full h-[350px] rounded-lg overflow-hidden">
-                  <Image 
-                    src={image} 
-                    alt={`Service traiteur ${index + 1}`} 
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+
+        {/* Tablet: 2 columns */}
+        <div className="hidden sm:grid lg:hidden grid-cols-2 gap-5">
+          {cateringImages.map((src, i) => (
+            <div
+              key={i}
+              className={`relative w-full bg-zinc-200 rounded-sm overflow-hidden ${i === 2 ? 'col-span-2 h-[340px]' : 'h-[420px]'}`}
+            >
+              <Image src={src} alt={`Service traiteur ${i + 1}`} fill className="object-cover" />
+            </div>
+          ))}
         </div>
-        {canScrollLeft && (
-          <Button
-            onClick={() => scroll("left", scrollContainerRef)}
-            className="z-10 absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white/80 active:bg-white/50 shadow-md p-2 rounded-full transition-opacity duration-300 ease-in-out"
-          >
-            <ChevronLeft className="w-6 h-6 text-black" />
-          </Button>
-        )}
-        {canScrollRight && (
-          <Button
-            onClick={() => scroll("right", scrollContainerRef)}
-            className="z-10 absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white/80 active:bg-white/50 shadow-md p-2 rounded-full transition-opacity duration-300 ease-in-out"
-          >
-            <ChevronRight className="w-6 h-6 text-black" />
-          </Button>
-        )}
-      </div>
-      
-      {/* Large screens (lg to xl) */}
-      <div className="hidden lg:block xl:hidden w-full px-4 mt-8 max-w-7xl mx-auto">
-        <div className="flex space-x-4">
-          {cateringImages.map((image, index) => (
-            <div key={index} className="flex-1">
-              <div className="relative w-full h-[472px] rounded-lg overflow-hidden">
-                <Image 
-                  src={image} 
-                  alt={`Service traiteur ${index + 1}`} 
-                  fill
-                  className="object-cover"
-                />
-              </div>
+
+        {/* Desktop lg+: 3 equal columns, fixed height, more gap on xl */}
+        <div className="hidden lg:grid grid-cols-3 gap-6 xl:gap-10 2xl:gap-48 w-[85%] mx-auto">
+          {cateringImages.map((src, i) => (
+            <div key={i} className="relative w-full h-[340px] xl:h-[440px] bg-zinc-200 rounded-sm overflow-hidden">
+              <Image src={src} alt={`Service traiteur ${i + 1}`} fill className="object-cover" />
             </div>
           ))}
         </div>
       </div>
-      
-      {/* Extra large screens (xl and above) - landscape mode with scrollable row */}
-      <div className="hidden xl:block w-full mt-8 relative">
-        <div 
-          className="w-full bg-transparent px-4 overflow-x-auto scrollbar-hide" 
-          ref={xlScrollContainerRef}
-          style={{
-            msOverflowStyle: 'none',
-            scrollbarWidth: 'none',
-          }}
-        >
-          <div 
-            className="flex space-x-4 min-w-max px-4"
-            style={{
-              '&::WebkitScrollbar': {
-                display: 'none',
-              },
-            } as React.CSSProperties}
-          >
-            {cateringImages.map((image, index) => (
-              <div key={index} className="flex-shrink-0">
-                <div className="relative w-[342px] h-[472px] rounded-lg overflow-hidden">
-                  <Image 
-                    src={image} 
-                    alt={`Service traiteur ${index + 1}`} 
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        {canXlScrollLeft && (
-          <Button
-            onClick={() => scroll("left", xlScrollContainerRef)}
-            className="z-10 absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white/80 active:bg-white/50 shadow-md p-2 rounded-full transition-opacity duration-300 ease-in-out"
-          >
-            <ChevronLeft className="w-6 h-6 text-black" />
-          </Button>
-        )}
-        {canXlScrollRight && (
-          <Button
-            onClick={() => scroll("right", xlScrollContainerRef)}
-            className="z-10 absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white/80 active:bg-white/50 shadow-md p-2 rounded-full transition-opacity duration-300 ease-in-out"
-          >
-            <ChevronRight className="w-6 h-6 text-black" />
-          </Button>
-        )}
-      </div>
-      
-      {/* Buttons section */}
-      <div className="w-full flex flex-col xs:flex-row items-center justify-center xs:justify-end sm:w-[95%] mt-8 space-y-2 xs:space-y-0 xs:space-x-3 px-4">
-        <Button 
-          asChild 
-          className="w-[60%] xs:w-auto border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center justify-center space-x-2 transition-all duration-300 group"
+
+      {/* Buttons */}
+      <div className="px-6 sm:px-10 lg:px-16 mt-8 flex flex-col sm:flex-row items-start sm:items-center sm:justify-end gap-3">
+        <Button
+          asChild
+          className="border border-zinc-800 bg-transparent text-zinc-800 hover:bg-zinc-800 hover:text-white font-light rounded-full px-6 py-2 flex items-center gap-2 transition-all duration-300 group"
         >
           <Link href="/traiteur">
-            <span className="text-sm font-medium">EN SAVOIR PLUS</span>
-            <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
+            <span className="text-sm tracking-wide">EN SAVOIR PLUS</span>
+            <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </Button>
-        <Button 
-          asChild 
-          className="w-[60%] xs:w-auto border-2 bg-transparent border-zinc-800 text-zinc-800 hover:text-white font-light rounded-full p-6 flex items-center justify-center space-x-2 transition-all duration-300 group"
+        <Button
+          asChild
+          className="border border-zinc-800 bg-transparent text-zinc-800 hover:bg-zinc-800 hover:text-white font-light rounded-full px-6 py-2 flex items-center gap-2 transition-all duration-300 group"
         >
-          <Link href="/traiteur">
-            <span className="text-sm font-medium">CATALOGUE</span>
-            <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
+          <Link href="/traiteur/catalogue">
+            <span className="text-sm tracking-wide">CATALOGUE</span>
+            <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </Button>
       </div>
+
     </div>
   );
 }
