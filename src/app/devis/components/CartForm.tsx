@@ -62,6 +62,38 @@ interface CartFormProps {
   onPrevious: () => void;
 }
 
+/** Devis context always has at least `fees`; merge so every RHF field is defined (avoids uncontrolled→controlled warnings). */
+function buildQuoteFormDefaults(formData: Record<string, unknown> | undefined) {
+  const fd = formData ?? {};
+  const addr = fd.address as Record<string, string> | undefined;
+  return {
+    first_name: (fd.first_name as string) ?? "",
+    last_name: (fd.last_name as string) ?? "",
+    raison_sociale: (fd.raison_sociale as string) ?? "",
+    email: (fd.email as string) ?? "",
+    phone_number: (fd.phone_number as string) ?? "",
+    voie: ((fd.voie as string) ?? addr?.voie) || "",
+    compl: ((fd.compl as string) ?? addr?.compl) || "",
+    cp: ((fd.cp as string) ?? addr?.cp) || "",
+    ville: ((fd.ville as string) ?? addr?.ville) || "",
+    depart: ((fd.depart as string) ?? addr?.depart) || "",
+    pays: ((fd.pays as string) ?? addr?.pays) || "France",
+    date: fd.event_start_date
+      ? {
+          from: new Date(fd.event_start_date as string),
+          to: fd.event_end_date
+            ? new Date(fd.event_end_date as string)
+            : undefined,
+        }
+      : { from: new Date(), to: new Date() },
+    is_traiteur:
+      (fd.is_traiteur === true || fd.is_traiteur === "true" ? "true" : "false") as
+        | "true"
+        | "false",
+    description: (fd.description as string) ?? "",
+  };
+}
+
 const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [titleMessage] = useState("");
@@ -72,29 +104,7 @@ const CartForm: React.FC<CartFormProps> = ({ onNext, onPrevious }) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: formData ? {
-      ...formData,
-      date: {
-        from: formData.event_start_date ? new Date(formData.event_start_date) : undefined,
-        to: formData.event_end_date ? new Date(formData.event_end_date) : undefined
-      },
-      is_traiteur: formData.is_traiteur ? "true" : "false"
-    } : {
-      first_name: "",
-      last_name: "",
-      raison_sociale: "",
-      email: "",
-      phone_number: "",
-      voie: "",
-      compl: "",
-      cp: "",
-      ville: "",
-      depart: "",
-      pays: "France",  
-      date: { from: new Date(), to: new Date() }, // Initialize with current date
-      is_traiteur: "false",
-      description: "",
-    },
+    defaultValues: buildQuoteFormDefaults(formData),
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {

@@ -169,7 +169,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
                           </Button>
                           <Input
                             type="number"
-                            value={localQuantities[item.id]}
+                            value={localQuantities[item.id] ?? item.quantity}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(item.id, e)}
                             onFocus={handleInputFocus}
                             onBlur={() => handleInputBlur(item.id)}
@@ -253,7 +253,7 @@ export const CartSheet: React.FC<CartSheetProps> = ({ isWhite = false }) => {
                           </Button>
                           <Input
                             type="number"
-                            value={localQuantities[item.id]}
+                            value={localQuantities[item.id] ?? item.quantity}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(item.id, e)}
                             onFocus={handleInputFocus}
                             onBlur={() => handleInputBlur(item.id)}

@@ -9,7 +9,6 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 import { generateQuotePDF } from '@/utils/pdf/generateQuotePDF';
 import { Product } from '@/utils/types/products';
 import { QuoteItem } from '@/utils/types/quotes';
-import { jsPDF } from 'jspdf';
 
 const CartValidation = ({ formData, cart, onPrevious }: { formData: any, cart: any, onPrevious: () => void }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
