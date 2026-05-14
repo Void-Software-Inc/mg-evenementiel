@@ -54,7 +54,7 @@ interface RealisationsPageProps {
 }
 
 async function fetchImages(): Promise<ImageProps[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: images, error } = await supabase
     .storage
     .from('mge-website-images')

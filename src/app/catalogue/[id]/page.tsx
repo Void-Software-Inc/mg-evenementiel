@@ -1,9 +1,14 @@
 import ProductDisplay from './ProductDisplay';
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   return (
     <div className="h-full w-full flex justify-center">
-      <ProductDisplay id={params.id} />
+      <ProductDisplay id={id} />
     </div>
   );
 }

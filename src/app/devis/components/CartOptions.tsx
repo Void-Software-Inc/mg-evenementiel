@@ -68,25 +68,21 @@ const CartOptions: React.FC<CartOptionsProps> = ({ onNext, onPrevious }) => {
   const hasBarnum = cart.some(item => item.type?.includes('chapiteau'));
   const hasTraiteur = cart.some(item => item.category === 'traiteur');
 
-  // Toggle fee selection
+  // Toggle fee selection (do not call setFormData inside setFees updater — that updates
+  // DevisProvider during CartOptions' state update and triggers a React warning.)
   const toggleFee = (feeName: string) => {
     console.log('Toggling fee:', feeName);
-    setFees(prevFees => {
-      const updatedFees = prevFees.map(fee => 
+    let updatedFees: FormData['fees'] = [];
+    setFees((prevFees) => {
+      updatedFees = prevFees.map((fee) =>
         fee.name === feeName ? { ...fee, enabled: !fee.enabled } : fee
       );
-      
-      // Update formData in context
-      setFormData((prev: FormData) => {
-        const newFormData = {
-          ...prev,
-          fees: updatedFees
-        };
-        return newFormData;
-      });
-      
       return updatedFees;
     });
+    setFormData((prev: FormData) => ({
+      ...prev,
+      fees: updatedFees,
+    }));
   };
 
   // Handle next step
